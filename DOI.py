@@ -30,7 +30,7 @@ class DOI:
 
 
     # Validate format of a given DOI.
-    def __init__(self, doi: str = '', _gather=True):
+    def __init__(self, doi: str = '', _gather: bool = True):
         doi_match = DOI_REGEX.match(doi)
         if not doi_match:
             raise ValueError('Invalid DOI format.')
