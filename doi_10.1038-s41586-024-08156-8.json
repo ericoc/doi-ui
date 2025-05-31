@@ -1,0 +1,819 @@
+{
+  "indexed": {
+    "date-parts": [
+      [
+        2025,
+        5,
+        27
+      ]
+    ],
+    "date-time": "2025-05-27T16:29:56Z",
+    "timestamp": 1748363396852,
+    "version": "3.37.3"
+  },
+  "reference-count": 48,
+  "publisher": "Springer Science and Business Media LLC",
+  "issue": "8040",
+  "license": [
+    {
+      "start": {
+        "date-parts": [
+          [
+            2024,
+            11,
+            6
+          ]
+        ],
+        "date-time": "2024-11-06T00:00:00Z",
+        "timestamp": 1730851200000
+      },
+      "content-version": "tdm",
+      "delay-in-days": 0,
+      "URL": "https://www.springernature.com/gp/researchers/text-and-data-mining"
+    },
+    {
+      "start": {
+        "date-parts": [
+          [
+            2024,
+            11,
+            6
+          ]
+        ],
+        "date-time": "2024-11-06T00:00:00Z",
+        "timestamp": 1730851200000
+      },
+      "content-version": "vor",
+      "delay-in-days": 0,
+      "URL": "https://www.springernature.com/gp/researchers/text-and-data-mining"
+    }
+  ],
+  "content-domain": {
+    "domain": [
+      "link.springer.com"
+    ],
+    "crossmark-restriction": false
+  },
+  "published-print": {
+    "date-parts": [
+      [
+        2024,
+        11,
+        28
+      ]
+    ]
+  },
+  "DOI": "10.1038/s41586-024-08156-8",
+  "type": "journal-article",
+  "created": {
+    "date-parts": [
+      [
+        2024,
+        11,
+        6
+      ]
+    ],
+    "date-time": "2024-11-06T17:05:26Z",
+    "timestamp": 1730912726000
+  },
+  "page": "847-853",
+  "update-policy": "https://doi.org/10.1007/springer_crossmark_policy",
+  "source": "Crossref",
+  "is-referenced-by-count": 5,
+  "title": "Electrically driven long-range solid-state amorphization in ferroic In2Se3",
+  "prefix": "10.1038",
+  "volume": "635",
+  "author": [
+    {
+      "ORCID": "https://orcid.org/0000-0001-6883-814X",
+      "authenticated-orcid": false,
+      "given": "Gaurav",
+      "family": "Modi",
+      "sequence": "first",
+      "affiliation": []
+    },
+    {
+      "ORCID": "https://orcid.org/0009-0004-5991-9609",
+      "authenticated-orcid": false,
+      "given": "Shubham K.",
+      "family": "Parate",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "Choah",
+      "family": "Kwon",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "Andrew C.",
+      "family": "Meng",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "Utkarsh",
+      "family": "Khandelwal",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "Anudeep",
+      "family": "Tullibilli",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "James",
+      "family": "Horwath",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "Peter K.",
+      "family": "Davies",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "ORCID": "https://orcid.org/0000-0002-3366-2153",
+      "authenticated-orcid": false,
+      "given": "Eric A.",
+      "family": "Stach",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "ORCID": "https://orcid.org/0000-0002-7841-8058",
+      "authenticated-orcid": false,
+      "given": "Ju",
+      "family": "Li",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "given": "Pavan",
+      "family": "Nukala",
+      "sequence": "additional",
+      "affiliation": []
+    },
+    {
+      "ORCID": "https://orcid.org/0000-0002-1289-4334",
+      "authenticated-orcid": false,
+      "given": "Ritesh",
+      "family": "Agarwal",
+      "sequence": "additional",
+      "affiliation": []
+    }
+  ],
+  "member": "297",
+  "published-online": {
+    "date-parts": [
+      [
+        2024,
+        11,
+        6
+      ]
+    ]
+  },
+  "reference": [
+    {
+      "key": "8156_CR1",
+      "doi-asserted-by": "publisher",
+      "first-page": "2201",
+      "DOI": "10.1109/JPROC.2010.2070050",
+      "volume": "98",
+      "author": "HSP Wong",
+      "year": "2010",
+      "unstructured": "Wong, H. S. P. et al. Phase change memory. Proc. IEEE 98, 2201–2227 (2010).",
+      "journal-title": "Proc. IEEE"
+    },
+    {
+      "key": "8156_CR2",
+      "doi-asserted-by": "publisher",
+      "first-page": "1561",
+      "DOI": "10.1126/science.1220119",
+      "volume": "336",
+      "author": "SW Nam",
+      "year": "2012",
+      "unstructured": "Nam, S. W. et al. Electrical wind force-driven and dislocation-templated amorphization in phase-change nanowires. Science 336, 1561–1566 (2012).",
+      "journal-title": "Science"
+    },
+    {
+      "key": "8156_CR3",
+      "doi-asserted-by": "publisher",
+      "DOI": "10.1038/ncomms10482",
+      "volume": "7",
+      "author": "P Nukala",
+      "year": "2016",
+      "unstructured": "Nukala, P., Lin, C. C., Composto, R. & Agarwal, R. Ultralow-power switching via defect engineering in germanium telluride phase-change memory devices. Nat. Commun. 7, 10482 (2016).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR4",
+      "doi-asserted-by": "publisher",
+      "first-page": "626",
+      "DOI": "10.1038/nnano.2007.291",
+      "volume": "2",
+      "author": "SH Lee",
+      "year": "2007",
+      "unstructured": "Lee, S. H., Jung, Y. & Agarwal, R. Highly scalable non-volatile and ultra-low-power phase-change nanowire memory. Nat. Nanotechnol. 2, 626–630 (2007).",
+      "journal-title": "Nat. Nanotechnol."
+    },
+    {
+      "key": "8156_CR5",
+      "doi-asserted-by": "publisher",
+      "first-page": "1364",
+      "DOI": "10.1021/nl104537c",
+      "volume": "11",
+      "author": "Y Jung",
+      "year": "2011",
+      "unstructured": "Jung, Y., Nam, S. W. & Agarwal, R. High-resolution transmission electron microscopy study of electrically-driven reversible phase change in Ge2Sb2Te5 nanowires. Nano Lett. 11, 1364–1368 (2011).",
+      "journal-title": "Nano Lett."
+    },
+    {
+      "key": "8156_CR6",
+      "doi-asserted-by": "publisher",
+      "first-page": "133",
+      "DOI": "10.1038/356133a0",
+      "volume": "356",
+      "author": "HJ Fecht",
+      "year": "1992",
+      "unstructured": "Fecht, H. J. Defect-induced melting and solid-state amorphization. Nature 356, 133–135 (1992).",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "8156_CR7",
+      "doi-asserted-by": "publisher",
+      "first-page": "6353",
+      "DOI": "10.1103/PhysRevB.58.6353",
+      "volume": "58",
+      "author": "S Zapperi",
+      "year": "1998",
+      "unstructured": "Zapperi, S., Cizeau, P., Durin, G. & Stanley, H. E. Dynamics of a ferromagnetic domain wall: avalanches, depinning transition, and the Barkhausen effect. Phys. Rev. B 58, 6353–6366 (1998).",
+      "journal-title": "Phys. Rev. B"
+    },
+    {
+      "key": "8156_CR8",
+      "doi-asserted-by": "publisher",
+      "first-page": "345",
+      "DOI": "10.1038/s41467-020-20477-6",
+      "volume": "12",
+      "author": "B Casals",
+      "year": "2021",
+      "unstructured": "Casals, B., Nataf, G. F. & Salje, E. K. H. Avalanche criticality during ferroelectric/ ferroelastic switching. Nat. Commun. 12, 345 (2021).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR9",
+      "doi-asserted-by": "publisher",
+      "first-page": "555",
+      "DOI": "10.1038/nphys3054",
+      "volume": "10",
+      "author": "G Biroli",
+      "year": "2014",
+      "unstructured": "Biroli, G. Disordered solids: in search of the perfect glass. Nat. Phys. 10, 555–556 (2014).",
+      "journal-title": "Nat. Phys."
+    },
+    {
+      "key": "8156_CR10",
+      "doi-asserted-by": "publisher",
+      "first-page": "587",
+      "DOI": "10.1103/RevModPhys.83.587",
+      "volume": "83",
+      "author": "L Berthier",
+      "year": "2011",
+      "unstructured": "Berthier, L. & Biroli, G. Theoretical perspective on the glass transition and amorphous materials. Rev. Mod. Phys. 83, 587–645 (2011).",
+      "journal-title": "Rev. Mod. Phys."
+    },
+    {
+      "key": "8156_CR11",
+      "doi-asserted-by": "publisher",
+      "first-page": "021040",
+      "DOI": "10.1103/PhysRevX.8.021040",
+      "volume": "8",
+      "author": "J Russo",
+      "year": "2018",
+      "unstructured": "Russo, J., Romano, F. & Tanaka, H. Glass forming ability in systems with competing orderings. Phys. Rev. 8, 021040 (2018).",
+      "journal-title": "Phys. Rev."
+    },
+    {
+      "key": "8156_CR12",
+      "doi-asserted-by": "publisher",
+      "first-page": "869",
+      "DOI": "10.1038/187869b0",
+      "volume": "187",
+      "author": "W Klement",
+      "year": "1960",
+      "unstructured": "Klement, W., Willens, R. H. & Duwez, P. Non-crystalline structure in solidified gold–silicon alloys. Nature 187, 869–870 (1960).",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "8156_CR13",
+      "doi-asserted-by": "publisher",
+      "first-page": "506",
+      "DOI": "10.1038/s41467-018-02961-2",
+      "volume": "9",
+      "author": "L Zhang",
+      "year": "2018",
+      "unstructured": "Zhang, L. et al. Amorphous martensite in β-Ti alloys. Nat. Commun. 9, 506 (2018).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR14",
+      "doi-asserted-by": "publisher",
+      "first-page": "2987",
+      "DOI": "10.1103/PhysRevLett.59.2987",
+      "volume": "59",
+      "author": "LE Rehn",
+      "year": "1987",
+      "unstructured": "Rehn, L. E., Okamoto, P. R., Pearson, J., Bhadra, R. & Grimsditch, M. Solid-state amorphization of Zr3Al: evidence of an elastic instability and first-order phase transformation. Phys. Rev. Lett. 59, 2987–2990 (1987).",
+      "journal-title": "Phys. Rev. Lett."
+    },
+    {
+      "key": "8156_CR15",
+      "doi-asserted-by": "crossref",
+      "first-page": "886",
+      "DOI": "10.1126/science.280.5365.886",
+      "volume": "280",
+      "author": "F Bridges",
+      "year": "1998",
+      "unstructured": "Bridges, F. et al. Local vibrations and negative thermal expansion in ZrW2O8. Science 280, 886–890 (1998).",
+      "journal-title": "Science"
+    },
+    {
+      "key": "8156_CR16",
+      "doi-asserted-by": "publisher",
+      "first-page": "866",
+      "DOI": "10.1038/nnano.2016.166",
+      "volume": "11",
+      "author": "Y He",
+      "year": "2016",
+      "unstructured": "He, Y. et al. In situ observation of shear-driven amorphization in silicon crystals. Nat. Nanotechnol. 11, 866–871 (2016).",
+      "journal-title": "Nat. Nanotechnol."
+    },
+    {
+      "key": "8156_CR17",
+      "doi-asserted-by": "publisher",
+      "first-page": "653",
+      "DOI": "10.1038/nmat2226",
+      "volume": "7",
+      "author": "K Shportko",
+      "year": "2008",
+      "unstructured": "Shportko, K. et al. Resonant bonding in crystalline phase-change materials. Nat. Mater. 7, 653–658 (2008).",
+      "journal-title": "Nat. Mater."
+    },
+    {
+      "key": "8156_CR18",
+      "doi-asserted-by": "publisher",
+      "DOI": "10.1038/ncomms15033",
+      "volume": "8",
+      "author": "P Nukala",
+      "year": "2017",
+      "unstructured": "Nukala, P. et al. Inverting polar domains via electrical pulsing in metallic germanium telluride. Nat. Commun. 8, 15033 (2017).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR19",
+      "doi-asserted-by": "publisher",
+      "first-page": "045210",
+      "DOI": "10.1103/PhysRevB.73.045210",
+      "volume": "73",
+      "author": "AH Edwards",
+      "year": "2006",
+      "unstructured": "Edwards, A. H. et al. Electronic structure of intrinsic defects in crystalline germanium telluride. Phys. Rev. B 73, 045210 (2006).",
+      "journal-title": "Phys. Rev. B"
+    },
+    {
+      "key": "8156_CR20",
+      "doi-asserted-by": "crossref",
+      "unstructured": "Lines, M. E. & Glass, A. M. Principles and Applications of Ferroelectrics and Related Materials (Oxford Univ. Press, 2001).",
+      "DOI": "10.1093/acprof:oso/9780198507789.001.0001"
+    },
+    {
+      "key": "8156_CR21",
+      "doi-asserted-by": "publisher",
+      "first-page": "14956",
+      "DOI": "10.1038/ncomms14956",
+      "volume": "8",
+      "author": "W Ding",
+      "year": "2017",
+      "unstructured": "Ding, W. et al. Prediction of intrinsic two-dimensional ferroelectrics in In2Se3 and other III2-VI3 van der Waals materials. Nat. Commun. 8, 14956 (2017).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR22",
+      "doi-asserted-by": "publisher",
+      "first-page": "227601",
+      "DOI": "10.1103/PhysRevLett.120.227601",
+      "volume": "120",
+      "author": "J Xiao",
+      "year": "2018",
+      "unstructured": "Xiao, J. et al. Intrinsic two-dimensional ferroelectricity with dipole locking. Phys. Rev. Lett. 120, 227601 (2018).",
+      "journal-title": "Phys. Rev. Lett."
+    },
+    {
+      "key": "8156_CR23",
+      "doi-asserted-by": "publisher",
+      "first-page": "47601",
+      "DOI": "10.1103/PhysRevLett.125.047601",
+      "volume": "125",
+      "author": "C Xu",
+      "year": "2020",
+      "unstructured": "Xu, C. et al. Two-dimensional antiferroelectricity in nanostripe-ordered In2Se3. Phys. Rev. Lett. 125, 47601 (2020).",
+      "journal-title": "Phys. Rev. Lett."
+    },
+    {
+      "key": "8156_CR24",
+      "doi-asserted-by": "publisher",
+      "first-page": "3665",
+      "DOI": "10.1038/s41467-021-23882-7",
+      "volume": "12",
+      "author": "C Xu",
+      "year": "2021",
+      "unstructured": "Xu, C. et al. Two-dimensional ferroelasticity in van der Waals β’-In2Se3. Nat. Commun. 12, 3665 (2021).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR25",
+      "doi-asserted-by": "publisher",
+      "first-page": "2106951",
+      "DOI": "10.1002/adma.202106951",
+      "volume": "34",
+      "author": "Z Zhang",
+      "year": "2022",
+      "unstructured": "Zhang, Z. et al. Atomic visualization and switching of ferroelectric order in β-In2Se3 films at the single layer limit. Adv. Mater. 34, 2106951 (2022).",
+      "journal-title": "Adv. Mater."
+    },
+    {
+      "key": "8156_CR26",
+      "doi-asserted-by": "publisher",
+      "first-page": "809",
+      "DOI": "10.1021/acsnano.3c09250",
+      "volume": "18",
+      "author": "L Wang",
+      "year": "2024",
+      "unstructured": "Wang, L. et al. In-plane ferrielectric order in van der Waals β′-In2Se3. ACS Nano 18, 809–818 (2024).",
+      "journal-title": "ACS Nano"
+    },
+    {
+      "key": "8156_CR27",
+      "doi-asserted-by": "publisher",
+      "first-page": "34",
+      "DOI": "10.1021/ja067436k",
+      "volume": "129",
+      "author": "H Peng",
+      "year": "2007",
+      "unstructured": "Peng, H., Schoen, D. T., Meister, S., Zhang, X. F. & Cui, Y. Synthesis and phase transformation of In2Se3 and CuInSe2 nanowires. J. Am. Chem. Soc. 129, 34–35 (2007).",
+      "journal-title": "J. Am. Chem. Soc."
+    },
+    {
+      "key": "8156_CR28",
+      "doi-asserted-by": "publisher",
+      "first-page": "10143",
+      "DOI": "10.1021/acs.chemmater.9b03499",
+      "volume": "31",
+      "author": "L Liu",
+      "year": "2019",
+      "unstructured": "Liu, L. et al. Atomically resolving polymorphs and crystal structures of In2Se3. Chem. Mater. 31, 10143–10149 (2019).",
+      "journal-title": "Chem. Mater."
+    },
+    {
+      "key": "8156_CR29",
+      "doi-asserted-by": "publisher",
+      "first-page": "519",
+      "DOI": "10.1016/0025-5408(68)90077-9",
+      "volume": "3",
+      "author": "J Van Landuyt",
+      "year": "1968",
+      "unstructured": "Van Landuyt, J., Hatwell, H. & Amelinckx, S. The domain structure of β-In2S3 ‘single crystals’ due to the ordering of indium vacancies. Mater. Res. Bull. 3, 519–528 (1968).",
+      "journal-title": "Mater. Res. Bull."
+    },
+    {
+      "key": "8156_CR30",
+      "doi-asserted-by": "publisher",
+      "first-page": "589",
+      "DOI": "10.1002/pssb.19690310219",
+      "volume": "31",
+      "author": "J Van Landuyt",
+      "year": "1969",
+      "unstructured": "Van Landuyt, J. & Amelinckx, S. Antiphase boundaries and twins associated with ordering of indium vacancies in β-In2S3. Phys. Status Solidi B Basic Solid State Phys. 31, 589–600 (1969).",
+      "journal-title": "Phys. Status Solidi B Basic Solid State Phys."
+    },
+    {
+      "key": "8156_CR31",
+      "doi-asserted-by": "publisher",
+      "first-page": "199",
+      "DOI": "10.1080/00150198008018803",
+      "volume": "23",
+      "author": "PJ Chen",
+      "year": "1980",
+      "unstructured": "Chen, P. J. & Montgomery, S. T. A macroscopic theory for the existence of the hysteresis and butterfly loops in ferroelectricity. Ferroelectrics 23, 199–207 (1980).",
+      "journal-title": "Ferroelectrics"
+    },
+    {
+      "key": "8156_CR32",
+      "doi-asserted-by": "publisher",
+      "first-page": "2162",
+      "DOI": "10.1021/acsnano.9b08986",
+      "volume": "14",
+      "author": "G Modi",
+      "year": "2020",
+      "unstructured": "Modi, G., Stach, E. A. & Agarwal, R. Low-power switching through disorder and carrier localization in bismuth-doped germanium telluride phase change memory nanowires. ACS Nano 14, 2162–2171 (2020).",
+      "journal-title": "ACS Nano"
+    },
+    {
+      "key": "8156_CR33",
+      "doi-asserted-by": "publisher",
+      "first-page": "5799",
+      "DOI": "10.1021/acs.nanolett.4c00878",
+      "volume": "24",
+      "author": "G Modi",
+      "year": "2024",
+      "unstructured": "Modi, G. et al. Controlled self-assembly of nanoscale superstructures in phase-change Ge–Sb–Te nanowires. Nano Lett. 24, 5799–5807 (2024).",
+      "journal-title": "Nano Lett."
+    },
+    {
+      "key": "8156_CR34",
+      "doi-asserted-by": "publisher",
+      "first-page": "8520",
+      "DOI": "10.1103/PhysRevB.47.8520",
+      "volume": "47",
+      "author": "ZH Yan",
+      "year": "1993",
+      "unstructured": "Yan, Z. H., Klassen, T., Michaelsen, C., Oehring, M. & Bormann, R. Inverse melting in the Ti-Cr system. Phys. Rev. B 47, 8520–8527 (1993).",
+      "journal-title": "Phys. Rev. B"
+    },
+    {
+      "key": "8156_CR35",
+      "doi-asserted-by": "publisher",
+      "first-page": "829",
+      "DOI": "10.1038/s41578-021-00304-0",
+      "volume": "6",
+      "author": "W Li",
+      "year": "2021",
+      "unstructured": "Li, W., Qian, X. & Li, J. Phase transitions in 2D materials. Nat. Rev. Mater. 6, 829–846 (2021).",
+      "journal-title": "Nat. Rev. Mater."
+    },
+    {
+      "key": "8156_CR36",
+      "doi-asserted-by": "publisher",
+      "first-page": "4415",
+      "DOI": "10.1038/ncomms5415",
+      "volume": "5",
+      "author": "S Matzen",
+      "year": "2014",
+      "unstructured": "Matzen, S. et al. Super switching and control of in-plane ferroelectric nanodomains in strained thin films. Nat. Commun. 5, 4415 (2014).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR37",
+      "doi-asserted-by": "publisher",
+      "DOI": "10.1038/ncomms1600",
+      "volume": "2",
+      "author": "P Gao",
+      "year": "2011",
+      "unstructured": "Gao, P. et al. Revealing the role of defects in ferroelectric switching with atomic resolution. Nat. Commun. 2, 591 (2011).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR38",
+      "doi-asserted-by": "publisher",
+      "first-page": "281",
+      "DOI": "10.1038/35002022",
+      "volume": "403",
+      "author": "H Fu",
+      "year": "2000",
+      "unstructured": "Fu, H. & Cohen, R. E. Polarization rotation mechanism for ultrahigh electromechanical response. Nature 403, 281–283 (2000).",
+      "journal-title": "Nature"
+    },
+    {
+      "key": "8156_CR39",
+      "doi-asserted-by": "publisher",
+      "first-page": "1700367",
+      "DOI": "10.1002/adfm.201700367",
+      "volume": "27",
+      "author": "EKH Salje",
+      "year": "2017",
+      "unstructured": "Salje, E. K. H., Wang, X., Ding, X. & Scott, J. F. Ultrafast switching in avalanche-driven ferroelectrics by supersonic kink movements. Adv. Funct. Mater. 27, 1700367 (2017).",
+      "journal-title": "Adv. Funct. Mater."
+    },
+    {
+      "key": "8156_CR40",
+      "doi-asserted-by": "publisher",
+      "DOI": "10.1038/s41467-024-48218-z",
+      "volume": "15",
+      "author": "F Sui",
+      "year": "2024",
+      "unstructured": "Sui, F. et al. Atomic-level polarization reversal in sliding ferroelectric semiconductors. Nat. Commun. 15, 3799 (2024).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR41",
+      "doi-asserted-by": "crossref",
+      "unstructured": "Nord, M., Vullum, P. E., MacLaren, I., Tybell, T. & Holmestad, R. Atomap: a new software tool for the automated analysis of atomic resolution images using two-dimensional Gaussian fitting. Adv. Struct. Chem. Imaging 3, 9 (2017).",
+      "DOI": "10.1186/s40679-017-0042-5"
+    },
+    {
+      "key": "8156_CR42",
+      "doi-asserted-by": "publisher",
+      "first-page": "2991",
+      "DOI": "10.1038/s41467-022-30687-9",
+      "volume": "131",
+      "author": "S Takamoto",
+      "year": "2022",
+      "unstructured": "Takamoto, S. et al. Towards universal neural network potential for material discovery applicable to arbitrary combination of 45 elements. Nat. Commun. 131, 2991 (2022).",
+      "journal-title": "Nat. Commun."
+    },
+    {
+      "key": "8156_CR43",
+      "first-page": "447",
+      "volume": "9",
+      "author": "S Takamoto",
+      "year": "2023",
+      "unstructured": "Takamoto, S., Okanohara, D., Li, Q. J. & Li, J. Towards universal neural network interatomic potential. J. Mater. 9, 447–454 (2023).",
+      "journal-title": "J. Mater."
+    },
+    {
+      "key": "8156_CR44",
+      "doi-asserted-by": "publisher",
+      "first-page": "1758",
+      "DOI": "10.1103/PhysRevB.59.1758",
+      "volume": "59",
+      "author": "G Kresse",
+      "year": "1999",
+      "unstructured": "Kresse, G. & Joubert, D. From ultrasoft pseudopotentials to the projector augmented-wave method. Phys. Rev. B 59, 1758 (1999).",
+      "journal-title": "Phys. Rev. B"
+    },
+    {
+      "key": "8156_CR45",
+      "doi-asserted-by": "publisher",
+      "first-page": "3865",
+      "DOI": "10.1103/PhysRevLett.77.3865",
+      "volume": "77",
+      "author": "JP Perdew",
+      "year": "1996",
+      "unstructured": "Perdew, J. P., Burke, K. & Ernzerhof, M. Generalized gradient approximation made simple. Phys. Rev. Lett. 77, 3865 (1996).",
+      "journal-title": "Phys. Rev. Lett."
+    },
+    {
+      "key": "8156_CR46",
+      "doi-asserted-by": "publisher",
+      "first-page": "558",
+      "DOI": "10.1103/PhysRevB.47.558",
+      "volume": "47",
+      "author": "G Kresse",
+      "year": "1993",
+      "unstructured": "Kresse, G. & Hafner, J. Ab initio molecular dynamics for liquid metals. Phys. Rev. B 47, 558 (1993).",
+      "journal-title": "Phys. Rev. B"
+    },
+    {
+      "key": "8156_CR47",
+      "doi-asserted-by": "publisher",
+      "first-page": "11169",
+      "DOI": "10.1103/PhysRevB.54.11169",
+      "volume": "54",
+      "author": "G Kresse",
+      "year": "1996",
+      "unstructured": "Kresse, G. & Furthmüller, J. Efficient iterative schemes for ab initio total-energy calculations using a plane-wave basis set. Phys. Rev. B 54, 11169 (1996).",
+      "journal-title": "Phys. Rev. B"
+    },
+    {
+      "key": "8156_CR48",
+      "doi-asserted-by": "publisher",
+      "first-page": "9901",
+      "DOI": "10.1063/1.1329672",
+      "volume": "113",
+      "author": "G Henkelman",
+      "year": "2000",
+      "unstructured": "Henkelman, G., Uberuaga, B. P. & Jónsson, H. A climbing image nudged elastic band method for finding saddle points and minimum energy paths. J. Chem. Phys. 113, 9901–9904 (2000).",
+      "journal-title": "J. Chem. Phys."
+    }
+  ],
+  "container-title": "Nature",
+  "original-title": [],
+  "language": "en",
+  "link": [
+    {
+      "URL": "https://www.nature.com/articles/s41586-024-08156-8.pdf",
+      "content-type": "application/pdf",
+      "content-version": "vor",
+      "intended-application": "text-mining"
+    },
+    {
+      "URL": "https://www.nature.com/articles/s41586-024-08156-8",
+      "content-type": "text/html",
+      "content-version": "vor",
+      "intended-application": "text-mining"
+    },
+    {
+      "URL": "https://www.nature.com/articles/s41586-024-08156-8.pdf",
+      "content-type": "application/pdf",
+      "content-version": "vor",
+      "intended-application": "similarity-checking"
+    }
+  ],
+  "deposited": {
+    "date-parts": [
+      [
+        2024,
+        11,
+        27
+      ]
+    ],
+    "date-time": "2024-11-27T13:09:13Z",
+    "timestamp": 1732712953000
+  },
+  "score": 1,
+  "resource": {
+    "primary": {
+      "URL": "https://www.nature.com/articles/s41586-024-08156-8"
+    }
+  },
+  "subtitle": [],
+  "short-title": [],
+  "issued": {
+    "date-parts": [
+      [
+        2024,
+        11,
+        6
+      ]
+    ]
+  },
+  "references-count": 48,
+  "journal-issue": {
+    "issue": "8040",
+    "published-print": {
+      "date-parts": [
+        [
+          2024,
+          11,
+          28
+        ]
+      ]
+    }
+  },
+  "alternative-id": [
+    "8156"
+  ],
+  "URL": "http://dx.doi.org/10.1038/s41586-024-08156-8",
+  "relation": {},
+  "ISSN": [
+    "0028-0836",
+    "1476-4687"
+  ],
+  "subject": [],
+  "container-title-short": "Nature",
+  "published": {
+    "date-parts": [
+      [
+        2024,
+        11,
+        6
+      ]
+    ]
+  },
+  "assertion": [
+    {
+      "value": "11 July 2023",
+      "order": 1,
+      "name": "received",
+      "label": "Received",
+      "group": {
+        "name": "ArticleHistory",
+        "label": "Article History"
+      }
+    },
+    {
+      "value": "4 October 2024",
+      "order": 2,
+      "name": "accepted",
+      "label": "Accepted",
+      "group": {
+        "name": "ArticleHistory",
+        "label": "Article History"
+      }
+    },
+    {
+      "value": "6 November 2024",
+      "order": 3,
+      "name": "first_online",
+      "label": "First Online",
+      "group": {
+        "name": "ArticleHistory",
+        "label": "Article History"
+      }
+    },
+    {
+      "value": "E.A.S. is an equity holder in Hummingbird Scientific. The other authors declare no competing interests.",
+      "order": 1,
+      "name": "Ethics",
+      "group": {
+        "name": "EthicsHeading",
+        "label": "Competing interests"
+      }
+    }
+  ]
+}
