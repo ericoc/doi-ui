@@ -1,13 +1,27 @@
 #!/usr/bin/env python3
 import logging
-from argparse import ArgumentParser
-from DOI import DOI
+from argparse import ArgumentParser, RawTextHelpFormatter
+from DOI import DOI, DOI_URL
 
 
 # Parse DOI argument.
-parser = ArgumentParser()
-parser.add_argument("doi", help="Digital Object Identifier (DOI)")
-parser.add_argument("-v", "--verbose", help="verbose", action="store_true")
+parser = ArgumentParser(formatter_class=RawTextHelpFormatter)
+parser.add_argument(
+    "doi",
+    help="Digital Object Identifier (DOI)\n\te.g. 10.1038/s41586-024-08156-8"
+)
+parser.add_argument(
+    "-a", "--authors", help="Show authors.", action="store_true"
+)
+parser.add_argument(
+    "-d", "--dates", help="Show dates.", action="store_true"
+)
+parser.add_argument(
+    "-r", "--references", help="Show reference DOI(s).", action="store_true"
+)
+parser.add_argument(
+    "-v", "--verbose", help="Verbose output.", action="store_true"
+)
 args = parser.parse_args()
 
 # Logging.
@@ -22,19 +36,63 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Gather DOI information.
+# Gather DOI information, and list its basic details.
 doi = DOI(args.doi)
+logger.info(f'{doi.title} ({doi.url})')
 logger.debug(doi)
-authors = doi.authors
-logger.debug(authors)
 
-# List total author count, as well as each author name, sequence, and ORCID.
-logger.info(doi.title)
-logger.info(doi.url)
-logger.info(f'{len(authors)} author(s) found:')
-for (i, author) in enumerate(iterable=authors, start=1):
-    logger.debug(author)
-    name = f'{author.get("given")} {author.get("family")}'
-    orcid = author.get("ORCID")
-    sequence = author.get("sequence")
-    logger.info(f'  {i}. {name} ({sequence}) [{orcid}]')
+# List dates, if requested.
+if args.dates is True:
+    created = doi.created
+    if created:
+        logger.info(f'Created: {created.strftime("%c")} ({created})')
+    published = doi.published
+    if published:
+        logger.info(f'Published: {published.strftime("%c")} ({published})')
+    published_online = doi.published_online
+    if published_online:
+        logger.info(
+            f'Published Online: {published_online.strftime("%c")}'
+            f' ({published_online})'
+        )
+    published_print = doi.published_print
+    if published_print:
+        logger.info(
+            f'Published Print: {published_print.strftime("%c")}'
+            f' ({published_print})'
+        )
+
+# List authors, if requested.
+if args.authors is True:
+    authors = doi.authors
+    if authors:
+        logger.info(f'{len(authors)} author(s):')
+        for (i, author) in enumerate(iterable=authors, start=1):
+            name = f'{author.get("given")} {author.get("family")}'
+            orcid = author.get("ORCID")
+            sequence = author.get("sequence")
+            logger.info(f'  {i}. {name} ({sequence}) [ORCID: {orcid}]')
+            logger.debug(author)
+
+# List reference DOI(s), if requested.
+if args.references is True:
+    references = doi.references
+    if references:
+        logger.info(f'{doi.reference_count}/{len(references)} reference(s):')
+
+        # Gather the information of any DOI of each reference.
+        for (i, reference) in enumerate(iterable=references, start=1):
+            msg = f'      {i}. '
+            if reference:
+                reference_doi = reference.get("DOI")
+                if reference_doi:
+                    reference_obj = DOI(reference_doi)
+                    if reference_obj:
+                        msg += reference_obj.title
+                        reference_url = f"{DOI_URL}/{reference_doi}"
+                        if reference_url:
+                            msg += f' ({reference_url})'
+                        logger.debug(reference_obj)
+                else:
+                    msg = f'      {i}. {str(reference)}'
+            logger.info(msg)

@@ -2,6 +2,7 @@
 Digital Object Identifier (DOI).
 https://www.doi.org/
 """
+from datetime import date, datetime
 from re import compile as re_compile
 from requests import get
 
@@ -13,9 +14,25 @@ DOI_TIMEOUT = 3
 DOI_URL = "https://doi.org"
 
 
+def _parse_date(item: (dict, None)) -> (date, datetime, None):
+    if item:
+        iso_dt = item.get("date-time")
+        if iso_dt:
+            return datetime.fromisoformat(iso_dt)
+
+        date_parts = item.get("date-parts")
+        if date_parts:
+            p_date = date_parts[0]
+            if p_date and len(p_date) == 3:
+                return date(p_date[0], p_date[1], p_date[2])
+
+    return None
+
+
+
 class DOI:
-    """A DOI is a digital identifier of an object, any object -
-    physical, digital, or abstract. DOIs solve a common problem:
+    """A Digital Object Identifier (DOI) is a digital identifier of an object,
+    any object - physical, digital, or abstract. DOIs solve a common problem:
     keeping track of things. Things can be matter, material, content, or
     activities. Designed to be used by humans as well as machines,
     DOIs identify objects persistently. They allow things to be uniquely
@@ -26,16 +43,27 @@ class DOI:
     _data: dict = {}
     author: (list, dict) = []
     authors: (list, dict) = []
+    created: (date, datetime, None) = None
+    journal_title: str = ""
+    published: (date, None) = None
+    published_online: (date, None) = None
+    published_print: (date, None) = None
+    publisher: str = ""
+    reference_count: int = 0
+    references: list = []
     title: str = ""
+    type: str = ""
+    url: str = ""
 
-
-    # Validate format of a given DOI.
+    # Initialization of a Digital Object Identifier (DOI) Python object.
     def __init__(self, doi: str = '', _gather: bool = True):
+
+        # Validate format of a given DOI.
         doi_match = DOI_REGEX.match(doi)
         if not doi_match:
             raise ValueError('Invalid DOI format.')
 
-        # Gather DOI data, if valid format.
+        # Gather DOI data, by default.
         self.doi = doi
         if _gather is True:
             self._data = self.__gather()
@@ -44,7 +72,7 @@ class DOI:
             if self._data:
 
                 # Set authors, and determine primary/"first" author.
-                self.authors = self._data.get("author")
+                self.authors = self._data.get("author", self.authors)
                 if self.authors:
                     for author in self.authors:
                         if author.get("sequence") != "additional":
@@ -54,16 +82,43 @@ class DOI:
                 if len(self.author) == 1:
                     self.author = self.author[0]
 
-                # Set title and URL on the Python object.
-                self.title = self._data.get("title")
-                self.url = self._data.get("URL")
+                # Set attributes on Python object, using data from JSON.
+                self.journal_title = self._data.get(
+                    "journal-title",
+                    self.journal_title
+                )
+                self.publisher = self._data.get("publisher", self.publisher)
+                self.reference_count = self._data.get(
+                    "reference-count",
+                    self.reference_count
+                )
+                self.references = self._data.get("reference", self.references)
+                self.title = self._data.get("title", self.title)
+                self.type = self._data.get("type", self.type)
+                self.url = self._data.get("URL", self.url)
+
+                # Set date attributes.
+                created = self._data.get("created")
+                if created:
+                    self.created = _parse_date(created)
+
+                published = self._data.get("published")
+                if published:
+                    self.published = _parse_date(published)
+
+                published_online = self._data.get("published-online")
+                if published_online:
+                    self.published_online = _parse_date(published_online)
+
+                published_print = self._data.get("published-print")
+                if published_print:
+                    self.published_print = _parse_date(published_print)
 
                 # Delete data dictionary, when done with it.
                 del self._data
 
-
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}: {self.__str__()}"
+        return f'{self.__class__.__name__}: {self.__str__()}'
 
     def __str__(self) -> str:
         msg = self.doi
