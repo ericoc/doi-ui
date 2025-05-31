@@ -3,8 +3,16 @@ Digital Object Identifier (DOI).
 https://www.doi.org/
 """
 from datetime import date, datetime
+from re import compile
 from requests import get
-from .config import DOI_HEADERS, DOI_REGEX, DOI_TIMEOUT, DOI_URL
+
+
+DOI_HEADERS = {
+    "Accept": "application/json",
+    "User-Agent": "DOI JSON Search / nano.upenn.edu v0.1"
+}
+DOI_REGEX = compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
+DOI_URL = "https://doi.org"
 
 
 def _parse_date(item: (dict, None)) -> (date, datetime, None):
@@ -32,8 +40,10 @@ class DOI:
     identified and accessed reliably. You know what you have, where it is,
     and others can track it too."""
 
-    doi: str = ""
     _data: dict = {}
+    _timeout: int = 3
+
+    doi: str = ""
     author: (list, dict) = []
     authors: (list, dict) = []
     created: (date, datetime, None) = None
@@ -135,10 +145,18 @@ class DOI:
     # Gather (JSON) information about the DOI.
     def __gather(self) -> dict:
         try:
-            return get(
+            resp = get(
                 headers=DOI_HEADERS,
                 url=f'{DOI_URL}/{self.doi}',
-                timeout=DOI_TIMEOUT
-            ).json()
+                timeout=self._timeout
+            )
+            if resp.status_code != 200:
+                raise FileNotFoundError(
+                    'No such DOI (<span class="font-monospace">'
+                    f'{self.doi}</span>).'
+                )
+            return resp.json()
         except Exception as doi_exc:
-            raise RuntimeError(f'Exception gathering {self.doi}.') from doi_exc
+            raise RuntimeError(str(doi_exc)) from doi_exc
+
+
