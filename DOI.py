@@ -3,15 +3,8 @@ Digital Object Identifier (DOI).
 https://www.doi.org/
 """
 from datetime import date, datetime
-from re import compile as re_compile
 from requests import get
-
-
-USER_AGENT = "DOI JSON Search / nano.upenn.edu v0.1"
-DOI_HEADERS = {"Accept": "application/json", "User-Agent": USER_AGENT}
-DOI_REGEX = re_compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
-DOI_TIMEOUT = 3
-DOI_URL = "https://doi.org"
+from .config import DOI_HEADERS, DOI_REGEX, DOI_TIMEOUT, DOI_URL
 
 
 def _parse_date(item: (dict, None)) -> (date, datetime, None):
