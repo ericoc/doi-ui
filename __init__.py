@@ -23,21 +23,37 @@ logging.basicConfig(
     level=LOG_LEVEL
 )
 
+# Main (Jinja2) template to search DOI.
 @app.route("/")
 def index():
-    # Return (Jinja2) template with DOI details.
     code = 200
     doi = None
+    err_msg = None
     get_doi = request.args.get("doi")
 
+    # Gather information about submitted DOI ("?doi=" GET parameter).
     if get_doi:
         try:
             doi = DOI(get_doi)
             logger.debug(vars(doi))
-        except Exception as exc:
+
+        # Handle any errors that may occur.
+        except ValueError:
+            code = 400
+            err_msg = 'Invalid DOI format!'
+        except FileNotFoundError:
             code = 404
+            err_msg = \
+                f'No such DOI (<span class="font-monospace">{get_doi}</span>).'
+        except Exception as exc:
+            code = 500
             logger.exception(exc)
-            flash(message=str(exc))
+            err_msg = str(exc)
+
+        # Display any error message that was generated.
+        if err_msg:
+            flash(err_msg)
+
     return make_response(render_template("index.html.j2", doi=doi), code)
 
 

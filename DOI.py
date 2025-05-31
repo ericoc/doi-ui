@@ -67,7 +67,7 @@ class DOI:
         # Validate format of a given DOI.
         doi_match = DOI_REGEX.match(doi)
         if not doi_match:
-            raise ValueError('Invalid DOI format.')
+            raise ValueError
 
         # Gather DOI data, by default.
         self.doi = doi
@@ -151,12 +151,10 @@ class DOI:
                 timeout=self._timeout
             )
             if resp.status_code != 200:
-                raise FileNotFoundError(
-                    'No such DOI (<span class="font-monospace">'
-                    f'{self.doi}</span>).'
-                )
+                raise FileNotFoundError
             return resp.json()
+
         except Exception as doi_exc:
-            raise RuntimeError(str(doi_exc)) from doi_exc
+            raise doi_exc
 
 
