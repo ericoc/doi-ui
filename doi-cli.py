@@ -17,7 +17,8 @@ parser.add_argument(
     "-d", "--dates", help="Show dates.", action="store_true"
 )
 parser.add_argument(
-    "-r", "--references", help="Show reference DOI(s).", action="store_true"
+    "-r", "--references",
+    help="Show reference information.", action="store_true"
 )
 parser.add_argument(
     "-v", "--verbose", help="Verbose output.", action="store_true"
@@ -38,7 +39,9 @@ logger = logging.getLogger(__name__)
 
 # Gather DOI information, and list its basic details.
 doi = DOI(args.doi)
-logger.info(f'{doi.title} ({doi.url})')
+logger.info(f'{doi.title} ({doi.type})')
+logger.info(doi.url)
+logger.info(doi.publisher)
 logger.debug(doi)
 
 # List dates, if requested.
@@ -46,6 +49,15 @@ if args.dates is True:
     created = doi.created
     if created:
         logger.info(f'Created: {created.strftime("%c")} ({created})')
+    deposited = doi.deposited
+    if deposited:
+        logger.info(f'Deposited: {deposited.strftime("%c")} ({deposited})')
+    indexed = doi.indexed
+    if indexed:
+        logger.info(f'Indexed: {indexed.strftime("%c")} ({indexed})')
+    issued = doi.issued
+    if issued:
+        logger.info(f'Issued: {issued.strftime("%c")} ({issued})')
     published = doi.published
     if published:
         logger.info(f'Published: {published.strftime("%c")} ({published})')
@@ -76,9 +88,11 @@ if args.authors is True:
 
 # List reference DOI(s), if requested.
 if args.references is True:
+    referenced_by_count = doi.referenced_by_count
+    logger.info(f'Referenced By: {doi.referenced_by_count}')
     references = doi.references
     if references:
-        logger.info(f'{doi.reference_count}/{len(references)} reference(s):')
+        logger.info(f'{doi.reference_count} reference(s):')
 
         # Gather the information of any DOI of each reference.
         for (i, reference) in enumerate(iterable=references, start=1):

@@ -44,11 +44,14 @@ class DOI:
     author: (list, dict) = []
     authors: (list, dict) = []
     created: (date, datetime, None) = None
-    journal_title: str = ""
+    deposited: (date, datetime, None) = None
+    indexed: (date, datetime, None) = None
+    issued: (date, datetime, None) = None
     published: (date, None) = None
     published_online: (date, None) = None
     published_print: (date, None) = None
     publisher: str = ""
+    referenced_by_count: int = 0
     reference_count: int = 0
     references: list = []
     title: str = ""
@@ -83,14 +86,12 @@ class DOI:
                     self.author = self.author[0]
 
                 # Set attributes on Python object, using data from JSON.
-                self.journal_title = self._data.get(
-                    "journal-title",
-                    self.journal_title
-                )
                 self.publisher = self._data.get("publisher", self.publisher)
+                self.referenced_by_count = self._data.get(
+                    "is-referenced-by-count", self.referenced_by_count
+                )
                 self.reference_count = self._data.get(
-                    "reference-count",
-                    self.reference_count
+                    "reference-count", self.reference_count
                 )
                 self.references = self._data.get("reference", self.references)
                 self.title = self._data.get("title", self.title)
@@ -101,6 +102,18 @@ class DOI:
                 created = self._data.get("created")
                 if created:
                     self.created = _parse_date(created)
+
+                deposited = self._data.get("deposited")
+                if deposited:
+                    self.deposited = _parse_date(deposited)
+
+                indexed = self._data.get("indexed")
+                if indexed:
+                    self.indexed = _parse_date(indexed)
+
+                issued = self._data.get("issued")
+                if issued:
+                    self.issued = _parse_date(issued)
 
                 published = self._data.get("published")
                 if published:
