@@ -123,8 +123,9 @@
                 </table>
             </div>
     {%- endif %}
+    <div class="row">
     {%- if doi.authors %}
-        <details class="m-3 p-3">
+        <details class="col m-3 p-3">
             <summary id="authors" title="Authors ({{ doi.authors|length }})">
                 <span class="h3">Authors ({{ doi.authors|length }})</span>
                 <a class="anchor-link" href="#authors" aria-label="Link to this section: Authors (authors)">
@@ -134,26 +135,26 @@
             <ol class="list-group list-group-numbered list-group-flush">
         {%- for author in doi.authors  %}
                 <li class="list-group-item list-group-item-action">
-                    {% if author["ORCID"] %}<a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">{% endif %}{{ author.given }} {{ author.family }}{% if author["ORCID"] %}</a>{% endif  %}
+            {% if author["ORCID"] %}<a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">{% endif %}{{ author.given }} {{ author.family }}{% if author["ORCID"] %}</a>{% endif  %}
                     (<i>{{ author.sequence }}</i>)
                 </li>
         {%- endfor %}
             </ol>
         </details>
-    {%- endif  %}
+        {%- endif  %}
     {%- if doi.references %}
-        <details class="m-3 p-3">
-            <summary id="references" title="References ({{ doi.references|length }})">
-                <span class="h3">References ({{ doi.references|length }})</span>
-                <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)">
-                    <i class="bi bi-link-45deg"></i>
-                </a>
-                <br>
-                <i class="ms-3">Referenced by</i>: <span class="font-monospace">{{ doi.referenced_by_count }}</span>
-            </summary>
-            <ol class="list-group list-group-numbered list-group-flush">
+        <details class="col m-3 p-3">
+                <summary id="references" title="References ({{ doi.references|length }})">
+                    <span class="h3">References ({{ doi.references|length }})</span>
+                    <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)">
+                        <i class="bi bi-link-45deg"></i>
+                    </a>
+                    <br>
+                    <i class="ms-3">Referenced by</i>: <span class="font-monospace">{{ doi.referenced_by_count }}</span>
+                </summary>
+                <ol class="list-group list-group-numbered list-group-flush">
         {%- for reference in doi.references  %}
-                <li class="list-group-item list-group-item-action">
+                    <li class="list-group-item list-group-item-action">
                     {%- if reference["DOI"] %}
                         <a href="?doi={{ reference["DOI"] }}#search" title="{{ reference["unstructured"]|default(reference["DOI"]) }}">
                     {%- endif %}
@@ -168,11 +169,12 @@
                         <code>{{ reference }}</code>
                     {%- endif %}
                     {%- if reference["DOI"] %}</a>{% endif %}
-                </li>
+                    </li>
         {%- endfor %}
-            </ol>
-        </details>
+                </ol>
+            </details>
     {%- endif  %}
+        </div>
         </main>
     </body>
 </html>
