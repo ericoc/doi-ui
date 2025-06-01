@@ -21,7 +21,10 @@ def _parse_date(item: (dict, None)) -> (date, datetime, None):
 
         iso_dt = item.get("date-time")
         if iso_dt:
-            return datetime.fromisoformat(iso_dt)
+            try:
+                return datetime.fromisoformat(iso_dt)
+            except ValueError:
+                pass
 
         date_parts = item.get("date-parts")
         if date_parts:

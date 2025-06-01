@@ -79,7 +79,7 @@
                                 <tr>
                                     <td class="fw-bold">Created</td>
                                     <td>
-                                        {{ doi.created.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z")|default('') }}
+                                        {{ doi.created.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
                                         (<code>{{ doi.created }}</code>)
                                     </td>
                                 </tr>
@@ -88,7 +88,7 @@
                                 <tr>
                                     <td class="fw-bold">Deposited</td>
                                     <td>
-                                        {{ doi.deposited.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z")|default('')  }}
+                                        {{ doi.deposited.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
                                         (<code>{{ doi.deposited }}</code>)
                                     </td>
                                 </tr>
@@ -97,7 +97,7 @@
                                 <tr>
                                     <td class="fw-bold">Indexed</td>
                                     <td>
-                                        {{ doi.indexed.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z")|default('')  }}
+                                        {{ doi.indexed.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
                                         (<code>{{ doi.indexed }}</code>)
                                     </td>
                                 </tr>
@@ -106,12 +106,8 @@
                                 <tr>
                                     <td class="fw-bold">Issued</td>
                                     <td>
-        {%- if doi.issued is mapping %}
-                                            {{ doi.issued }}
-        {%- else %}
-                                            {{ doi.issued.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z")|default('')  }}
-                                            (<code>{{ doi.issued }}</code>)
-        {%- endif %}
+                                        {{ doi.issued.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.issued }}</code>)
                                     </td>
                                 </tr>
     {%- endif %}
@@ -119,12 +115,8 @@
                                 <tr>
                                     <td class="fw-bold">Published</td>
                                     <td>
-        {%- if doi.published is mapping %}
-                                        {{ doi.published }}
-        {%- else  %}
-                                        {{ doi.published.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z")|default('')  }}
+                                        {{ doi.published.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
                                         (<code>{{ doi.published }}</code>)
-        {%- endif %}
                                     </td>
                                 </tr>
     {%- endif %}
@@ -132,12 +124,8 @@
                                 <tr>
                                     <td class="fw-bold">Published Online</td>
                                     <td>
-        {%- if doi.published_online is mapping %}
-                                        {{ doi.published_online }}
-        {%- else %}
-                                        {{ doi.published_online.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z")|default('') }}
+                                        {{ doi.published_online.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
                                         (<code>{{ doi.published_online }}</code>)
-        {%- endif %}
                                     </td>
                                 </tr>
     {%- endif %}
@@ -145,12 +133,8 @@
                                 <tr>
                                     <td class="fw-bold">Published Print</td>
                                     <td>
-        {%- if doi.published_print is mapping %}
-                                        {{ doi.published_print }}
-        {%- else %}
-                                        {{ doi.published_print.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z")|default('')  }}
+                                        {{ doi.published_print.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
                                         (<code>{{ doi.published_print }}</code>)
-        {%- endif %}
                                     </td>
                                 </tr>
     {%- endif %}
