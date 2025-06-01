@@ -54,10 +54,10 @@
             <hr class="border-3 border-top border-light-subtle">
             <div class="container-fluid">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" title="{{ doi.title }} <{{ doi.url }}>">{{ doi.title }}</a>
-                <div class="row m-3">
-                    <span class="h2 col" title="{{ doi.doi }}"><code>{{ doi.doi }}</code></span>
-                    <span class="h2 col" title="{{ doi.publisher }}">{{ doi.publisher }}</span>
-                    <span class="h2 col" title="{{ doi.type }}">{{ doi.type }}</span>
+                <div class="row">
+                    <span class="h2 m-3 p-1 col" title="{{ doi.doi }}"><code>{{ doi.doi }}</code></span>
+                    <span class="h2 m-3 p-1 col" title="{{ doi.publisher }}">{{ doi.publisher }}</span>
+                    <span class="h2 m-3 p-1 col" title="{{ doi.type }}">{{ doi.type }}</span>
                 </div>
                 <div class="card-group row">
     {%- if doi.authors %}
