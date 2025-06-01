@@ -43,8 +43,7 @@ def index():
             err_msg = 'Invalid DOI format!'
         except FileNotFoundError:
             code = 404
-            err_msg = \
-                f'No such DOI was found!'
+            err_msg = 'No such DOI was found!'
         except Exception as exc:
             code = 500
             logger.exception(exc)
