@@ -3,7 +3,7 @@
 
 Experimenting with searching/displaying Digital Object Identifiers (DOIs).
 
-### Requires Python `requests`!
+#### Requires Python `requests`!
 
 ### DOI?
 > A DOI is a digital identifier of an object, any object -
@@ -18,8 +18,24 @@ and others can track it too.
 
 ## Example
 
-- [`https://doi.org/10.1038/s41586-024-08156-8`](https://doi.org/10.1038/s41586-024-08156-8)
+- `s41586-024-08156-8`
+  * [`https://doi.org/10.1038/s41586-024-08156-8`](https://doi.org/10.1038/s41586-024-08156-8)
 
+### Web
+
+- Index
+  * [`https://doi.ericoc.com/`](https://doi.ericoc.com/)
+- Search
+  * [`https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#search`](https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#search)
+- Dates
+  * [`https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#dates`](https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#dates)
+- Authors
+  * [`https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#authors`](https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#authors)
+- References
+  * [`https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#references`](https://doi.ericoc.com/?doi=10.1038/s41586-024-08156-8#references)
+
+### Command-line Interface (CLI)
+#### `doi-cli.py`
 ```py
 $ ./doi-cli.py -adr 10.1038/s41586-024-08156-8
 2025-05-30 21:51:43 EDT (-0400) [INFO] (75667): Electrically driven long-range solid-state amorphization in ferroic In2Se3 (journal-article)

@@ -71,9 +71,9 @@ def prettytime(when: (date, datetime, str, None) = None):
     if when:
         date_fmt = ""
         if type(when) == date:
-            date_fmt = "%a, %b %d, %Y"
+            date_fmt = "%A, %B %d, %Y"
         if type(when) == datetime:
-            date_fmt = "%a, %b %d, %Y @ %H:%M:%S %p %z (%Z)"
+            date_fmt = "%A, %B %d, %Y @ %H:%M:%S %p %z (%Z)"
 
         if date_fmt:
             when = when.strftime(date_fmt)
