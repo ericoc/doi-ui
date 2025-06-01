@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import logging
 from argparse import ArgumentParser, RawTextHelpFormatter
-from DOI import DOI, DOI_URL
+from doi import DOI, DOI_URL
 
 
 # Parse DOI argument.
