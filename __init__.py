@@ -2,7 +2,7 @@ import logging
 from flask import (
     Flask, flash, render_template, make_response, request, send_from_directory
 )
-from .DOI import DOI
+from doi import DOI
 
 # Flask.
 app = Flask(__name__)
