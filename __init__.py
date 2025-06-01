@@ -44,7 +44,7 @@ def index():
         except FileNotFoundError:
             code = 404
             err_msg = \
-                f'No such DOI (<span class="font-monospace">{get_doi}</span>).'
+                f'No such DOI was found!'
         except Exception as exc:
             code = 500
             logger.exception(exc)
