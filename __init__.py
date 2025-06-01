@@ -2,6 +2,7 @@ import logging
 from flask import (
     Flask, flash, render_template, make_response, request, send_from_directory
 )
+from datetime import date, datetime
 from doi import DOI
 
 # Flask.
@@ -27,15 +28,15 @@ logging.basicConfig(
 @app.route("/")
 def index():
     code = 200
-    doi = None
+    _doi = None
     err_msg = None
     get_doi = request.args.get("doi")
 
     # Gather information about submitted DOI ("?doi=" GET parameter).
     if get_doi:
         try:
-            doi = DOI(get_doi)
-            logger.debug(vars(doi))
+            _doi = DOI(get_doi)
+            logger.debug(vars(_doi))
 
         # Handle any errors that may occur.
         except ValueError:
@@ -53,10 +54,28 @@ def index():
         if err_msg:
             flash(err_msg)
 
-    return make_response(render_template("index.html.j2", doi=doi), code)
+    return make_response(render_template("index.html.j2", doi=_doi), code)
 
 
 @app.route('/static/<path:path>')
 def statics(path):
     # Static content.
     return send_from_directory("static", path)
+
+
+# Create a template filter function for Jinja2 to display timestamps.
+@app.template_filter()
+def prettytime(when: (date, datetime, str, None) = None):
+
+    # Format date and datetime, as needed.
+    if when:
+        date_fmt = ""
+        if type(when) == date:
+            date_fmt = "%a, %b %d, %Y"
+        if type(when) == datetime:
+            date_fmt = "%a, %b %d, %Y @ %H:%M:%S %p %z (%Z)"
+
+        if date_fmt:
+            when = when.strftime(date_fmt)
+
+    return when

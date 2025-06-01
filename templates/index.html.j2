@@ -79,8 +79,8 @@
                                 <tr>
                                     <td class="fw-bold">Created</td>
                                     <td>
-                                        {{ doi.created.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
-                                        (<code>{{ doi.created }}</code>)
+                                        {{ doi.created|prettytime }}
+                                        [<code>{{ doi.created }}</code>]
                                     </td>
                                 </tr>
     {%- endif %}
@@ -88,8 +88,8 @@
                                 <tr>
                                     <td class="fw-bold">Deposited</td>
                                     <td>
-                                        {{ doi.deposited.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
-                                        (<code>{{ doi.deposited }}</code>)
+                                        {{ doi.deposited|prettytime }}
+                                        [<code>{{ doi.deposited }}</code>]
                                     </td>
                                 </tr>
     {%- endif %}
@@ -97,8 +97,8 @@
                                 <tr>
                                     <td class="fw-bold">Indexed</td>
                                     <td>
-                                        {{ doi.indexed.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
-                                        (<code>{{ doi.indexed }}</code>)
+                                        {{ doi.indexed|prettytime }}
+                                        [<code>{{ doi.indexed }}</code>]
                                     </td>
                                 </tr>
     {%- endif %}
@@ -106,8 +106,8 @@
                                 <tr>
                                     <td class="fw-bold">Issued</td>
                                     <td>
-                                        {{ doi.issued.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
-                                        (<code>{{ doi.issued }}</code>)
+                                        {{ doi.issued|prettytime }}
+                                        [<code>{{ doi.issued }}</code>]
                                     </td>
                                 </tr>
     {%- endif %}
@@ -115,8 +115,8 @@
                                 <tr>
                                     <td class="fw-bold">Published</td>
                                     <td>
-                                        {{ doi.published.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
-                                        (<code>{{ doi.published }}</code>)
+                                        {{ doi.published|prettytime }}
+                                        [<code>{{ doi.published }}</code>]
                                     </td>
                                 </tr>
     {%- endif %}
@@ -124,8 +124,8 @@
                                 <tr>
                                     <td class="fw-bold">Published Online</td>
                                     <td>
-                                        {{ doi.published_online.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
-                                        (<code>{{ doi.published_online }}</code>)
+                                        {{ doi.published_online|prettytime }}
+                                        [<code>{{ doi.published_online }}</code>]
                                     </td>
                                 </tr>
     {%- endif %}
@@ -133,8 +133,8 @@
                                 <tr>
                                     <td class="fw-bold">Published Print</td>
                                     <td>
-                                        {{ doi.published_print.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
-                                        (<code>{{ doi.published_print }}</code>)
+                                        {{ doi.published_print|prettytime }}
+                                        [<code>{{ doi.published_print }}</code>]
                                     </td>
                                 </tr>
     {%- endif %}
