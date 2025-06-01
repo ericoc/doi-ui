@@ -34,7 +34,8 @@ def _parse_date(item: (dict, None)) -> (date, datetime, None):
                     return date(p_date[0], p_date[1], p_date[2])
                 elif len(p_date) == 2:
                     return date(p_date[0], p_date[1], 1)
-
+                elif len(p_date) == 1:
+                    return date(p_date[0], 1, 1)
         return item
 
     return None
