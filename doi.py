@@ -16,16 +16,23 @@ DOI_URL = "https://doi.org"
 
 
 def _parse_date(item: (dict, None)) -> (date, datetime, None):
+
     if item:
+
         iso_dt = item.get("date-time")
         if iso_dt:
-            return datetime.fromisoformat(iso_dt)
+            try:
+                return datetime.fromisoformat(iso_dt)
+            except ValueError:
+                pass
 
         date_parts = item.get("date-parts")
         if date_parts:
             p_date = date_parts[0]
             if p_date and len(p_date) == 3:
                 return date(p_date[0], p_date[1], p_date[2])
+
+        return item
 
     return None
 
