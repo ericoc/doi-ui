@@ -7,12 +7,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>DOI Search</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-
         <link href="{{ url_for('static', filename='bootstrap-5.3.6-dist/css/bootstrap.min.css') }}" rel="stylesheet">
         <script src="{{ url_for('static', filename='bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js') }}"></script>
         <link href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.min.css') }}" rel="stylesheet">
         <style>
-            .icon-link-hover { --bs-icon-link-transform: translate3d(0, -.3rem, 0); }
+            #logo { height: 3rem; }
+            #logo:hover { filter: opacity(0.5); transform: translate3d(0, -.3rem, 0); }
             svg[role="anchor"], svg[role="img"] { color: var(--bs-primary); }
             svg[role="note"] { --bs-icon-link-transform: none; color: var(--bs-secondary); }
             a[target="_blank"]::after { margin-left: 0.25rem; content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==); filter: invert(0.5); }
@@ -22,22 +22,20 @@
         <header class="container-fluid header">
             <nav class="navbar navbar-expand-md gap-1">
                 <a class="btn btn-nav icon-link icon-link-hover text-white text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI">
-                    <svg class="bi h1" aria-hidden="false" role="img" id="logo">
-                        <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#house"></use>
-                    </svg>
+                    <img id="logo" src="{{ url_for('static', filename='icon.png') }}">
                 </a>
             </nav>
         </header>
         <main class="container-fluid">
-    {%- with messages = get_flashed_messages(with_categories=False) %}
-        {%- if messages %}
-            {%- for message in messages %}
-                <div class="alert alert-danger m-3 p-3 border border-light-subtle w-75" id="search">
-                    <span class="fw-bold">{{ message }}</span>
-                </div>
-            {%- endfor %}
-        {%- endif %}
-    {%- endwith %}
+{%- with messages = get_flashed_messages(with_categories=False) %}
+    {%- if messages %}
+        {%- for message in messages %}
+            <div class="alert alert-danger m-3 p-3 border border-light-subtle w-75" id="search">
+                <span class="fw-bold">{{ message }}</span>
+            </div>
+        {%- endfor %}
+    {%- endif %}
+{%- endwith %}
             <form class="mx-3" method="get" action="#search">
                 <label for="doi">
                     <input class="m-3" id="doi" type="text" style="width: 60%;" maxlength="255" name="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}"><br>
@@ -52,7 +50,7 @@
                     <input class="btn btn-outline-secondary" id="reset" type="reset" value="Clear">
                 </p>
             </form>
-    {%- if doi and doi != "" and doi != None %}
+{%- if doi and doi != "" and doi != None %}
             <hr class="border-3 border-top border-light-subtle">
             <div class="container-fluid" id="search">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" title="{{ doi.title }} <{{ doi.url }}>">{{ doi.title }}</a>
@@ -61,120 +59,154 @@
                     <span class="h2 col" title="{{ doi.publisher }}">{{ doi.publisher }}</span>
                     <span class="h2 col" title="{{ doi.type }}">{{ doi.type }}</span>
                 </div>
-                <table class="m-3 table table-bordered table-responsive table-hover table-striped border-light-subtle container-fluid">
-                    <thead>
-                        <tr class="fw-bold">
-                            <td class="bg-black">Date Type</td>
-                            <td class="bg-black">When</td>
-                            <td class="bg-black">Timestamp</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-        {%- if doi.created  %}
-                        <tr>
-                            <td>Created</td>
-                            <td>{{ doi.created.strftime("%c") }}</td>
-                            <td class="font-monospace">{{ doi.created }}</td>
-                        </tr>
-        {%- endif %}
-        {%- if doi.deposited  %}
-                        <tr>
-                            <td>Deposited</td>
-                            <td>{{ doi.deposited.strftime("%c") }}</td>
-                            <td class="font-monospace">{{ doi.deposited }}</td>
-                        </tr>
-        {%- endif %}
-        {%- if doi.indexed  %}
-                        <tr>
-                            <td>Indexed</td>
-                            <td>{{ doi.indexed.strftime("%c") }}</td>
-                            <td class="font-monospace">{{ doi.indexed }}</td>
-                        </tr>
-        {%- endif %}
-        {%- if doi.issued  %}
-                        <tr>
-                            <td>Issued</td>
-                            <td>{{ doi.issued.strftime("%c") }}</td>
-                            <td class="font-monospace">{{ doi.issued }}</td>
-                        </tr>
-        {%- endif %}
-        {%- if doi.published  %}
-                        <tr>
-                            <td>Published</td>
-                            <td>{{ doi.published.strftime("%c") }}</td>
-                            <td class="font-monospace">{{ doi.published }}</td>
-                        </tr>
-        {%- endif %}
-        {%- if doi.published_online  %}
-                        <tr>
-                            <td>Published Online</td>
-                            <td>{{ doi.published_online.strftime("%c") }}</td>
-                            <td class="font-monospace">{{ doi.published_online }}</td>
-                        </tr>
-        {%- endif  %}
-        {%- if doi.published_print  %}
-                        <tr>
-                            <td>Published Print</td>
-                            <td>{{ doi.published_print.strftime("%c") }}</td>
-                            <td class="font-monospace">{{ doi.published_print }}</td>
-                        </tr>
-        {%- endif %}
-                    </tbody>
-                </table>
-            </div>
-            <div class="row">
-        {%- if doi.authors %}
-                <details class="col m-3 p-3">
-                    <summary id="authors" title="Authors ({{ doi.authors|length }})">
-                        <span class="h3">Authors (<code>{{ doi.authors|length }}</code>)</span>
-                        <a class="anchor-link" href="#authors" aria-label="Link to this section: Authors (authors)">
-                            <i class="bi bi-link-45deg"></i>
-                        </a>
-                    </summary>
-                    <ol class="list-group list-group-numbered list-group-flush">
-            {%- for author in doi.authors  %}
-                        <li class="list-group-item list-group-item-action">
-                {% if author["ORCID"] %}<a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">{% endif %}{{ author.given }} {{ author.family }}{% if author["ORCID"] %}</a>{% endif  %}
-                            (<i>{{ author.sequence }}</i>)
-                        </li>
-                {%- endfor %}
-                    </ol>
-                </details>
-        {%- endif  %}
-        {%- if doi.references %}
-                <details class="col m-3 p-3">
-                    <summary id="references" title="References ({{ doi.references|length }})">
-                        <span class="h3">References (<code>{{ doi.references|length }}</code>)</span>
-                        <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)">
-                            <i class="bi bi-link-45deg"></i>
-                        </a>
-                        <br>
-                        <i class="ms-3">Referenced by</i>: <code>{{ doi.referenced_by_count }}</code>
-                    </summary>
-                <ol class="list-group list-group-numbered list-group-flush">
-            {%- for reference in doi.references  %}
-                    <li class="list-group-item list-group-item-action">
-                {%- if reference["DOI"] %}
-                        <a href="?doi={{ reference["DOI"] }}#search" title="{{ reference["unstructured"]|default(reference["DOI"]) }}">
-                {%- endif %}
-                {%- if reference["unstructured"] %}
-                        {{ reference["unstructured"] }}
-                        {%- if reference["DOI"] %}
-                        (<code>{{ reference["DOI"] }}</code>)
-                        {%- endif %}
-                {%- elif reference["DOI"] %}
-                        <code>{{ reference["DOI"] }}</code>
-                {%- else %}
-                        <code>{{ reference }}</code>
-                {%- endif %}
-                {%- if reference["DOI"] %}</a>{% endif %}
-                    </li>
-            {%- endfor %}
-                </ol>
-            </details>
-        {%- endif %}
+                <div class="col m-3 p-1">
+                    <details class="card">
+                        <summary class="card-header" id="dates" title="Dates">
+                            <span class="border-secondary h3">Dates</span>
+                            <a class="anchor-link" href="#dates" aria-label="Link to this section: Dates (dates)">
+                                <i class="bi bi-link-45deg"></i>
+                            </a>
+                        </summary>
+                        <table class="card-body card-text table table-bordered rounded table-responsive table-hover table-striped border-light-subtle container-fluid">
+                            <thead>
+                                <tr class="border-secondary">
+                                    <th class="bg-dark-subtle">Type</th>
+                                    <th class="bg-dark-subtle">When</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+    {%- if doi.created  %}
+                                <tr>
+                                    <td>Created</td>
+                                    <td>
+                                        {{ doi.created.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.created }}</code>)
+                                    </td>
+                                </tr>
     {%- endif %}
-        </div>
+    {%- if doi.deposited  %}
+                                <tr>
+                                    <td>Deposited</td>
+                                    <td>
+                                        {{ doi.deposited.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.deposited }}</code>)
+                                    </td>
+                                </tr>
+    {%- endif %}
+    {%- if doi.indexed  %}
+                                <tr>
+                                    <td>Indexed</td>
+                                    <td>
+                                        {{ doi.indexed.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.indexed }}</code>)
+                                    </td>
+                                </tr>
+    {%- endif %}
+    {%- if doi.issued  %}
+                                <tr>
+                                    <td>Issued</td>
+                                    <td>
+                                        {{ doi.issued.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.issued }}</code>)
+                                    </td>
+                                </tr>
+    {%- endif %}
+    {%- if doi.published  %}
+                                <tr>
+                                    <td>Published</td>
+                                    <td>
+                                        {{ doi.published.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.published }}</code>)
+                                    </td>
+                                </tr>
+    {%- endif %}
+    {%- if doi.published_online  %}
+                                <tr>
+                                    <td>Published Online</td>
+                                    <td>
+                                        {{ doi.published_online.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.published_online }}</code>)
+                                    </td>
+                                </tr>
+    {%- endif %}
+    {%- if doi.published_print  %}
+                                <tr>
+                                    <td>Published Print</td>
+                                    <td>
+                                        {{ doi.published_print.strftime("%A, %B %d, %Y @ %H:%M:%S %z %Z") }}
+                                        (<code>{{ doi.published_print }}</code>)
+                                    </td>
+                                </tr>
+    {%- endif %}
+                            </tbody>
+                        </table>
+                    </details>
+                </div>
+            </div>
+            <div class="card-group m-3 p-1 row">
+    {%- if doi.authors %}
+                <div class="col p-3">
+                    <details class="card">
+                        <summary class="card-header" id="authors" title="Authors ({{ doi.authors|length }})">
+                            <span class="border-secondary h3">Authors</span>
+                            <code class="badge bg-dark rounded-pill border border-secondary">{{ doi.authors|length }}</code>
+                            <a class="anchor-link" href="#authors" aria-label="Link to this section: Authors (authors)">
+                                <i class="bi bi-link-45deg"></i>
+                            </a>
+                        </summary>
+                        <ol class="list-group list-group-numbered list-group-flush">
+        {%- for author in doi.authors %}
+                            <li class="list-group-item list-group-item-action">
+            {% if author["ORCID"] %}<a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">{% endif %}{{ author.given }} {{ author.family }}{% if author["ORCID"] %}</a>{% endif  %}
+                                (<i>{{ author.sequence }}</i>)
+                            </li>
+        {%- endfor %}
+                        </ol>
+                    </details>
+                </div>
+    {%- endif %}
+    {%- if doi.references %}
+                <div class="col p-3">
+                    <details class="card">
+                        <summary class="card-header" id="references" title="References ({{ doi.references|length }})">
+                            <span class="border-secondary h3">References</span>
+                            <code class="badge bg-dark rounded-pill border border-secondary">{{ doi.references|length }}</code>
+                            <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)">
+                                <i class="bi bi-link-45deg"></i>
+                            </a>
+                        </summary>
+                        <ol class="card-body list-group list-group-numbered list-group-flush">
+        {%- for reference in doi.references %}
+                            <li class="list-group-item list-group-item-action">
+            {%- if reference["DOI"] %}
+                                <a href="?doi={{ reference["DOI"] }}#search" title="{{ reference["unstructured"]|default(reference["DOI"]) }}">
+            {%- endif %}
+            {%- if reference["unstructured"] %}
+                                    {{ reference["unstructured"] }}
+                    {%- if reference["DOI"] %}
+                                    (<code>{{ reference["DOI"] }}</code>)
+                    {%- endif %}
+            {%- elif reference["DOI"] %}
+                                    <code>{{ reference["DOI"] }}</code>
+            {%- else %}
+                                    <code>{{ reference }}</code>
+            {%- endif %}
+            {%- if reference["DOI"] %}
+                                </a>
+            {% endif %}
+                            </li>
+        {%- endfor %}
+                        </ol>
+                    </details>
+                    <div class="card-footer">
+                        <span class="card-text">
+                            <i class="ms-3">Referenced by</i>: <code>{{ doi.referenced_by_count }}</code>
+                        </span>
+                    </div>
+                </div>
+    {%- endif %}
+{%- endif %}
+            </div>
         </main>
     </body>
 </html>
