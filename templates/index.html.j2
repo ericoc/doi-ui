@@ -71,7 +71,7 @@
                             </summary>
                             <ol class="list-group list-group-numbered list-group-flush">
         {%- for author in doi.authors %}
-                                <li class="list-group-item list-group-item-action">
+                                <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
             {%- if author["ORCID"] %}
                                     <a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">
             {%- endif %}
