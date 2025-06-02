@@ -13,8 +13,7 @@
         <style>
             #logo { height: 3rem; }
             #logo:hover { filter: opacity(0.5); transform: translate3d(0, -.3rem, 0); }
-            svg[role="anchor"], svg[role="img"] { color: var(--bs-primary); }
-            svg[role="note"] { --bs-icon-link-transform: none; color: var(--bs-secondary); }
+            .icon-link-hover { --bs-icon-link-transform: translate3d(0, -.3rem, 0); }
             a[target="_blank"]::after { margin-left: 0.25rem; content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==); filter: invert(0.5); }
         </style>
     </head>
@@ -22,7 +21,7 @@
         <header class="container-fluid header">
             <nav class="navbar navbar-expand-md gap-1">
                 <a class="btn btn-nav icon-link icon-link-hover text-white text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI">
-                    <img alt="DOI-UI"  id="logo" src="{{ url_for('static', filename='icon.png') }}">
+                    <img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}">
                 </a>
             </nav>
         </header>
@@ -30,26 +29,26 @@
 {%- with messages = get_flashed_messages(with_categories=False) %}
     {%- if messages %}
         {%- for message in messages %}
-            <div class="alert alert-danger m-3 p-3 border border-light-subtle w-75" id="search">
+            <div class="alert alert-danger m-3 p-3 border border-light-subtle w-75">
                 <span class="fw-bold">{{ message }}</span>
             </div>
         {%- endfor %}
     {%- endif %}
 {%- endwith %}
-            <form class="mx-3" method="get" action="#search">
-                <label for="doi">
-                    <input class="m-3" id="doi" type="text" style="width: 60%;" maxlength="255" name="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}"><br>
-                    <span class="m-3">
-                        Please enter a
-                        <a class="fst-italic" href="https://www.doi.org/" target="_blank" title="Digital Object Identifier (DOI) [https://www.doi.org/]">Digital Object Identifier (DOI)</a>,
-                        <i>such as</i> <a class="font-monospace" href="?doi=10.1038/s41586-024-08156-8#search">10.1038/s41586-024-08156-8</a>.
-                    </span>
-                </label>
-                <p class="m-3">
-                    <input class="btn btn-outline-primary" type="submit" tabindex="1" value="Search">
-                    <input class="btn btn-outline-secondary" id="reset" type="reset" value="Clear">
-                </p>
+            <form class="mx-3" method="get" action="#search" id="search">
+                <div class="input-group m-3" style="width: 75%;">
+                    <input type="text" class="form-control" maxlength="255" name="doi" id="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}" aria-label="DOI">
+                    <button class="btn btn-outline-primary" type="submit" tabindex="1" value="Search">Search</button>
+                    <button class="btn btn-outline-secondary" id="reset" type="reset">Clear</button>
+                </div>
             </form>
+            <p class="mx-3">
+                <label for="doi" class="m-3">
+                    Please enter a
+                    <a class="fst-italic" href="https://www.doi.org/" target="_blank" title="Digital Object Identifier (DOI) [https://www.doi.org/]">Digital Object Identifier (DOI)</a> &mdash;
+                    <i>such as</i> <a class="font-monospace" href="?doi=10.1038/s41586-024-08156-8#search">10.1038/s41586-024-08156-8</a>.
+                </label>
+            </p>
 {%- if doi and doi != "" and doi != None %}
             <hr class="border-3 border-top border-light-subtle">
             <div class="container-fluid">
@@ -73,8 +72,14 @@
                             <ol class="list-group list-group-numbered list-group-flush">
         {%- for author in doi.authors %}
                                 <li class="list-group-item list-group-item-action">
-            {% if author["ORCID"] %}<a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">{% endif %}{{ author.given }} {{ author.family }}{% if author["ORCID"] %}</a>{% endif  %}
-                                    (<i>{{ author.sequence }}</i>)
+            {%- if author["ORCID"] %}
+                                    <a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">
+            {%- endif %}
+                                        {{ author.given }} {{ author.family }}
+            {%- if author["ORCID"] %}
+                                    </a>
+            {%- endif %}
+                                        (<i>{{ author.sequence }}</i>)
                                 </li>
         {%- endfor %}
                             </ol>
@@ -82,7 +87,7 @@
                     </div>
     {%- endif %}
                     <div class="col m-3 p-1">
-    {% if doi.references %}
+    {%- if doi.references %}
                         <details class="card">
                             <summary class="card-header" id="references" title="References ({{ doi.references|length }})">
                                 <span class="border-secondary h3">References</span>
@@ -109,7 +114,7 @@
             {%- endif %}
             {%- if reference["DOI"] %}
                                     </a>
-            {% endif %}
+            {%- endif %}
                                 </li>
         {%- endfor %}
                             </ol>
@@ -204,5 +209,13 @@
             </div>
 {%- endif %}
         </main>
+        <footer class="container-fluid text-end">
+            <small>
+                <a class="mx-3 p-1 font-monospace icon-link icon-link-hover" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;">
+                    <i class="bi bi-code-slash"></i>
+                    https://github.com/ericoc/doi-ui
+                </a>
+            </small>
+        </footer>
     </body>
 </html>
