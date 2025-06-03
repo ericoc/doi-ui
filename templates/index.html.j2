@@ -20,9 +20,7 @@
     <body>
         <header class="container-fluid header">
             <nav class="navbar navbar-expand-md gap-1">
-                <a class="btn btn-nav icon-link icon-link-hover text-white text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI">
-                    <img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}">
-                </a>
+                <a class="btn btn-nav icon-link icon-link-hover text-white text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI"><img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}"></a>
             </nav>
         </header>
         <main class="container-fluid">
@@ -51,25 +49,34 @@
                         </svg>
                     </button>
                     &mdash;
-                    <i>such as</i> <a class="font-monospace" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8">10.1038/s41586-024-08156-8</a>.
+                    <i>such as</i>
+                    <a class="font-monospace" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospacce fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8">10.1038/s41586-024-08156-8</a>.
                 </label>
             </p>
 {%- if doi and doi != "" and doi != None %}
             <hr class="border-3 border-top border-light-subtle">
             <div class="container-fluid">
-                <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" title="{{ doi.title }} <{{ doi.url }}>">{{ doi.title }}</a>
+                <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title }} &lt;{{ doi.url }}&gt;">{{ doi.title }}</a>
                 <div class="row">
-                    <span class="h2 m-3 p-1 col" title="{{ doi.doi }}"><code>{{ doi.doi }}</code></span>
-                    <span class="h2 m-3 p-1 col" title="{{ doi.publisher }}">{{ doi.publisher }}</span>
-                    <span class="h2 m-3 p-1 col" title="{{ doi.type }}">{{ doi.type }}</span>
+                    <span class="h2 m-3 p-1 col" data-bs-title="&lt;span class='font-monospace fw-bold'&gt;{{ doi.doi }}&lt;/code&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="{{ doi.doi }}">
+                        <code>{{ doi.doi }}</code>
+                    </span>
+                    <span class="h2 m-3 p-1 col" data-bs-title="{{ doi.publisher }}" data-bs-toggle="tooltip" title="{{ doi.publisher }}">
+                        {{ doi.publisher }}
+                    </span>
+                    <span class="h2 m-3 p-1 col" data-bs-title="{{ doi.type }}" data-bs-toggle="tooltip" title="{{ doi.type }}">
+                        {{ doi.type }}
+                    </span>
                 </div>
                 <div class="card-group row">
     {%- if doi.authors %}
                     <div class="col m-3 p-1">
                         <details class="card" open>
-                            <summary class="card-header" id="authors" title="Authors ({{ doi.authors|length }})">
+                            <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Authors&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.authors|length }}&lt;/span&gt;)" id="authors" title="Authors ({{ doi.authors|length }})">
                                 <span class="border-secondary h3">Authors</span>
-                                <span class="badge bg-dark rounded-pill border border-secondary"><code>{{ doi.authors|length }}</code></span>
+                                <span class="badge bg-dark rounded-pill border border-secondary">
+                                    <code>{{ doi.authors|length }}</code>
+                                </span>
                                 <a class="anchor-link" href="#authors" aria-label="Link to this section: Authors (authors)">
                                     <i class="bi bi-link-45deg"></i>
                                 </a>
@@ -78,7 +85,7 @@
         {%- for author in doi.authors %}
                                 <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
             {%- if author["ORCID"] %}
-                                    <a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} <{{ author["ORCID"] }}>">
+                                    <a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} &lt;{{ author["ORCID"] }}&gt;">
             {%- endif %}
                                         {{ author.given }} {{ author.family }}
             {%- if author["ORCID"] %}
@@ -94,9 +101,11 @@
                     <div class="col m-3 p-1">
     {%- if doi.references %}
                         <details class="card" open>
-                            <summary class="card-header" id="references" title="References ({{ doi.references|length }})">
+                            <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;References&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.references|length }}&lt;/span&gt;)" id="references" title="References ({{ doi.references|length }})">
                                 <span class="border-secondary h3">References</span>
-                                <span class="badge bg-dark rounded-pill border border-secondary"><code>{{ doi.references|length }}</code></span>
+                                <span class="badge bg-dark rounded-pill border border-secondary">
+                                    <code class="fw-bold">{{ doi.references|length }}</code>
+                                </span>
                                 <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)">
                                     <i class="bi bi-link-45deg"></i>
                                 </a>
@@ -125,11 +134,14 @@
                             </ol>
                         </details>
     {%- endif %}
-                        <i class="ms-3">Referenced by</i>: <code>{{ doi.referenced_by_count }}</code>
+                        <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;i&gt;Referenced by&lt;/i&gt;: &lt;strong&gt;{{ doi.referenced_by_count }}&lt;/strong&gt;" title="Referenced by: {{ doi.referenced_by_count }}">
+                            <i class="ms-3">Referenced by</i>:
+                            <code class="fw-bold">{{ doi.referenced_by_count }}</code>
+                        </span>
                     </div>
                     <div class="col m-3 p-1">
                         <details class="card" open>
-                            <summary class="card-header" id="dates" title="Dates">
+                            <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Dates&lt;/strong&gt;" id="dates" title="Dates">
                                 <span class="border-secondary h3">Dates</span>
                                 <a class="anchor-link" href="#dates" aria-label="Link to this section: Dates (dates)">
                                     <i class="bi bi-link-45deg"></i>
@@ -195,10 +207,7 @@
         </main>
         <footer class="container-fluid text-end">
             <small>
-                <a class="mx-3 p-1 font-monospace icon-link icon-link-hover" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;">
-                    <i class="bi bi-code-slash"></i>
-                    https://github.com/ericoc/doi-ui
-                </a>
+                <a class="mx-3 p-1 font-monospace icon-link icon-link-hover" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>
             </small>
         </footer>
         <script>
