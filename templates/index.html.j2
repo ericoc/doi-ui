@@ -56,10 +56,10 @@
             <div class="container-fluid">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title }} &lt;{{ doi.url }}&gt;">{{ doi.title }}</a>
                 <div class="row">
-                    <span class="h2 m-3 p-1 col" data-bs-title="&lt;span class='font-monospace fw-bold'&gt;{{ doi.doi }}&lt;/code&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="{{ doi.doi }}">
+                    <span class="h2 m-3 p-1 col" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/code&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">
                         <code>{{ doi.doi }}</code>
                     </span>
-                    <span class="h2 m-3 p-1 col" data-bs-title="{{ doi.publisher }}" data-bs-toggle="tooltip" title="{{ doi.publisher }}">
+                    <span class="h2 fst-italic m-3 p-1 col" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" title="Publisher: {{ doi.publisher }}">
                         {{ doi.publisher }}
                     </span>
                     <span class="h2 m-3 p-1 col" data-bs-title="{{ doi.type }}" data-bs-toggle="tooltip" title="{{ doi.type }}">
