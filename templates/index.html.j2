@@ -40,18 +40,16 @@
                     <button class="btn btn-outline-secondary" id="reset" type="reset">Reset</button>
                 </div>
             </form>
-            <p class="mx-3">
-                <label for="doi" class="m-3">
-                    Please enter a <i>Digital Object Identifier (DOI)</i>
-                    <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="&lt;strong&gt;A &lt;a href='https://www.doi.org/' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object&lt;/strong&gt;, any object — physical, digital, or abstract." type="button">
-                        <svg class="bi" aria-hidden="false" role="note">
-                            <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#question-circle"></use>
-                        </svg>
-                    </button>
-                    &mdash;
-                    <i>such as</i>
-                    <a class="font-monospace" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospacce fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8">10.1038/s41586-024-08156-8</a>.
-                </label>
+            <p class="m-3">
+                Please enter a <i>Digital Object Identifier (DOI)</i>
+                <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="&lt;strong&gt;A &lt;a href='https://www.doi.org/' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object&lt;/strong&gt;, any object — physical, digital, or abstract." type="button">
+                    <svg class="bi" aria-hidden="false" role="note">
+                        <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#question-circle"></use>
+                    </svg>
+                </button>
+                &mdash;
+                <i>such as</i>
+                <a class="font-monospace" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospacce fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8">10.1038/s41586-024-08156-8</a>.
             </p>
 {%- if doi and doi != "" and doi != None %}
             <hr class="border-3 border-top border-light-subtle">
@@ -207,7 +205,7 @@
         </main>
         <footer class="container-fluid text-end">
             <small>
-                <a class="mx-3 p-1 font-monospace icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>
+                <a class="m-3 p-3 font-monospace icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>
             </small>
         </footer>
         <script>
