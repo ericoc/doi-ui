@@ -29,31 +29,32 @@ logging.basicConfig(
 # Main (Jinja2) template to search DOI.
 @app.route("/")
 def index():
-    _cache = False
-    code = 200
     _doi = None
-    err_msg = None
-    get_doi = request.args.get("doi")
+    cached: bool = False
+    code: int = 200
+    err_msg: (str, None) = None
+    get_doi: (str, None) = request.args.get("doi")
 
     # Gather information about submitted DOI ("?doi=" GET parameter).
     if get_doi:
         try:
-
-            # Check Flask cache for the DOI information
-            if cache.get(get_doi):
-                _doi = get_doi
-                _cache = True
+            # Check cache for the DOI information
+            cache_key = get_doi.replace("/", "_")
+            in_cache = cache.get(cache_key)
+            if in_cache:
+                _doi = in_cache
+                cached = True
             else:
                 _doi = DOI(get_doi)
-                cache.set(get_doi.replace('/', '_'), _doi)
+                cache.set(cache_key, _doi)
 
         # Handle any errors that may occur.
         except ValueError:
             code = 400
-            err_msg = 'Invalid DOI format!'
+            err_msg = "Invalid DOI format!"
         except FileNotFoundError:
             code = 404
-            err_msg = 'No such DOI was found!'
+            err_msg = "No such DOI was found!"
         except Exception as exc:
             code = 500
             logger.exception(exc)
@@ -63,15 +64,16 @@ def index():
         if err_msg:
             flash(err_msg)
 
-
+    # Return template response, with header whether DOI was found in cache.
     resp = make_response(
-        render_template("index.html.j2", doi=_doi), code
+        render_template("index.html.j2", doi=_doi),
+        code
     )
-    resp.headers["X-DOI-Cache"] = _cache
+    resp.headers["X-DOI-Cached"] = cached
     return resp
 
 
-@app.route('/static/<path:path>')
+@app.route("/static/<path:path>")
 def statics(path):
     # Static content.
     return send_from_directory("static", path)
