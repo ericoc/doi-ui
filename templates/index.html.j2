@@ -3,9 +3,9 @@
     <head>
         <meta charset="UTF-8">
         <meta name="author" content="Eric O'Callaghan">
-        <meta name="description" content="DOI Search">
+        <meta name="description" content="DOI Search{% if doi and doi.doi %}: Results ({{ doi.doi }}){% endif %}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>DOI Search</title>
+        <title>DOI Search{% if doi and doi.doi %}: Results ({{ doi.doi }}){% endif %}</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <link href="{{ url_for('static', filename='bootstrap-5.3.6-dist/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.min.css') }}" rel="stylesheet">
