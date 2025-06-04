@@ -44,14 +44,12 @@
             </form>
             <p class="mx-3 px-3">
                 <label for="doi">Please enter a <i>Digital Object Identifier (DOI)</i></label>
-                <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="&lt;strong&gt;A &lt;a href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object&lt;/strong&gt;, any object — physical, digital, or abstract." type="button">
+                <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="A &lt;a class='fw-bold' href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object, any object — physical, digital, or abstract." type="button">
                     <svg class="bi" aria-hidden="false" role="note">
                         <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#question-circle"></use>
                     </svg>
                 </button>
-                &mdash;
-                <i>such as</i>
-                <a class="font-monospace" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospacce fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8">10.1038/s41586-024-08156-8</a>.
+                &mdash; such as <a class="font-monospace" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8">10.1038/s41586-024-08156-8</a>.
             </p>
 {%- if doi and doi != "" and doi != None %}
             <hr class="border-3 border-top border-light-subtle">
@@ -237,9 +235,9 @@
         <script>
             // Enable Bootstrap tooltips and popovers.
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
-            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
         </script>
     </body>
 </html>
