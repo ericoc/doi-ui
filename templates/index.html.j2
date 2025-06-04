@@ -86,9 +86,9 @@
                                 <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
             {%- if author["ORCID"] %}
                                     <a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} &lt;{{ author["ORCID"] }}&gt;">
-            {%- endif %}
+            {%- endif -%}
                                         {{ author.given }} {{ author.family }}
-            {%- if author["ORCID"] %}
+            {%- if author["ORCID"] -%}
                                     </a>
             {%- endif %}
                                         (<i>{{ author.sequence }}</i>)
