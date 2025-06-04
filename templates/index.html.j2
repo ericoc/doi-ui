@@ -22,7 +22,7 @@
     <body>
         <header class="container-fluid header">
             <nav class="navbar navbar-expand-md gap-1">
-                <a class="btn btn-nav icon-link icon-link-hover text-white text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI"><img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}"></a>
+                <a class="icon-link icon-link-hover text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI"><img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}"></a>
             </nav>
         </header>
         <main class="container-fluid">
@@ -58,6 +58,7 @@
                 <div class="row">
                     <div class="h2 m-3 p-1 col">
                         <code id="current-doi" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
+                        <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-doi" title="Copy '{{ doi.doi }}' to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt; to clipboard"></a>
                     </div>
                     <div class="h2 fst-italic m-3 p-1 col" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" title="Publisher: {{ doi.publisher }}">
                         {{ doi.publisher }}
@@ -201,7 +202,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
+            <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">
                 <i class="bi bi-arrow-up-circle-fill"></i>
             </button>
 {%- endif %}
@@ -212,15 +213,30 @@
             </small>
         </footer>
         <script>
+            // Copy-paste button for the DOI.
+            async function copyDOI(text) {
+                try {
+                    await navigator.clipboard.writeText(text)
+                } catch (err) {
+                    console.error("Failed to copy text: ", err)
+                }
+            }
+            const copyDOIButton = document.getElementById("copy-doi")
+            const currentDOI = document.getElementById("current-doi").innerText
+            copyDOIButton.addEventListener("click", () => {
+                if (copyDOI(currentDOI)) {
+                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
+                    tooltipInner[0].innerHTML = "Copied!"
+                }
+            })
+
+            // Button to jump to top of page.
             let goUpButton = document.getElementById("btn-back-to-top")
             window.onscroll = function () {
                 scrollFunction()
             }
             function scrollFunction() {
-                if (
-                    document.body.scrollTop > 20 ||
-                    document.documentElement.scrollTop > 20
-                ) {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                     goUpButton.style.display = "block"
                 } else {
                     goUpButton.style.display = "none"
@@ -228,6 +244,8 @@
             }
             goUpButton.addEventListener("click", backToTop)
             function backToTop() {
+                let tooltipInner = document.getElementsByClassName("tooltip-inner")
+                tooltipInner[0].innerHTML = "Scrolling!"
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
             }
