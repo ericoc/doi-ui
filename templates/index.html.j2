@@ -8,13 +8,13 @@
         <title>DOI Search</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <link href="{{ url_for('static', filename='bootstrap-5.3.6-dist/css/bootstrap.min.css') }}" rel="stylesheet">
-        <script src="{{ url_for('static', filename='bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js') }}"></script>
         <link href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.min.css') }}" rel="stylesheet">
         <style>
             #logo { height: 3rem; }
             #logo:hover { filter: opacity(0.5); transform: translate3d(0, -.3rem, 0); }
             .icon-link-hover { --bs-icon-link-transform: translate3d(0, -.3rem, 0); }
             a[target="_blank"]::after { margin-left: 0.25rem; content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==); filter: invert(0.5); }
+            #btn-back-to-top { position: fixed; bottom: 20px; right: 20px; display: none; }
         </style>
     </head>
     <body>
@@ -40,8 +40,8 @@
                     <button class="btn btn-outline-secondary" id="reset" type="reset">Reset</button>
                 </div>
             </form>
-            <p class="m-3">
-                Please enter a <i>Digital Object Identifier (DOI)</i>
+            <p class="mx-3 px-3">
+                <label for="doi">Please enter a <i>Digital Object Identifier (DOI)</i></label>
                 <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="&lt;strong&gt;A &lt;a href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object&lt;/strong&gt;, any object — physical, digital, or abstract." type="button">
                     <svg class="bi" aria-hidden="false" role="note">
                         <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#question-circle"></use>
@@ -56,15 +56,15 @@
             <div class="container-fluid">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title }} &lt;{{ doi.url }}&gt;">{{ doi.title }}</a>
                 <div class="row">
-                    <span class="h2 m-3 p-1 col" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/code&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">
-                        <code>{{ doi.doi }}</code>
-                    </span>
-                    <span class="h2 fst-italic m-3 p-1 col" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" title="Publisher: {{ doi.publisher }}">
+                    <div class="h2 m-3 p-1 col">
+                        <code id="current-doi" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
+                    </div>
+                    <div class="h2 fst-italic m-3 p-1 col" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" title="Publisher: {{ doi.publisher }}">
                         {{ doi.publisher }}
-                    </span>
-                    <span class="h2 m-3 p-1 col" data-bs-title="{{ doi.type }}" data-bs-toggle="tooltip" title="{{ doi.type }}">
+                    </div>
+                    <div class="h2 m-3 p-1 col" data-bs-title="{{ doi.type }}" data-bs-toggle="tooltip" title="{{ doi.type }}">
                         {{ doi.type }}
-                    </span>
+                    </div>
                 </div>
                 <div class="card-group row">
     {%- if doi.authors %}
@@ -201,13 +201,37 @@
                     </div>
                 </div>
             </div>
+            <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top">
+                <i class="bi bi-arrow-up-circle-fill"></i>
+            </button>
 {%- endif %}
         </main>
-        <footer class="container-fluid text-end">
+        <footer class="container-fluid text-start">
             <small>
                 <a class="m-3 p-3 font-monospace icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>
             </small>
         </footer>
+        <script>
+            let goUpButton = document.getElementById("btn-back-to-top")
+            window.onscroll = function () {
+                scrollFunction()
+            }
+            function scrollFunction() {
+                if (
+                    document.body.scrollTop > 20 ||
+                    document.documentElement.scrollTop > 20
+                ) {
+                    goUpButton.style.display = "block"
+                } else {
+                    goUpButton.style.display = "none"
+                }
+            }
+            goUpButton.addEventListener("click", backToTop)
+            function backToTop() {
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
+            }
+        </script>
         <script>
             // Enable Bootstrap tooltips and popovers.
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
@@ -215,5 +239,7 @@
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
             const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
         </script>
+        <script src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js') }}"></script>
     </body>
 </html>
