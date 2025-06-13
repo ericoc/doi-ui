@@ -54,7 +54,7 @@
 {%- if doi and doi != "" and doi != None %}
             <hr class="border-3 border-top border-light-subtle">
             <div class="container-fluid">
-                <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title }} &lt;{{ doi.url }}&gt;">{{ doi.title }}</a>
+                <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
                     <div class="h2 m-3 p-1 col">
                         <code id="current-doi" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
@@ -67,6 +67,15 @@
                         {{ doi.type }}
                     </div>
                 </div>
+    {%- if doi.abstract %}
+                <div class="row">
+                    <div class="h5 col m-3 p-1">
+                        <blockquote class="blockquote">
+                            {{ doi.abstract }}
+                        </blockquote>
+                    </div>
+                </div>
+    {%- endif  %}
                 <div class="card-group row">
     {%- if doi.authors %}
                     <div class="col m-3 p-1">

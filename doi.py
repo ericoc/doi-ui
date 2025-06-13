@@ -55,6 +55,7 @@ class DOI:
     _timeout: int = 3
 
     doi: str = ""
+    abstract: str = ""
     author: (list, dict) = []
     authors: (list, dict) = []
     created: (date, datetime, None) = None
@@ -82,11 +83,14 @@ class DOI:
 
         # Gather DOI data, by default.
         self.doi = doi
-        if _gather is True:
+        if _gather:
             self._data = self.__gather()
 
             # Fill in attributes of the Python DOI object.
             if self._data:
+
+                # Set abstract string text.
+                self.abstract = self._data.get("abstract", self.abstract)
 
                 # Set authors, and determine primary/"first" author.
                 self.authors = self._data.get("author", self.authors)
@@ -108,9 +112,9 @@ class DOI:
                     "reference-count", self.reference_count
                 )
                 self.references = self._data.get("reference", self.references)
-                self.title = self._data.get("title", self.title)
                 self.type = self._data.get("type", self.type)
                 self.url = self._data.get("URL", self.url)
+                self.title = self._data.get("title", self.title)
 
                 # Set date attributes.
                 created = self._data.get("created")
