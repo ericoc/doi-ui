@@ -2,6 +2,7 @@
 Digital Object Identifier (DOI).
 https://www.doi.org/
 """
+import json
 from datetime import date, datetime
 from re import compile
 from requests import get
@@ -62,6 +63,7 @@ class DOI:
     deposited: (date, datetime, None) = None
     indexed: (date, datetime, None) = None
     issued: (date, datetime, None) = None
+    json: str = ""
     published: (date, None) = None
     published_online: (date, None) = None
     published_print: (date, None) = None
@@ -96,12 +98,9 @@ class DOI:
                 self.authors = self._data.get("author", self.authors)
                 if self.authors:
                     for author in self.authors:
+
                         if author.get("sequence") != "additional":
                             self.author.append(author)
-
-                # Single dictionary for one primary ("first") author.
-                if len(self.author) == 1:
-                    self.author = self.author[0]
 
                 # Set attributes on Python object, using data from JSON.
                 self.publisher = self._data.get("publisher", self.publisher)
@@ -145,8 +144,10 @@ class DOI:
                 if published_print:
                     self.published_print = _parse_date(published_print)
 
-                # Delete data dictionary, when done with it.
-                # del self._data
+                # Format JSON and delete data dictionary.
+                self.json =  json.dumps(self._data, indent=2)
+                del self._data
+
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'

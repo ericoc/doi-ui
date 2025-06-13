@@ -10,6 +10,7 @@
         <link href="{{ url_for('static', filename='bootstrap-5.3.6-dist/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.min.css') }}" rel="stylesheet">
         <style>
+            .penn-shield { height: 2rem; }
             #logo { height: 3rem; }
             #logo:hover { filter: opacity(0.5); transform: translate3d(0, -.3rem, 0); }
             .icon-link-hover { --bs-icon-link-transform: translate3d(0, -.3rem, 0); }
@@ -101,6 +102,15 @@
                                     </a>
             {%- endif %}
                                         (<i>{{ author.sequence }}</i>)
+            {%- if author["affiliation"] %}
+                {%- for affiliation in author["affiliation"] %}
+                    {%- if affiliation and "name" in affiliation %}
+                        {%- if "University of Pennsylvania" in affiliation["name"] %}
+                                        <img class="penn-shield" src="{{ url_for('static', filename='penn-shield.png') }}">
+                        {%- endif %}
+                    {%- endif %}
+                {%- endfor %}
+            {%- endif %}
                                 </li>
         {%- endfor %}
                             </ol>
@@ -211,20 +221,20 @@
                             </table>
                         </details>
                     </div>
-    {%- if doi._data %}
+    {%- if doi.json %}
                     <div class="row">
                         <div class="col m-1 p-1">
                             <details class="card">
                                 <summary class="card-header" data-bs-toggle="tooltip" data-bs-title="Raw Data" id="raw-data" title="Raw Data">
                                     <span class="border-secondary h3">Raw Data</span>
                                     <span class="badge bg-dark rounded-pill border border-secondary">
-                                        <code>{{ doi._data|length }}</code>
+                                        <code>{{ doi.json|length }}</code>
                                     </span>
                                     <a class="anchor-link" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)">
                                         <i class="bi bi-link-45deg"></i>
                                     </a>
                                 </summary>
-                                <pre>{{ doi._data }}</pre>
+                                <pre>{{ doi.json }}</pre>
                             </details>
                         </div>
                     </div>
@@ -240,7 +250,7 @@
         </main>
         <footer class="container-fluid text-start">
             <small>
-                <a class="m-3 p-3 font-monospace icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>
+                <a class="m-1 p-1 font-monospace icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>
             </small>
         </footer>
         <script>
