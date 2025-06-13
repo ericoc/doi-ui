@@ -146,7 +146,7 @@ class DOI:
                     self.published_print = _parse_date(published_print)
 
                 # Delete data dictionary, when done with it.
-                del self._data
+                # del self._data
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'

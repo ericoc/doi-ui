@@ -57,20 +57,20 @@
             <div class="container-fluid">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
-                    <div class="h2 m-3 p-1 col">
+                    <div class="h2 m-1 p-1 col">
                         <code id="current-doi" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
                         <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-doi" title="Copy '{{ doi.doi }}' to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt; to clipboard"></a>
                     </div>
-                    <div class="h2 fst-italic m-3 p-1 col" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
+                    <div class="h2 fst-italic m-1 p-1 col" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
                         {{ doi.publisher }}
                     </div>
-                    <div class="h2 m-3 p-1 col" data-bs-title="{{ doi.type }}" data-bs-toggle="tooltip" id="doi-type" title="{{ doi.type }}">
+                    <div class="h2 m-1 p-1 col" data-bs-title="&lt;b&gt;Type&lt;/b&gt;: {{ doi.type }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-type" title="{{ doi.type }}">
                         {{ doi.type }}
                     </div>
                 </div>
     {%- if doi.abstract %}
                 <div class="row">
-                    <div class="col m-3 p-1">
+                    <div class="col m-1 p-1">
                         <p class="blockquote" id="doi-abstract">
                             {{ doi.abstract }}
                         </p>
@@ -79,7 +79,7 @@
     {%- endif  %}
                 <div class="card-group row">
     {%- if doi.authors %}
-                    <div class="col m-3 p-1">
+                    <div class="col m-1 p-1">
                         <details class="card" open>
                             <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Authors&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.authors|length }}&lt;/span&gt;)" id="authors" title="Authors ({{ doi.authors|length }})">
                                 <span class="border-secondary h3">Authors</span>
@@ -107,7 +107,7 @@
                         </details>
                     </div>
     {%- endif %}
-                    <div class="col m-3 p-1">
+                    <div class="col m-1 p-1">
     {%- if doi.references %}
                         <details class="card" open>
                             <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;References&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.references|length }}&lt;/span&gt;)" id="references" title="References ({{ doi.references|length }})">
@@ -148,7 +148,8 @@
                             <code class="fw-bold">{{ doi.referenced_by_count }}</code>
                         </span>
                     </div>
-                    <div class="col m-3 p-1">
+
+                    <div class="col m-1 p-1">
                         <details class="card" open>
                             <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Dates&lt;/strong&gt;" id="dates" title="Dates">
                                 <span class="border-secondary h3">Dates</span>
@@ -210,11 +211,31 @@
                             </table>
                         </details>
                     </div>
+    {%- if doi._data %}
+                    <div class="row">
+                        <div class="col m-1 p-1">
+                            <details class="card">
+                                <summary class="card-header" data-bs-toggle="tooltip" data-bs-title="Raw Data" id="raw-data" title="Raw Data">
+                                    <span class="border-secondary h3">Raw Data</span>
+                                    <span class="badge bg-dark rounded-pill border border-secondary">
+                                        <code>{{ doi._data|length }}</code>
+                                    </span>
+                                    <a class="anchor-link" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)">
+                                        <i class="bi bi-link-45deg"></i>
+                                    </a>
+                                </summary>
+                                <pre>{{ doi._data }}</pre>
+                            </details>
+                        </div>
+                    </div>
+    {%- endif %}
                 </div>
             </div>
+
             <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">
                 <i class="bi bi-arrow-up-circle-fill"></i>
             </button>
+
 {%- endif %}
         </main>
         <footer class="container-fluid text-start">
