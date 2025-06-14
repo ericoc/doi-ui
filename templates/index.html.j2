@@ -55,6 +55,7 @@
             </p>
 {%- if doi and doi != "" and doi != None %}
             <hr class="border-3 border-top border-light-subtle">
+    <!-- {{ doi }} -->
             <div class="container-fluid">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
@@ -83,9 +84,11 @@
                     <div class="col m-1 p-1">
                         <details class="card" open>
                             <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Authors&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.authors|length }}&lt;/span&gt;)" id="authors" title="Authors ({{ doi.authors|length }})">
-                                <span class="border-secondary h3">Authors</span>
-                                <span class="badge bg-dark rounded-pill border border-secondary">
-                                    <code>{{ doi.authors|length }}</code>
+                                <span class="h3">
+                                    Authors
+                                    <span class="badge bg-dark rounded-pill border border-secondary">
+                                        <code>{{ doi.authors|length }}</code>
+                                    </span>
                                 </span>
                                 <a class="anchor-link" href="#authors" aria-label="Link to this section: Authors (authors)">
                                     <i class="bi bi-link-45deg"></i>
@@ -93,7 +96,7 @@
                             </summary>
                             <ol class="list-group list-group-numbered list-group-flush">
         {%- for author in doi.authors %}
-                                <!-- {{ author }} -->
+                            <!-- {{ author }} -->
                                 <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
             {%- if author.orcid %}
                                     <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid }}&gt;">
@@ -102,11 +105,11 @@
             {%- if author.orcid -%}
                                     </a>
             {%- endif %}
-                                        (<i>{{ author.sequence }}</i>)
+                                    (<i>{{ author.sequence }}</i>)
             {%- if author.is_penn_affiliated %}
-                                        <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
-                                            <img class="penn-shield mx-1" src="{{ url_for('static', filename='penn-shield.png') }}" alt="University of Pennsylvania Shield Logo Icon">
-                                        </span>
+                                    <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
+                                        <img class="penn-shield mx-1" src="{{ url_for('static', filename='penn-shield.png') }}" alt="University of Pennsylvania Shield Logo Icon">
+                                    </span>
             {%- endif %}
                                 </li>
         {%- endfor %}
@@ -117,14 +120,18 @@
                     <div class="col m-1 p-1">
     {%- if doi.references %}
                         <details class="card" open>
-                            <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;References&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.references|length }}&lt;/span&gt;)" id="references" title="References ({{ doi.references|length }})">
-                                <span class="border-secondary h3">References</span>
+                            <summary class="card-header">
+                                <span class="h3 text-start" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;References&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.references|length }}&lt;/span&gt;)" id="references" title="References ({{ doi.references|length }})">
+                                    References
+                                </span>
                                 <span class="badge bg-dark rounded-pill border border-secondary">
                                     <code class="fw-bold">{{ doi.references|length }}</code>
                                 </span>
-                                <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)">
-                                    <i class="bi bi-link-45deg"></i>
-                                </a>
+                                <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)"><i class="bi bi-link-45deg"></i></a>
+                                <span class="text-end" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;i&gt;Referenced by&lt;/i&gt;: &lt;strong&gt;{{ doi.referenced_by_count }}&lt;/strong&gt;" title="Referenced by: {{ doi.referenced_by_count }}">
+                                    <i class="ms-3">Referenced by</i>:
+                                    <code class="fw-bold">{{ doi.referenced_by_count }}</code>
+                                </span>
                             </summary>
                             <ol class="card-body list-group list-group-numbered list-group-flush">
         {%- for reference in doi.references %}
@@ -150,23 +157,19 @@
                             </ol>
                         </details>
     {%- endif %}
-                        <span data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;i&gt;Referenced by&lt;/i&gt;: &lt;strong&gt;{{ doi.referenced_by_count }}&lt;/strong&gt;" title="Referenced by: {{ doi.referenced_by_count }}">
-                            <i class="ms-3">Referenced by</i>:
-                            <code class="fw-bold">{{ doi.referenced_by_count }}</code>
-                        </span>
                     </div>
 
                     <div class="col m-1 p-1">
                         <details class="card" open>
                             <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Dates&lt;/strong&gt;" id="dates" title="Dates">
-                                <span class="border-secondary h3">Dates</span>
+                                <span class="h3">Dates</span>
                                 <a class="anchor-link" href="#dates" aria-label="Link to this section: Dates (dates)">
                                     <i class="bi bi-link-45deg"></i>
                                 </a>
                             </summary>
                             <table class="card-body card-text table table-bordered rounded table-responsive table-hover table-striped border-light-subtle container-fluid">
                                 <thead>
-                                    <tr class="border-secondary">
+                                    <tr>
                                         <th class="bg-dark-subtle">Type</th>
                                         <th class="bg-dark-subtle">When</th>
                                     </tr>
@@ -223,7 +226,7 @@
                         <div class="col m-1 p-1">
                             <details class="card">
                                 <summary class="card-header" data-bs-toggle="tooltip" data-bs-title="Raw Data" id="raw-data" title="Raw Data">
-                                    <span class="border-secondary h3">Raw Data</span>
+                                    <span class="h3">Raw Data</span>
                                     <span class="badge bg-dark rounded-pill border border-secondary">
                                         <code>{{ doi.json|length }}</code>
                                     </span>
@@ -245,6 +248,7 @@
 
 {%- endif %}
         </main>
+        <hr class="border-3 border-top border-light-subtle">
         <footer class="container-fluid text-start">
             <small>
                 <a class="m-1 p-1 font-monospace icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>

@@ -17,9 +17,8 @@ DOI_URL = "https://doi.org"
 
 
 def _parse_date(item: (dict, None)) -> (date, datetime, None):
-
+    # Parse "date-time" and "date-parts" chunks from DOI JSON.
     if item:
-
         iso_dt = item.get("date-time")
         if iso_dt:
             try:
@@ -40,7 +39,6 @@ def _parse_date(item: (dict, None)) -> (date, datetime, None):
         return item
 
     return None
-
 
 
 class DOI:
@@ -108,7 +106,9 @@ class DOI:
                 if author_data:
                     self.authors = []
                     for _author in author_data:
-                        self.authors.append(self.DOIAuthor(author=_author))
+                        self.authors.append(
+                            self.DOIAuthor(doi=self, author=_author)
+                        )
                 del author_data
 
                 # Set date attributes.
@@ -151,7 +151,7 @@ class DOI:
     def __str__(self) -> str:
         msg = self.doi
         if self.title:
-            msg += f' ({self.title})'
+            msg += f'. {self.title}'
         return msg
 
     # Gather (JSON) information about the DOI.
@@ -174,6 +174,7 @@ class DOI:
     class DOIAuthor:
         """Author of a DOI, which can include specific affiliation(s)."""
 
+        doi: str = ""
         given: str = ""
         family: str = ""
         name: str = ""
@@ -183,7 +184,8 @@ class DOI:
         is_penn_affiliated: bool = False
 
         # Initialization of a DOI author.
-        def __init__(self, author: dict = {}):
+        def __init__(self, doi, author: dict = {}):
+            self.doi = doi
             self.sequence = author.get("sequence", self.sequence)
             self.given = author.get("given", self.given)
             self.family = author.get("family", self.family)
@@ -207,9 +209,11 @@ class DOI:
             return f'{self.__class__.__name__}: {self.__str__()}'
 
         def __str__(self) -> str:
-            msg = f'{self.given} {self.family} ({self.sequence})'
+            msg = f'{self.name}'
             if self.orcid:
-                msg += f' [{self.orcid}]'
+                msg += f' <{self.orcid}>'
+            msg += f' ({self.sequence})'
             if self.is_penn_affiliated:
-                msg += ' @ Penn'
+                msg += ' [Penn]'
+            msg += f' @ {self.doi}'
             return msg
