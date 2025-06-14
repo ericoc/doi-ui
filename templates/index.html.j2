@@ -36,14 +36,14 @@
         {%- endfor %}
     {%- endif %}
 {%- endwith %}
-            <form class="mx-3" method="get" action="#search" id="search">
-                <div class="input-group m-3" style="width: 75%;">
+            <form class="mx-1" method="get" action="#search" id="search">
+                <div class="input-group m-1" style="width: 75%;">
                     <input type="text" class="form-control" maxlength="255" name="doi" id="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}" aria-label="DOI">
                     <button class="btn btn-outline-primary" type="submit" tabindex="1" value="Search">Search</button>
                     <button class="btn btn-outline-secondary" id="reset" type="reset">Reset</button>
                 </div>
             </form>
-            <p class="mx-3 px-3">
+            <p class="mx-1 px-1">
                 <label for="doi">Please enter a <i>Digital Object Identifier (DOI)</i></label>
                 <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="A &lt;a class='fw-bold' href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object, any object — physical, digital, or abstract." type="button">
                     <svg class="bi" aria-hidden="false" role="note">
@@ -58,14 +58,14 @@
             <div class="container-fluid">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
-                    <div class="h2 m-1 p-1 col">
+                    <div class="h2 m-1 p-1 col text-start">
                         <code id="current-doi" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
-                        <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-doi" title="Copy '{{ doi.doi }}' to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt; to clipboard"></a>
+                        <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-doi" title="Copy '{{ doi.doi }}' to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy &lt;span class='fw-bold font-monospace'&gt;{{ doi.doi }}&lt;/span&gt; to clipboard"></a>
                     </div>
-                    <div class="h2 fst-italic m-1 p-1 col" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
+                    <div class="h2 fst-italic m-1 p-1 col text-center" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
                         {{ doi.publisher }}
                     </div>
-                    <div class="h2 m-1 p-1 col" data-bs-title="&lt;b&gt;Type&lt;/b&gt;: {{ doi.type }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-type" title="{{ doi.type }}">
+                    <div class="h2 m-1 p-1 col text-end" data-bs-title="&lt;b&gt;Type&lt;/b&gt;: {{ doi.type }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-type" title="{{ doi.type }}">
                         {{ doi.type }}
                     </div>
                 </div>
@@ -106,7 +106,9 @@
                 {%- for affiliation in author["affiliation"] %}
                     {%- if affiliation and "name" in affiliation %}
                         {%- if "University of Pennsylvania" in affiliation["name"] %}
-                                        <img class="penn-shield" src="{{ url_for('static', filename='penn-shield.png') }}">
+                                        <span class="bg-secondary border border-light badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
+                                            <img class="penn-shield mx-1" src="{{ url_for('static', filename='penn-shield.png') }}" alt="University of Pennsylvania Shield Logo Icon">
+                                        </span>
                         {%- endif %}
                     {%- endif %}
                 {%- endfor %}
