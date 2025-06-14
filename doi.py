@@ -172,33 +172,36 @@ class DOI:
 
 
     class DOIAuthor:
-        """Author of a DOI."""
+        """Author of a DOI, which can include specific affiliation(s)."""
 
-        doi: str = ""
         given: str = ""
         family: str = ""
+        name: str = ""
         sequence: str = ""
         affiliation: list = []
         orcid: str = ""
         is_penn_affiliated: bool = False
 
+        # Initialization of a DOI author.
         def __init__(self, author: dict = {}):
             self.sequence = author.get("sequence", self.sequence)
             self.given = author.get("given", self.given)
             self.family = author.get("family", self.family)
+            self.name = f'{self.given} {self.family}'
             self.affiliation = author.get("affiliation", self.affiliation)
             self.orcid = author.get("ORCID", self.orcid)
-            self.is_penn_affiliated = self._is_affiliation()
 
-        def _is_affiliation(self, test: str = "University of Pennsylvania"):
-            for _affiliation in self.affiliation:
-                if test in _affiliation.get("name", ""):
-                    return True
+            # Check if the author is affiliated with Penn.
+            uni = "University of Pennsylvania"
+            self.is_penn_affiliated = self._is_affiliation(uni)
+
+        def _is_affiliation(self, test: str = ""):
+            # Check for the test string in each affiliation name.
+            if test:
+                for _affiliation in self.affiliation:
+                    if test in _affiliation.get("name", ""):
+                        return True
             return False
-
-        @property
-        def name(self):
-            return f'{self.given} {self.family}'
 
         def __repr__(self) -> str:
             return f'{self.__class__.__name__}: {self.__str__()}'
@@ -207,4 +210,6 @@ class DOI:
             msg = f'{self.given} {self.family} ({self.sequence})'
             if self.orcid:
                 msg += f' [{self.orcid}]'
+            if self.is_penn_affiliated:
+                msg += ' @ Penn'
             return msg
