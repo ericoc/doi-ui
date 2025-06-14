@@ -10,7 +10,7 @@
         <link href="{{ url_for('static', filename='bootstrap-5.3.6-dist/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.min.css') }}" rel="stylesheet">
         <style>
-            .penn-shield { height: 2rem; }
+            .penn-shield { height: 1.5rem; }
             #logo { height: 3rem; }
             #logo:hover { filter: opacity(0.5); transform: translate3d(0, -.3rem, 0); }
             .icon-link-hover { --bs-icon-link-transform: translate3d(0, -.3rem, 0); }
@@ -93,25 +93,20 @@
                             </summary>
                             <ol class="list-group list-group-numbered list-group-flush">
         {%- for author in doi.authors %}
+                                <!-- {{ author }} -->
                                 <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
-            {%- if author["ORCID"] %}
-                                    <a href="{{ author["ORCID"] }}" target="_blank" title="{{ author.given }} {{ author.family }} &lt;{{ author["ORCID"] }}&gt;">
+            {%- if author.orcid %}
+                                    <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid }}&gt;">
             {%- endif -%}
-                                        {{ author.given }} {{ author.family }}
-            {%- if author["ORCID"] -%}
+                                        {{ author.name }}
+            {%- if author.orcid -%}
                                     </a>
             {%- endif %}
                                         (<i>{{ author.sequence }}</i>)
-            {%- if author["affiliation"] %}
-                {%- for affiliation in author["affiliation"] %}
-                    {%- if affiliation and "name" in affiliation %}
-                        {%- if "University of Pennsylvania" in affiliation["name"] %}
-                                        <span class="bg-secondary border border-light badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
+            {%- if author.is_penn_affiliated %}
+                                        <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
                                             <img class="penn-shield mx-1" src="{{ url_for('static', filename='penn-shield.png') }}" alt="University of Pennsylvania Shield Logo Icon">
                                         </span>
-                        {%- endif %}
-                    {%- endif %}
-                {%- endfor %}
             {%- endif %}
                                 </li>
         {%- endfor %}

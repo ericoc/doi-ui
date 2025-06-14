@@ -57,8 +57,7 @@ class DOI:
 
     doi: str = ""
     abstract: str = ""
-    author: (list, dict) = []
-    authors: (list, dict) = []
+    authors: list = []
     created: (date, datetime, None) = None
     deposited: (date, datetime, None) = None
     indexed: (date, datetime, None) = None
@@ -88,21 +87,10 @@ class DOI:
         if _gather:
             self._data = self.__gather()
 
-            # Fill in attributes of the Python DOI object.
+            # Fill in attributes of the Python DOI object, using JSON data.
             if self._data:
-
-                # Set abstract string text.
                 self.abstract = self._data.get("abstract", self.abstract)
-
-                # Set authors, and determine primary/"first" author.
-                self.authors = self._data.get("author", self.authors)
-                if self.authors:
-                    for author in self.authors:
-
-                        if author.get("sequence") != "additional":
-                            self.author.append(author)
-
-                # Set attributes on Python object, using data from JSON.
+                self.abstract = self._data.get("abstract", self.abstract)
                 self.publisher = self._data.get("publisher", self.publisher)
                 self.referenced_by_count = self._data.get(
                     "is-referenced-by-count", self.referenced_by_count
@@ -114,6 +102,14 @@ class DOI:
                 self.type = self._data.get("type", self.type)
                 self.url = self._data.get("URL", self.url)
                 self.title = self._data.get("title", self.title)
+
+                # Set author(s).
+                author_data = self._data.get("author")
+                if author_data:
+                    self.authors = []
+                    for _author in author_data:
+                        self.authors.append(self.DOIAuthor(author=_author))
+                del author_data
 
                 # Set date attributes.
                 created = self._data.get("created")
@@ -174,3 +170,41 @@ class DOI:
             raise doi_exc
 
 
+
+    class DOIAuthor:
+        """Author of a DOI."""
+
+        doi: str = ""
+        given: str = ""
+        family: str = ""
+        sequence: str = ""
+        affiliation: list = []
+        orcid: str = ""
+        is_penn_affiliated: bool = False
+
+        def __init__(self, author: dict = {}):
+            self.sequence = author.get("sequence", self.sequence)
+            self.given = author.get("given", self.given)
+            self.family = author.get("family", self.family)
+            self.affiliation = author.get("affiliation", self.affiliation)
+            self.orcid = author.get("ORCID", self.orcid)
+            self.is_penn_affiliated = self._is_affiliation()
+
+        def _is_affiliation(self, test: str = "University of Pennsylvania"):
+            for _affiliation in self.affiliation:
+                if test in _affiliation.get("name", ""):
+                    return True
+            return False
+
+        @property
+        def name(self):
+            return f'{self.given} {self.family}'
+
+        def __repr__(self) -> str:
+            return f'{self.__class__.__name__}: {self.__str__()}'
+
+        def __str__(self) -> str:
+            msg = f'{self.given} {self.family} ({self.sequence})'
+            if self.orcid:
+                msg += f' [{self.orcid}]'
+            return msg
