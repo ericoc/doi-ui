@@ -3,7 +3,7 @@ from flask import (
     Flask, flash, render_template, make_response, request, send_from_directory
 )
 from flask_caching import Cache
-from doi import DOI
+from .doi import DOI
 from prettytime import prettytime
 from orcid import PublicAPI
 
@@ -73,7 +73,7 @@ def index():
             uni = "University of Pennsylvania"
 
             for _author in _doi.authors:
-                if _author.orcid and _author.is_penn_affiliated is False:
+                if _author.orcid and _author.is_penn is False:
                     short_orcid = _author.orcid.replace(base_url, "")
                     employments = orcid_api.read_record_public(
                         orcid_id=short_orcid,
@@ -87,7 +87,7 @@ def index():
                                 if employ_org:
                                     employ_org_name = employ_org.get("name")
                                     if employ_org_name == uni:
-                                        _author.is_penn_affiliated = True
+                                        _author.is_penn = True
 
         # Display any error message that was generated.
         if err_msg:

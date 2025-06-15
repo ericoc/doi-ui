@@ -2,7 +2,7 @@
 import logging
 from argparse import ArgumentParser, RawTextHelpFormatter
 from config import ORCID_API_CLIENT_ID, ORCID_API_CLIENT_SECRET
-from doi import DOI, DOI_URL
+from doi import DOI
 from orcid import PublicAPI
 
 
@@ -100,7 +100,7 @@ if args.authors is True:
                             if employ_org:
                                 employ_org_name = employ_org.get("name")
                                 if employ_org_name == uni:
-                                    author.is_penn_affiliated = True
+                                    author.is_penn = True
 
             logger.info(f'  {i}. {author}')
 
@@ -121,9 +121,7 @@ if args.references is True:
                     reference_obj = DOI(reference_doi)
                     if reference_obj:
                         msg += reference_obj.title
-                        reference_url = f"{DOI_URL}/{reference_doi}"
-                        if reference_url:
-                            msg += f' ({reference_url})'
+                        msg += f' (https://doi.org/{reference_doi})'
                         logger.debug(reference_obj)
                 else:
                     msg = f'      {i}. {str(reference)}'
