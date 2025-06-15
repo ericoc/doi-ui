@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import logging
 from argparse import ArgumentParser, RawTextHelpFormatter
+from config import ORCID_API_CLIENT_ID, ORCID_API_CLIENT_SECRET
 from doi import DOI, DOI_URL
+from orcid import PublicAPI
 
 
 # Parse DOI argument.
@@ -78,13 +80,29 @@ if args.dates is True:
 if args.authors is True:
     authors = doi.authors
     if authors:
-        logger.info(f'{len(authors)} author(s):')
+        orcid_api = PublicAPI(ORCID_API_CLIENT_ID, ORCID_API_CLIENT_SECRET)
+        orcid_token = orcid_api.get_search_token_from_orcid()
+        uni = "University of Pennsylvania"
         for (i, author) in enumerate(iterable=authors, start=1):
-            name = f'{author.get("given")} {author.get("family")}'
-            orcid = author.get("ORCID")
-            sequence = author.get("sequence")
-            logger.info(f'  {i}. {name} ({sequence}) [ORCID: {orcid}]')
-            logger.debug(author)
+            if author.orcid:
+                author.orcid = author.orcid.replace("https://orcid.org/", "")
+                logger.debug(f'    ORCID: {author.orcid}')
+                employments = orcid_api.read_record_public(
+                    author.orcid, "employments", orcid_token
+                )
+                if employments:
+                    logger.debug(f'{employments}')
+                    employ_summary = employments.get("employment-summary")
+                    if employ_summary:
+                        for employment in employ_summary:
+                            logger.debug(employment)
+                            employ_org = employment.get("organization")
+                            if employ_org:
+                                employ_org_name = employ_org.get("name")
+                                if employ_org_name == uni:
+                                    author.is_penn_affiliated = True
+
+            logger.info(f'  {i}. {author}')
 
 # List reference DOI(s), if requested.
 if args.references is True:

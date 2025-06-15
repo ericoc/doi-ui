@@ -185,11 +185,11 @@ class DOI:
         # Initialization of a DOI author.
         def __init__(self, doi, author: dict = {}):
             self.doi = doi
+            self.orcid = author.get("ORCID", self.orcid)
             self.sequence = author.get("sequence", self.sequence)
             self.given = author.get("given", self.given)
             self.family = author.get("family", self.family)
             self.name = f'{self.given} {self.family}'
-            self.orcid = author.get("ORCID", self.orcid)
 
             # Check if the author is affiliated with Penn.
             self.affiliation = author.get("affiliation", self.affiliation)

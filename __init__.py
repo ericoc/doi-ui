@@ -5,6 +5,8 @@ from flask import (
 from flask_caching import Cache
 from datetime import date, datetime
 from doi import DOI
+from orcid import PublicAPI
+
 
 # Flask.
 app = Flask(__name__)
@@ -38,15 +40,15 @@ def index():
     # Gather information about submitted DOI ("?doi=" GET parameter).
     if get_doi:
         try:
-            # Check cache for the DOI information
-            cache_key = get_doi.replace("/", "_")
-            in_cache = cache.get(cache_key)
+            # Check cache for DOI information.
+            doi_cache_key = get_doi.replace("/", "_")
+            in_cache = cache.get(doi_cache_key)
             if in_cache:
                 _doi = in_cache
                 cached = True
             else:
                 _doi = DOI(get_doi)
-                cache.set(cache_key, _doi)
+                cache.set(doi_cache_key, _doi)
 
         # Handle any errors that may occur.
         except ValueError:
@@ -59,6 +61,32 @@ def index():
             code = 500
             logger.exception(exc)
             err_msg = str(exc)
+
+        if _doi and _doi.authors:
+            orcid_api = PublicAPI(
+                institution_key=app.config["ORCID_API_CLIENT_ID"],
+                institution_secret=app.config["ORCID_API_CLIENT_SECRET"]
+            )
+            orcid_token = orcid_api.get_search_token_from_orcid()
+            base_url = "https://orcid.org/"
+            uni = "University of Pennsylvania"
+
+            for _author in _doi.authors:
+                if _author.orcid:
+                    short_orcid = _author.orcid.replace(base_url, "")
+                    employments = orcid_api.read_record_public(
+                        orcid_id=short_orcid,
+                        request_type="employments",
+                        token=orcid_token
+                    )
+                    if employments:
+                        employ_summary = employments.get("employment-summary")
+                        for employment in employ_summary:
+                                employ_org = employment.get("organization")
+                                if employ_org:
+                                    employ_org_name = employ_org.get("name")
+                                    if employ_org_name == uni:
+                                        _author.is_penn_affiliated = True
 
         # Display any error message that was generated.
         if err_msg:

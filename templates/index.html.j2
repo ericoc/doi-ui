@@ -44,19 +44,24 @@
                 </div>
             </form>
             <p class="mx-1 px-1">
-                <label for="doi">Please enter a <i>Digital Object Identifier (DOI)</i></label>
-                <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="A &lt;a class='fw-bold' href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object, any object — physical, digital, or abstract." type="button">
+                <label for="doi">Please enter a <i>Digital Object Identifier</i></label>
+                <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="A &lt;a class='fst-italic' href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object, any object — physical, digital, or abstract." type="button">
                     <svg class="bi" aria-hidden="false" role="note">
                         <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#question-circle"></use>
                     </svg>
                 </button>
-                &mdash; such as <a class="font-monospace" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8">10.1038/s41586-024-08156-8</a>
-                or <a class="font-monospace" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1116/6.0004361&lt;/code&gt;" href="?doi=10.1116/6.0004361#search" title="Search DOI: 10.1116/6.0004361">10.1116/6.0004361</a>.
+                such as:
+                &ensp;
+                &ensp;
+                <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1116/6.0004361&lt;/code&gt;" href="?doi=10.1116/6.0004361#search" title="Search DOI: 10.1116/6.0004361"><code>10.1116/6.0004361</code></a>,
+                &ensp;
+                <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8"><code>10.1038/s41586-024-08156-8</code></a>,
+                &ensp;
+                <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1021/acsenergylett.4c03337&lt;/code&gt;" href="?doi=10.1021/acsenergylett.4c03337#search" title="Search DOI: 10.1021/acsenergylett.4c03337"><code>10.1021/acsenergylett.4c03337</code></a>.
             </p>
 {%- if doi and doi != "" and doi != None %}
-            <hr class="border-3 border-top border-light-subtle">
     <!-- {{ doi }} -->
-            <div class="container-fluid">
+            <div class="border-top container-fluid py-3">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
                     <div class="h2 m-1 p-1 col text-start">
@@ -84,11 +89,9 @@
                     <div class="col m-1 p-1">
                         <details class="card" open>
                             <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Authors&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.authors|length }}&lt;/span&gt;)" id="authors" title="Authors ({{ doi.authors|length }})">
-                                <span class="h3">
-                                    Authors
-                                    <span class="badge bg-dark rounded-pill border border-secondary">
-                                        <code>{{ doi.authors|length }}</code>
-                                    </span>
+                                <span class="h3">Authors</span>
+                                <span class="badge bg-dark rounded-pill border border-secondary">
+                                    <code>{{ doi.authors|length }}</code>
                                 </span>
                                 <a class="anchor-link" href="#authors" aria-label="Link to this section: Authors (authors)">
                                     <i class="bi bi-link-45deg"></i>
@@ -99,7 +102,7 @@
                             <!-- {{ author }} -->
                                 <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
             {%- if author.orcid %}
-                                    <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid }}&gt;">
+                                    <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid|replace('https://orcid.org/', '') }}&gt;">
             {%- endif -%}
                                         {{ author.name }}
             {%- if author.orcid -%}
@@ -222,19 +225,18 @@
                         </details>
                     </div>
     {%- if doi.json %}
-                    <div class="row">
+                    <div class="row py-3">
                         <div class="col m-1 p-1">
                             <details class="card">
                                 <summary class="card-header" data-bs-toggle="tooltip" data-bs-title="Raw Data" id="raw-data" title="Raw Data">
-                                    <span class="h3">Raw Data</span>
-                                    <span class="badge bg-dark rounded-pill border border-secondary">
-                                        <code>{{ doi.json|length }}</code>
-                                    </span>
+                                    <label class="h3" for="doi-json">Raw Data</label>
                                     <a class="anchor-link" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)">
                                         <i class="bi bi-link-45deg"></i>
                                     </a>
                                 </summary>
-                                <pre>{{ doi.json }}</pre>
+                                <div class="m-3">
+                                    <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
+                                </div>
                             </details>
                         </div>
                     </div>
@@ -248,10 +250,9 @@
 
 {%- endif %}
         </main>
-        <hr class="border-3 border-top border-light-subtle">
-        <footer class="container-fluid text-start">
-            <small>
-                <a class="m-1 p-1 font-monospace icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> https://github.com/ericoc/doi-ui</a>
+        <footer class="border-top container-fluid">
+            <small class="text-start">
+                <a class="m-1 p-1 icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> <code>https://github.com/ericoc/doi-ui</code></a>
             </small>
         </footer>
         <script>
