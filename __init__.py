@@ -3,7 +3,7 @@ from flask import (
     Flask, flash, render_template, make_response, request, send_from_directory
 )
 from flask_caching import Cache
-from .doi import DOI
+from doi import DOI
 from prettytime import prettytime
 from orcid import PublicAPI
 
