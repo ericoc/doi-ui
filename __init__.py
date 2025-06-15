@@ -72,7 +72,7 @@ def index():
             uni = "University of Pennsylvania"
 
             for _author in _doi.authors:
-                if _author.orcid:
+                if _author.orcid and _author.is_penn_affiliated is False:
                     short_orcid = _author.orcid.replace(base_url, "")
                     employments = orcid_api.read_record_public(
                         orcid_id=short_orcid,
