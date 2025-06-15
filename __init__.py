@@ -3,14 +3,15 @@ from flask import (
     Flask, flash, render_template, make_response, request, send_from_directory
 )
 from flask_caching import Cache
-from datetime import date, datetime
 from doi import DOI
+from prettytime import prettytime
 from orcid import PublicAPI
 
 
 # Flask.
 app = Flask(__name__)
 app.config.from_pyfile("config.py")
+app.add_template_filter(prettytime)
 cache = Cache(app)
 
 # Logging.
@@ -105,21 +106,3 @@ def index():
 def statics(path):
     # Static content.
     return send_from_directory("static", path)
-
-
-# Create a template filter function for Jinja2 to display timestamps.
-@app.template_filter()
-def prettytime(when: (date, datetime, str, None) = None):
-
-    # Format date and datetime, as needed.
-    if when:
-        date_fmt = ""
-        if type(when) == date:
-            date_fmt = "%A, %B %d, %Y"
-        if type(when) == datetime:
-            date_fmt = "%A, %B %d, %Y @ %H:%M:%S %z (%Z)"
-
-        if date_fmt:
-            when = when.strftime(date_fmt)
-
-    return when
