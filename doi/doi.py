@@ -6,9 +6,9 @@ from datetime import date, datetime
 from json import dumps as json_dumps
 from re import compile as re_compile
 from requests import get
-from .parsers import parse_date
 
 from .author import DOIAuthor
+from .parsers import parse_date
 
 
 DOI_REGEX = re_compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
@@ -59,19 +59,17 @@ class DOI:
 
             # Fill in attributes of the Python DOI object, using JSON data.
             if self._data:
-                self.abstract = self._data.get("abstract", self.abstract)
-                self.abstract = self._data.get("abstract", self.abstract)
-                self.publisher = self._data.get("publisher", self.publisher)
+                self.abstract = self._data.get("abstract")
+                self.authors = self._data.get("author")
+                self.publisher = self._data.get("publisher")
                 self.referenced_by_count = self._data.get(
-                    "is-referenced-by-count", self.referenced_by_count
+                    "is-referenced-by-count"
                 )
-                self.reference_count = self._data.get(
-                    "reference-count", self.reference_count
-                )
-                self.references = self._data.get("reference", self.references)
-                self.type = self._data.get("type", self.type)
-                self.url = self._data.get("URL", self.url)
-                self.title = self._data.get("title", self.title)
+                self.reference_count = self._data.get("reference-count")
+                self.references = self._data.get("reference")
+                self.type = self._data.get("type")
+                self.url = self._data.get("URL")
+                self.title = self._data.get("title")
 
                 # Set author(s).
                 author_data = self._data.get("author")
@@ -82,38 +80,21 @@ class DOI:
                 del author_data
 
                 # Set date attributes.
-                created = self._data.get("created")
-                if created:
-                    self.created = parse_date(created)
-
-                deposited = self._data.get("deposited")
-                if deposited:
-                    self.deposited = parse_date(deposited)
-
-                indexed = self._data.get("indexed")
-                if indexed:
-                    self.indexed = parse_date(indexed)
-
-                issued = self._data.get("issued")
-                if issued:
-                    self.issued = parse_date(issued)
-
-                published = self._data.get("published")
-                if published:
-                    self.published = parse_date(published)
-
-                published_online = self._data.get("published-online")
-                if published_online:
-                    self.published_online = parse_date(published_online)
-
-                published_print = self._data.get("published-print")
-                if published_print:
-                    self.published_print = parse_date(published_print)
+                self.created = parse_date(self._data.get("created"))
+                self.deposited = parse_date(self._data.get("deposited"))
+                self.indexed = parse_date(self._data.get("indexed"))
+                self.issued = parse_date(self._data.get("issued"))
+                self.published = parse_date(self._data.get("published"))
+                self.published_online = parse_date(
+                    self._data.get("published-online")
+                )
+                self.published_print = parse_date(
+                    self._data.get("published-print")
+                )
 
                 # Format JSON and delete data dictionary.
                 self.json =  json_dumps(self._data, indent=2)
                 del self._data
-
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'

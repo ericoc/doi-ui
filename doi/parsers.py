@@ -2,7 +2,9 @@ from datetime import date, datetime
 
 
 def parse_date(item: (dict, None)) -> (date, datetime, None):
-    '''Parse "date-time" and "date-parts" chunks from DOI JSON.'''
+    """
+    Parse "date-time" and "date-parts" chunks from DOI JSON.
+    """
     if item:
         iso_dt = item.get("date-time")
         if iso_dt:
