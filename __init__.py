@@ -33,25 +33,27 @@ logging.basicConfig(
 @app.route("/")
 def index():
     _doi = None
-    cached: bool = False
     code: int = 200
     err_msg: (str, None) = None
     get_doi: (str, None) = request.args.get("doi")
 
-    # Gather information about submitted DOI ("?doi=" GET parameter).
+    # Handle submitted DOI ("?doi=" GET parameter).
     if get_doi:
         try:
             # Check cache for DOI information.
             doi_cache_key = get_doi.replace("/", "_")
-            in_cache = cache.get(doi_cache_key)
-            if in_cache:
-                _doi = in_cache
-                cached = True
+            doi_in_cache = cache.get(doi_cache_key)
+
+            # Use cached DOI information, if it was found.
+            if doi_in_cache:
+                _doi = doi_in_cache
+
+            # Otherwise, gather DOI information, and cache it.
             else:
                 _doi = DOI(get_doi)
                 cache.set(doi_cache_key, _doi)
 
-        # Handle any errors that may occur.
+        # Handle any exceptions.
         except ValueError:
             code = 400
             err_msg = "Invalid DOI format!"
@@ -63,43 +65,57 @@ def index():
             logger.exception(exc)
             err_msg = str(exc)
 
+        # Authors.
         if _doi and _doi.authors:
+
+            # Connect to ORCID.org public API, and get a search token.
             orcid_api = PublicAPI(
                 institution_key=app.config["ORCID_API_CLIENT_ID"],
                 institution_secret=app.config["ORCID_API_CLIENT_SECRET"]
             )
             orcid_token = orcid_api.get_search_token_from_orcid()
-            base_url = "https://orcid.org/"
-            uni = "University of Pennsylvania"
 
-            for _author in _doi.authors:
-                if _author.orcid and _author.is_penn is False:
-                    short_orcid = _author.orcid.replace(base_url, "")
-                    employments = orcid_api.read_record_public(
-                        orcid_id=short_orcid,
-                        request_type="employments",
-                        token=orcid_token
-                    )
+            # Iterate each author of the DOI.
+            for author in _doi.authors:
+
+                # Search ORCID, if author is not already affiliated with Penn.
+                if author.orcid and author.is_penn is False:
+                    orcid_id = author.orcid.replace("https://orcid.org/", "")
+
+                    # Use ORCID employments from cache, if found.
+                    orcid_in_cache = cache.get(orcid_id)
+                    if orcid_in_cache:
+                        employments = orcid_in_cache
+
+                    # Otherwise, gather and cache ORCID employments.
+                    else:
+                        employments = orcid_api.read_record_public(
+                            orcid_id=orcid_id,
+                            request_type="employments",
+                            token=orcid_token
+                        )
+                        cache.set(orcid_id, employments)
+
+                    # Check each employment for "University of Pennsylvania".
                     if employments:
                         employ_summary = employments.get("employment-summary")
                         for employment in employ_summary:
                                 employ_org = employment.get("organization")
                                 if employ_org:
-                                    employ_org_name = employ_org.get("name")
-                                    if employ_org_name == uni:
-                                        _author.is_penn = True
+                                    org_name = employ_org.get("name")
+                                    if org_name == "University of Pennsylvania":
+                                        author.is_penn = True
 
         # Display any error message that was generated.
         if err_msg:
             flash(err_msg)
 
-    # Return template response, with header whether DOI was found in cache.
-    resp = make_response(
-        render_template("index.html.j2", doi=_doi),
-        code
+    return make_response(
+        render_template(
+            template_name_or_list="index.html.j2",
+            doi=_doi
+        ), code
     )
-    resp.headers["X-DOI-Cached"] = cached
-    return resp
 
 
 @app.route("/static/<path:path>")

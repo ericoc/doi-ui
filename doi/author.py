@@ -3,7 +3,7 @@ Author of a DOI can include specific affiliation(s), ORCID, etc.
 """
 class DOIAuthor:
 
-    doi: str = ""
+    doi = None
     given: str = ""
     family: str = ""
     name: str = ""
@@ -15,19 +15,17 @@ class DOIAuthor:
     # Initialization of a DOI author.
     def __init__(self, doi, author: dict = {}):
         self.doi = doi
-        self.orcid = author.get("ORCID", self.orcid)
+        self.orcid = author.get("ORCID", "")
         self.sequence = author.get("sequence", self.sequence)
         self.given = author.get("given", self.given)
         self.family = author.get("family", self.family)
         self.name = f'{self.given} {self.family}'
 
-        # Check if author is affiliated with Penn.
+        # Check if DOI author affiliated with "University of Pennsylvania".
         self.affiliation = author.get("affiliation", self.affiliation)
-        if self.affiliation:
-            uni = "University of Pennsylvania"
-            self.is_penn = self.is_affiliation(uni)
+        self.is_penn = self.is_affiliated()
 
-    def is_affiliation(self, _test: str = ""):
+    def is_affiliated(self, _test: str = "University of Pennsylvania") -> bool:
         # Check for test string in each affiliation name.
         if _test:
             for _affiliation in self.affiliation:
@@ -40,9 +38,9 @@ class DOIAuthor:
 
     def __str__(self) -> str:
         msg = f'{self.name}'
+        msg += f' ({self.sequence})'
         if self.orcid:
             msg += f' <{self.orcid}>'
-        msg += f' ({self.sequence})'
         if self.is_penn:
             msg += ' [Penn]'
         msg += f' @ {self.doi}'
