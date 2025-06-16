@@ -22,8 +22,27 @@
     </head>
     <body>
         <header class="container-fluid header">
-            <nav class="navbar navbar-expand-md gap-1">
-                <a class="icon-link icon-link-hover text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI"><img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}"></a>
+            <nav class="navbar navbar-expand-lg">
+                <a class="border border-secondary rounded me-3 p-3 icon-link icon-link-hover navbar-brand text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI"><img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}"></a>
+                <form method="get" action="#search" id="search" role="search">
+                    <p>
+                        <label class="form-label" for="doi">Please enter a <i>Digital Object Identifier</i></label>
+                        <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="A &lt;a class='fst-italic' href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object, any object — physical, digital, or abstract." type="button">
+                            <svg class="bi" aria-hidden="false" role="note">
+                                <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#question-circle"></use>
+                            </svg>
+                        </button>
+                        <i>e.g.</i>
+                        <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1116/6.0004361&lt;/code&gt;" href="?doi=10.1116/6.0004361#search" title="Search DOI: 10.1116/6.0004361"><code>10.1116/6.0004361</code></a>,&ensp;
+                        <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8"><code>10.1038/s41586-024-08156-8</code></a>,&ensp;
+                        <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1021/acsenergylett.4c03337&lt;/code&gt;" href="?doi=10.1021/acsenergylett.4c03337#search" title="Search DOI: 10.1021/acsenergylett.4c03337"><code>10.1021/acsenergylett.4c03337</code></a>
+                    </p>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg" maxlength="255" name="doi" id="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}" aria-label="DOI">
+                        <button class="btn btn-outline-primary btn-lg" type="submit" tabindex="1" value="Search">Search</button>
+                        <button class="btn btn-outline-secondary btn-lg" id="reset" type="reset">Reset</button>
+                    </div>
+                </form>
             </nav>
         </header>
         <main class="container-fluid">
@@ -36,28 +55,9 @@
         {%- endfor %}
     {%- endif %}
 {%- endwith %}
-            <form class="mx-1" method="get" action="#search" id="search">
-                <div class="input-group m-1" style="width: 75%;">
-                    <input type="text" class="form-control" maxlength="255" name="doi" id="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}" aria-label="DOI">
-                    <button class="btn btn-outline-primary" type="submit" tabindex="1" value="Search">Search</button>
-                    <button class="btn btn-outline-secondary" id="reset" type="reset">Reset</button>
-                </div>
-            </form>
-            <p class="mx-1 px-1">
-                <label for="doi">Please enter a <i>Digital Object Identifier</i></label>
-                <button class="bg-dark border-0 icon-link icon-link-hover p-1 text-secondary" data-bs-toggle="popover" data-bs-html="true" data-bs-title="&lt;strong&gt;Digital Object Identifier (DOI)?&lt;/strong&gt;" data-bs-content="A &lt;a class='fst-italic' href='https://www.doi.org/' target='_blank' title='Digital Object Identifier (DOI) [https://www.doi.org/]'&gt;Digital Object Identifier (DOI)&lt;/a&gt; is a digital identifier of an object, any object — physical, digital, or abstract." type="button">
-                    <svg class="bi" aria-hidden="false" role="note">
-                        <use xlink:href="{{ url_for('static', filename='bootstrap-icons-1.13.1/bootstrap-icons.svg') }}#question-circle"></use>
-                    </svg>
-                </button>
-                <i>e.g.</i>
-                <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1116/6.0004361&lt;/code&gt;" href="?doi=10.1116/6.0004361#search" title="Search DOI: 10.1116/6.0004361"><code>10.1116/6.0004361</code></a>,&ensp;
-                <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8"><code>10.1038/s41586-024-08156-8</code></a>,&ensp;
-                <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1021/acsenergylett.4c03337&lt;/code&gt;" href="?doi=10.1021/acsenergylett.4c03337#search" title="Search DOI: 10.1021/acsenergylett.4c03337"><code>10.1021/acsenergylett.4c03337</code></a>
-            </p>
 {%- if doi and doi != "" and doi != None %}
     <!-- {{ doi }} -->
-            <div class="border-top container-fluid py-3">
+            <div class="container-fluid py-3">
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
                     <div class="h2 m-1 p-1 col text-start">
@@ -246,9 +246,9 @@
 
 {%- endif %}
         </main>
-        <footer class="border-top container-fluid">
+        <footer class="container-fluid py-1">
             <small class="text-start">
-                <a class="m-1 p-1 icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> <code>https://github.com/ericoc/doi-ui</code></a>
+                <a class="icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> <code>https://github.com/ericoc/doi-ui</code></a>
             </small>
         </footer>
         <script>
