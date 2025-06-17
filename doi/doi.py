@@ -59,24 +59,28 @@ class DOI:
 
             # Fill in attributes of the Python DOI object, using JSON data.
             if self._data:
-                self.abstract = self._data.get("abstract")
-                self.authors = self._data.get("author")
-                self.publisher = self._data.get("publisher")
+                self.abstract = self._data.get("abstract", self.abstract)
+                self.authors = self._data.get("author", self.authors)
+                self.publisher = self._data.get("publisher", self.publisher)
                 self.referenced_by_count = self._data.get(
-                    "is-referenced-by-count"
+                    "is-referenced-by-count", self.referenced_by_count
                 )
-                self.reference_count = self._data.get("reference-count")
-                self.references = self._data.get("reference")
-                self.type = self._data.get("type")
-                self.url = self._data.get("URL")
-                self.title = self._data.get("title")
+                self.reference_count = self._data.get(
+                    "reference-count", self.reference_count
+                )
+                self.references = self._data.get("reference", self.references)
+                self.type = self._data.get("type", self.type)
+                self.url = self._data.get("URL", self.url)
+                self.title = self._data.get("title", self.title)
 
                 # Set author(s).
                 author_data = self._data.get("author")
                 if author_data:
                     self.authors = []
                     for author in author_data:
-                        self.authors.append(DOIAuthor(doi=self, author=author))
+                        self.authors.append(
+                            DOIAuthor(doi=self, author=author)
+                        )
                 del author_data
 
                 # Set date attributes.

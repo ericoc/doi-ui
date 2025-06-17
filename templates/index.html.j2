@@ -116,7 +116,6 @@
                         </details>
                     </div>
     {%- endif %}
-    {%- if doi.references %}
                     <div class="col m-1 p-1">
                         <details class="card" open>
                             <summary class="card-header">
@@ -132,6 +131,7 @@
                                     <code class="fw-bold">{{ doi.referenced_by_count }}</code>
                                 </span>
                             </summary>
+    {%- if doi.references %}
                             <ol class="card-body list-group list-group-numbered list-group-flush">
         {%- for reference in doi.references %}
                                 <li class="list-group-item list-group-item-action">
@@ -154,9 +154,13 @@
                                 </li>
         {%- endfor %}
                             </ol>
+    {%- else %}
+                            <div class="card-body">
+                                <p class="card-text fst-italic">None</p>
+                            </div>
+    {%- endif %}
                         </details>
                     </div>
-    {%- endif %}
 
                     <div class="col m-1 p-1">
                         <details class="card" open>
