@@ -32,38 +32,40 @@ logging.basicConfig(
 # Main (Jinja2) template to search DOI.
 @app.route("/")
 def index():
-    _doi = None
+    _doi: (None, DOI) = None
     code: int = 200
-    err_msg: (str, None) = None
-    get_doi: (str, None) = request.args.get("doi")
+    err_msg: str = ""
 
     # Handle submitted DOI ("?doi=" GET parameter).
+    get_doi: str = request.args.get("doi", "")
     if get_doi:
-        try:
-            # Check cache for DOI information.
-            doi_cache_key = get_doi.replace("/", "_")
-            doi_in_cache = cache.get(doi_cache_key)
 
-            # Use cached DOI information, if it was found.
-            if doi_in_cache:
-                _doi = doi_in_cache
+        # Check cache for DOI information.
+        doi_cache_key = get_doi.replace("/", "_")
+        doi_in_cache = cache.get(doi_cache_key)
 
-            # Otherwise, gather DOI information, and cache it.
-            else:
+        # Use cached DOI information, if it was found.
+        if doi_in_cache:
+            _doi = doi_in_cache
+
+        # Otherwise, try to gather DOI information, and cache it.
+        else:
+
+            try:
                 _doi = DOI(get_doi)
                 cache.set(doi_cache_key, _doi)
 
-        # Handle any exceptions.
-        except ValueError:
-            code = 400
-            err_msg = "Invalid DOI format!"
-        except FileNotFoundError:
-            code = 404
-            err_msg = "No such DOI was found!"
-        except Exception as exc:
-            code = 500
-            logger.exception(exc)
-            err_msg = str(exc)
+            # Handle any exceptions.
+            except ValueError:
+                code = 400
+                err_msg = "Invalid DOI format!"
+            except FileNotFoundError:
+                code = 404
+                err_msg = "No such DOI was found!"
+            except Exception as exc:
+                code = 500
+                logger.exception(exc)
+                err_msg = str(exc)
 
         # Authors.
         if _doi and _doi.authors:
@@ -75,7 +77,7 @@ def index():
             )
             orcid_token = orcid_api.get_search_token_from_orcid()
 
-            # Iterate each author of the DOI.
+            # Iterate each DOI author ORCID to see if they are Penn-affiliated.
             for author in _doi.authors:
 
                 # Search ORCID, if author is not already affiliated with Penn.
