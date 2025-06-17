@@ -1,7 +1,6 @@
 import logging
-from flask import (
-    Flask, flash, render_template, make_response, request, send_from_directory
-)
+from flask import Flask, \
+    flash, render_template, make_response, request, send_from_directory
 from flask_caching import Cache
 from doi import DOI
 from prettytime import prettytime
@@ -102,11 +101,11 @@ def index():
                     if employments:
                         employ_summary = employments.get("employment-summary")
                         for employment in employ_summary:
-                                employ_org = employment.get("organization")
-                                if employ_org:
-                                    org_name = employ_org.get("name")
-                                    if org_name == "University of Pennsylvania":
-                                        author.is_penn = True
+                            employ_org = employment.get("organization")
+                            if employ_org:
+                                org_name = employ_org.get("name")
+                                if org_name == "University of Pennsylvania":
+                                    author.is_penn = True
 
         # Display any error message that was generated.
         if err_msg:
