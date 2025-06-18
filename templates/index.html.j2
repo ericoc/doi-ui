@@ -88,13 +88,22 @@
     {%- endif %}
                 <div class="card-group row">
     {%- if doi.authors %}
+        {%- if debug %}
+        <!--
+            {{ doi.authors }}
+        -->
+        {%- endif %}
+
                     <div class="col m-1 p-1">
                         <details class="card" open>
-                            <summary class="card-header" id="authors" title="Authors ({{ doi.authors|length }})">
+                            <summary class="card-header" id="authors" title="Authors: {{ doi.authors|length }}{%- if doi.is_penn %} ({{ doi.penn_author_count }} @ Penn){%- endif %}">
                                 <span class="h3">Authors</span>
-                                <span class="badge bg-dark rounded-pill border border-secondary">
-                                    <code>{{ doi.authors|length }}</code>
+                                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.authors|length }}</code>
+        {%- if doi.is_penn %}
+                                <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
+                                    <img class="penn-shield mx-1" src="{{ url_for('static', filename='penn-shield.png') }}" alt="University of Pennsylvania Shield Logo Icon">
                                 </span>
+        {%- endif %}
                                 <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
                             </summary>
                             <ol class="list-group list-group-numbered list-group-flush">
@@ -126,11 +135,11 @@
     {%- endif %}
                     <div class="col m-1 p-1">
                         <details class="card" open>
-                            <summary class="card-header">
-                                <span class="h3 text-start" id="references" title="References: {{ doi.references|length }}">References</span>
-                                <span class="badge bg-dark rounded-pill border border-secondary"><code class="fw-bold">{{ doi.references|length }}</code></span>
+                            <summary class="card-header" id="references" title="References: {{ doi.references|length }} / Referenced By: {{ doi.referenced_by_count }}">
+                                <span class="h3">References</span>
+                                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.references|length }}</code>
                                 <a class="anchor-link bi bi-link-45deg" href="#references" aria-label="Link to this section: References (references)"></a>
-                                <span class="text-end" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;i&gt;Referenced by&lt;/i&gt;: &lt;strong&gt;{{ doi.referenced_by_count }}&lt;/strong&gt;" title="Referenced by: {{ doi.referenced_by_count }}">
+                                <span class="text-end" title="Referenced by: {{ doi.referenced_by_count }}">
                                     <i class="ms-3">Referenced by</i>:
     {%- if doi.referenced_by_count > 0 %}
                                     <code class="fw-bold">{{ doi.referenced_by_count }}</code>
@@ -300,6 +309,7 @@
     {%- endif %}
 
                 </div>
+
     {%- if doi.json %}
                     <div class="row py-3">
                         <div class="col m-1 p-1">
@@ -317,8 +327,6 @@
     {%- endif %}
                 </div>
 
-            </div>
-
             <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">
                 <i class="bi bi-arrow-up-circle-fill"></i>
             </button>
@@ -330,6 +338,7 @@
                 <a class="icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> <code>https://github.com/ericoc/doi-ui</code></a>
             </small>
         </footer>
+{%- if doi %}
         <script>
             // Copy-paste button for the DOI.
             async function copyDOI(text) {
@@ -368,6 +377,7 @@
                 document.documentElement.scrollTop = 0
             }
         </script>
+{%- endif %}
         <script>
             // Enable Bootstrap tooltips and popovers.
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')

@@ -34,6 +34,7 @@ class DOI:
     funders: list = []
     indexed: (date, datetime, None) = None
     issued: (date, datetime, None) = None
+    is_penn: bool = False
     json: str = ""
     published: (date, None) = None
     published_online: (date, None) = None
@@ -80,9 +81,10 @@ class DOI:
                 if author_data:
                     self.authors = []
                     for author in author_data:
-                        self.authors.append(
-                            DOIAuthor(doi=self, author=author)
-                        )
+                        author_obj = DOIAuthor(doi=self, author=author)
+                        self.authors.append(author_obj)
+                        if author_obj.is_penn:
+                            self.is_penn = True
                 del author_data
 
                 # Set date attributes.
@@ -109,6 +111,8 @@ class DOI:
         msg = self.doi
         if self.title:
             msg += f'. {self.title}'
+        if self.is_penn:
+            msg += ' [Penn]'
         return msg
 
     # Gather (JSON) information about the DOI.

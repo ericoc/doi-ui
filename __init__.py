@@ -101,6 +101,7 @@ def index():
                                 org_name = employ_org.get("name")
                                 if org_name == "University of Pennsylvania":
                                     author.is_penn = True
+                                    _doi.is_penn = True
 
         # Display any error message that was generated.
         if err_msg:
