@@ -16,8 +16,8 @@
             .icon-link-hover { --bs-icon-link-transform: translate3d(0, -.3rem, 0); }
             a[target="_blank"]::after { margin-left: 0.25rem; content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==); filter: invert(0.5); }
             #btn-back-to-top { position: fixed; bottom: 20px; right: 20px; display: none; }
-            summary::marker { color: var(--bs-danger-text-emphasis); }
-            details[open] summary::marker { color: var(--bs-primary); }
+            summary::marker { color: var(--bs-primary-text-emphasis); }
+            details[open] summary::marker, td.future-date { color: var(--bs-danger-text-emphasis); }
         </style>
         <script src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js') }}"></script>
@@ -214,43 +214,57 @@
     {%- if doi.created %}
                                     <tr title="{{ doi.created|prettytime }} [{{ doi.created }}]">
                                         <td class="fw-bold">Created</td>
-                                        <td>{{ doi.created|prettytime }}</td>
+                                        <td class="{%- if doi.created|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                            {{ doi.created|prettytime }}
+                                        </td>
                                     </tr>
     {%- endif %}
     {%- if doi.deposited %}
                                     <tr title="{{ doi.deposited|prettytime }} [{{ doi.deposited }}]">
                                         <td class="fw-bold">Deposited</td>
-                                        <td>{{ doi.deposited|prettytime }}</td>
+                                        <td class="{%- if doi.deposited|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                            {{ doi.deposited|prettytime }}
+                                        </td>
                                     </tr>
     {%- endif %}
     {%- if doi.indexed %}
                                     <tr title="{{ doi.indexed|prettytime }} [{{ doi.indexed }}]">
                                         <td class="fw-bold">Indexed</td>
-                                        <td>{{ doi.indexed|prettytime }}</td>
+                                        <td class="{%- if doi.indexed|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                            {{ doi.indexed|prettytime }}
+                                        </td>
                                     </tr>
     {%- endif %}
     {%- if doi.issued %}
                                     <tr title="{{ doi.issued|prettytime }} [{{ doi.issued }}]">
                                         <td class="fw-bold">Issued</td>
-                                        <td>{{ doi.issued|prettytime }}</td>
+                                        <td class="{%- if doi.issued|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                            {{ doi.issued|prettytime }}
+                                        </td>
                                     </tr>
     {%- endif %}
     {%- if doi.published %}
                                     <tr title="[{{ doi.published }}]">
                                         <td class="fw-bold">Published</td>
-                                        <td>{{ doi.published|prettytime }}</td>
+                                        <td class="{%- if doi.published|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                            {{ doi.published|prettytime }}
+                                        </td>
                                     </tr>
     {%- endif %}
     {%- if doi.published_online %}
                                     <tr title="{{ doi.published_online|prettytime }} [{{ doi.published_online }}]">
                                         <td class="fw-bold">Published Online</td>
-                                        <td>{{ doi.published_online|prettytime }}</td>
+                                        <td class="{%- if doi.published_online|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                            {{ doi.published_online|prettytime }}
+                                        </td>
                                     </tr>
     {%- endif %}
     {%- if doi.published_print %}
                                     <tr title="{{ doi.published_print|prettytime }} [{{ doi.published_print }}]">
                                         <td class="fw-bold">Published Print</td>
-                                        <td>{{ doi.published_print|prettytime }}</td>
+                                        <td class="{%- if doi.published_print|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                            {{ doi.published_print|prettytime }}
+                                        </td>
                                     </tr>
     {%- endif %}
                                 </tbody>
