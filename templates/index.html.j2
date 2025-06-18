@@ -23,7 +23,7 @@
     <body>
         <header class="container-fluid header">
             <nav class="navbar navbar-expand-lg">
-                <a class="border border-secondary rounded me-3 p-3 icon-link icon-link-hover navbar-brand text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI"><img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}"></a>
+                <a class="border border-secondary rounded me-3 p-3 icon-link icon-link-hover navbar-brand text-decoration-none" href="{{ url_for('index') }}" aria-label="DOI-UI" title="DOI-UI" data-bs-toggle="tooltip" data-bs-title="Home"><img alt="DOI-UI" id="logo" src="{{ url_for('static', filename='icon.png') }}"></a>
                 <form method="get" action="#search" id="search" role="search">
                     <p>
                         <label class="form-label" for="doi">Please enter a <i>Digital Object Identifier</i></label>
@@ -33,9 +33,9 @@
                             </svg>
                         </button>
                         <i>e.g.</i>
-                        <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1116/6.0004361&lt;/code&gt;" href="?doi=10.1116/6.0004361#search" title="Search DOI: 10.1116/6.0004361"><code>10.1116/6.0004361</code></a>,&ensp;
-                        <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1038/s41586-024-08156-8&lt;/code&gt;" href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8"><code>10.1038/s41586-024-08156-8</code></a>,&ensp;
-                        <a data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="Search DOI: &lt;span class='font-monospace fw-bold'&gt;10.1021/acsenergylett.4c03337&lt;/code&gt;" href="?doi=10.1021/acsenergylett.4c03337#search" title="Search DOI: 10.1021/acsenergylett.4c03337"><code>10.1021/acsenergylett.4c03337</code></a>
+                        <a href="?doi=10.1116/6.0004361#search" title="Search DOI: 10.1116/6.0004361"><code>10.1116/6.0004361</code></a>,&ensp;
+                        <a href="?doi=10.1038/s41586-024-08156-8#search" title="Search DOI: 10.1038/s41586-024-08156-8"><code>10.1038/s41586-024-08156-8</code></a>,&ensp;
+                        <a href="?doi=10.1021/acsenergylett.4c03337#search" title="Search DOI: 10.1021/acsenergylett.4c03337"><code>10.1021/acsenergylett.4c03337</code></a>
                     </p>
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg" maxlength="255" name="doi" id="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}" aria-label="DOI">
@@ -65,13 +65,13 @@
                 <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
                     <div class="h2 m-1 p-1 col text-start">
-                        <code id="current-doi" data-bs-title="&lt;b&gt;DOI&lt;/b&gt;: &lt;span class='font-monospace'&gt;{{ doi.doi }}&lt;/span&gt;" data-bs-html="true" data-bs-toggle="tooltip" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
+                        <code id="current-doi" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
                         <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-doi" title="Copy '{{ doi.doi }}' to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy &lt;span class='fw-bold font-monospace'&gt;{{ doi.doi }}&lt;/span&gt; to clipboard"></a>
                     </div>
-                    <div class="h2 fst-italic m-1 p-1 col text-center" data-bs-title="&lt;b&gt;Publisher&lt;/b&gt;: {{ doi.publisher }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
+                    <div class="h2 fst-italic m-1 p-1 col text-center" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
                         {{ doi.publisher }}
                     </div>
-                    <div class="h2 m-1 p-1 col text-end" data-bs-title="&lt;b&gt;Type&lt;/b&gt;: {{ doi.type }}" data-bs-html="true" data-bs-toggle="tooltip" id="doi-type" title="{{ doi.type }}">
+                    <div class="h2 m-1 p-1 col text-end" id="doi-type" title="Type: {{ doi.type }}">
                         {{ doi.type }}
                     </div>
                 </div>
@@ -88,18 +88,16 @@
     {%- if doi.authors %}
                     <div class="col m-1 p-1">
                         <details class="card" open>
-                            <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Authors&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.authors|length }}&lt;/span&gt;)" id="authors" title="Authors ({{ doi.authors|length }})">
+                            <summary class="card-header" id="authors" title="Authors ({{ doi.authors|length }})">
                                 <span class="h3">Authors</span>
                                 <span class="badge bg-dark rounded-pill border border-secondary">
                                     <code>{{ doi.authors|length }}</code>
                                 </span>
-                                <a class="anchor-link" href="#authors" aria-label="Link to this section: Authors (authors)">
-                                    <i class="bi bi-link-45deg"></i>
-                                </a>
+                                <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
                             </summary>
                             <ol class="list-group list-group-numbered list-group-flush">
         {%- for author in doi.authors %}
-            {%- if author %}
+            {%- if debug %}
                 <!--
                     {{ author }}
                 -->
@@ -127,22 +125,22 @@
                     <div class="col m-1 p-1">
                         <details class="card" open>
                             <summary class="card-header">
-                                <span class="h3 text-start" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;References&lt;/strong&gt; (&lt;span class='font-monospace'&gt;{{ doi.references|length }}&lt;/span&gt;)" id="references" title="References ({{ doi.references|length }})">
-                                    References
-                                </span>
-                                <span class="badge bg-dark rounded-pill border border-secondary">
-                                    <code class="fw-bold">{{ doi.references|length }}</code>
-                                </span>
-                                <a class="anchor-link" href="#references" aria-label="Link to this section: References (references)"><i class="bi bi-link-45deg"></i></a>
+                                <span class="h3 text-start" id="references" title="References: {{ doi.references|length }}">References</span>
+                                <span class="badge bg-dark rounded-pill border border-secondary"><code class="fw-bold">{{ doi.references|length }}</code></span>
+                                <a class="anchor-link bi bi-link-45deg" href="#references" aria-label="Link to this section: References (references)"></a>
                                 <span class="text-end" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;i&gt;Referenced by&lt;/i&gt;: &lt;strong&gt;{{ doi.referenced_by_count }}&lt;/strong&gt;" title="Referenced by: {{ doi.referenced_by_count }}">
                                     <i class="ms-3">Referenced by</i>:
+    {%- if doi.referenced_by_count > 0 %}
                                     <code class="fw-bold">{{ doi.referenced_by_count }}</code>
+    {%- else %}
+                                    <span class="fw-bold fst-italic text-danger-emphasis">None</span>
+    {%- endif %}
                                 </span>
                             </summary>
     {%- if doi.references %}
                             <ol class="card-body list-group list-group-numbered list-group-flush">
         {%- for reference in doi.references %}
-            {%- if reference %}
+            {%- if debug %}
                 <!--
                     {{ reference }}
                 -->
@@ -164,6 +162,12 @@
             {%- if reference["DOI"] %}
                                     </a>
             {%- endif %}
+            {%- if reference["journal-title"] %}
+                                    - <i>{{ reference["journal-title"] }}</i>
+            {%- endif %}
+            {%- if reference["year"] %}
+                                    (<span class="font-monospace">{{ reference["year"]}}</span>)
+            {%- endif %}
                                 </li>
         {%- endfor %}
                             </ol>
@@ -175,13 +179,15 @@
                         </details>
                     </div>
 
+                </div>
+
+                <div class="card-group row">
+
                     <div class="col m-1 p-1">
                         <details class="card" open>
-                            <summary class="card-header" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="&lt;strong&gt;Dates&lt;/strong&gt;" id="dates" title="Dates">
+                            <summary class="card-header" id="dates" title="Dates">
                                 <span class="h3">Dates</span>
-                                <a class="anchor-link" href="#dates" aria-label="Link to this section: Dates (dates)">
-                                    <i class="bi bi-link-45deg"></i>
-                                </a>
+                                <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
                             </summary>
                             <table class="card-body card-text table table-bordered rounded table-responsive table-hover table-striped border-light-subtle container-fluid">
                                 <thead>
@@ -237,15 +243,65 @@
                             </table>
                         </details>
                     </div>
+
+    {%- if doi.funders %}
+                    <div class="col m-1 p-1">
+
+                        <details class="card" open>
+                            <summary class="card-header" id="funders" title="Funders">
+                                <span class="h3">Funders</span>
+                                <a class="anchor-link bi bi-link-45deg" href="#funder" aria-label="Link to this section: Funders (funders)"></a>
+                            </summary>
+                            <ol class="card-body list-group list-group-numbered list-group-flush">
+        {%- for funder in doi.funders %}
+            {%- if debug %}
+        <!--
+            {{ funder }}
+        -->
+            {%- endif %}
+                                <li class="list-group-item list-group-item-action">
+                                    <ul class="list-group list-group-flush">
+            {%- for (fund_key, fund_val) in funder.items() %}
+                                        <li class="list-group-item">
+                                            <b>{{ fund_key }}</b>
+                                            <ul class="list-group list-group-flush">
+                {%- if  fund_val.__class__.__name__ == 'list' %}
+                    {%- for i in fund_val %}
+                                                    <li class="list-group-item">
+                                                        <code>{{ i }}</code>
+                                                    </li>
+                    {%- endfor %}
+                {%- elif fund_key == "DOI" %}
+                                                    <li class="list-group-item">
+                                                        <code>{{ fund_val }}</code>
+                                                    </li>
+                {%- elif fund_key == "name" %}
+                                                    <li class="list-group-item">
+                                                        <i>{{ fund_val }}</i>
+                                                    </li>
+                {%- else %}
+                                                    <li class="list-group-item">{{ fund_val }}</li>
+                {%- endif %}
+                                            </ul>
+                                        </li>
+            {%- endfor %}
+                                    </ul>
+                                </li>
+        {%- endfor %}
+                            </ol>
+                        </details>
+
+                    </div>
+    {%- endif %}
+
+                </div>
     {%- if doi.json %}
                     <div class="row py-3">
                         <div class="col m-1 p-1">
                             <details class="card">
                                 <summary class="card-header" data-bs-toggle="tooltip" data-bs-title="Raw Data" id="raw-data" title="Raw Data">
                                     <label class="h3" for="doi-json">Raw Data</label>
-                                    <a class="anchor-link" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)">
-                                        <i class="bi bi-link-45deg"></i>
-                                    </a>
+                                    <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
                                 </summary>
                                 <div class="m-3">
                                     <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
@@ -255,6 +311,7 @@
                     </div>
     {%- endif %}
                 </div>
+
             </div>
 
             <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">

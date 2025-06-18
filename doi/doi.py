@@ -31,6 +31,7 @@ class DOI:
     authors: list = []
     created: (date, datetime, None) = None
     deposited: (date, datetime, None) = None
+    funders: list = []
     indexed: (date, datetime, None) = None
     issued: (date, datetime, None) = None
     json: str = ""
@@ -61,6 +62,7 @@ class DOI:
             if self._data:
                 self.abstract = self._data.get("abstract", self.abstract)
                 self.authors = self._data.get("author", self.authors)
+                self.funders = self._data.get("funder", self.funders)
                 self.publisher = self._data.get("publisher", self.publisher)
                 self.referenced_by_count = self._data.get(
                     "is-referenced-by-count", self.referenced_by_count
