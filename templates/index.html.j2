@@ -96,7 +96,7 @@
 
                     <div class="col m-1 p-1">
                         <details class="card" open>
-                            <summary class="card-header" id="authors" title="Authors: {{ doi.authors|length }}{%- if doi.is_penn %} ({{ doi.penn_author_count }} @ Penn){%- endif %}">
+                            <summary class="card-header" id="authors" title="Authors: {{ doi.authors|length }}{%- if doi.is_penn %} (Penn){%- endif %}">
                                 <span class="h3">Authors</span>
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.authors|length }}</code>
         {%- if doi.is_penn %}
