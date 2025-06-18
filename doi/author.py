@@ -3,7 +3,7 @@ Author of a DOI can include specific affiliation(s), ORCID, etc.
 """
 class DOIAuthor:
 
-    doi = None
+    doi: str = ""
     given: str = ""
     family: str = ""
     name: str = ""
@@ -38,10 +38,10 @@ class DOIAuthor:
 
     def __str__(self) -> str:
         msg = f'{self.name}'
-        msg += f' ({self.sequence})'
         if self.orcid:
             msg += f' <{self.orcid}>'
         if self.is_penn:
             msg += ' [Penn]'
+        msg += f' ({self.sequence})'
         msg += f' @ {self.doi}'
         return msg

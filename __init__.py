@@ -12,20 +12,15 @@ app = Flask(__name__)
 app.config.from_pyfile("config.py")
 app.add_template_filter(prettytime)
 cache = Cache(app)
+debug = app.config.get("DEBUG", False)
 
 # Logging.
 logger = logging.getLogger(__name__)
-LOG_LEVEL = logging.ERROR
-if (
-    app.config.get("DEBUG") or app.config.get("TESTING") or
-    app.config.get("ENV", "") in ("development", "dev")
-):
-    LOG_LEVEL = logging.DEBUG
 logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S %Z",
     format="%(asctime)s [%(levelname)s] (%(process)d): %(message)s",
     handlers=(logging.StreamHandler(),),
-    level=LOG_LEVEL
+    level=logging.DEBUG if debug else logging.INFO
 )
 
 # Main (Jinja2) template to search DOI.
@@ -114,6 +109,7 @@ def index():
     return make_response(
         render_template(
             template_name_or_list="index.html.j2",
+            debug=debug,
             doi=_doi
         ), code
     )
