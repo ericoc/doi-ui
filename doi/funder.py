@@ -10,7 +10,7 @@ class DOIFunder:
     name: str = ""
     preferred_label: str = ""
     alternative_label: str = ""
-    awards: list = []
+    awards: set = set()
     fund_doi: str = ""
 
     # Initialization of a DOI Funder Python object.
@@ -18,7 +18,7 @@ class DOIFunder:
         self.doi = doi
         self.fund_doi = funder.get("DOI", "")
         self.name = funder.get("name", "")
-        self.awards = funder.get("award", [])
+        self.awards = set(funder.get("award", set()))
 
         # Gather fund DOI data, by default.
         if self.fund_doi and _gather:
