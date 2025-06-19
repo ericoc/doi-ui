@@ -14,10 +14,14 @@
             #logo { height: 3rem; }
             #logo:hover { filter: opacity(0.5); transform: translate3d(0, -.3rem, 0); }
             .icon-link-hover { --bs-icon-link-transform: translate3d(0, -.3rem, 0); }
+            a { text-decoration: none; }
             a[target="_blank"]::after { margin-left: 0.25rem; content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==); filter: invert(0.5); }
+            a:visited, a:visited code, a:visited.h1 { color: var(--bs-purple); }
             #btn-back-to-top { position: fixed; bottom: 20px; right: 20px; display: none; }
             summary::marker { color: var(--bs-primary-text-emphasis); }
-            details[open] summary::marker, td.future-date { color: var(--bs-danger-text-emphasis); }
+            details[open] summary::marker { color: var(--bs-danger-text-emphasis); }
+            td.doi-date { font-style: italic; }
+            td.future-doi-date { font-weight: bold; color: var(--bs-danger-text-emphasis); }
         </style>
         <script src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
         <script src="{{ url_for('static', filename='bootstrap-5.3.6-dist/js/bootstrap.bundle.min.js') }}"></script>
@@ -51,8 +55,8 @@
 {%- with messages = get_flashed_messages(with_categories=False) %}
     {%- if messages %}
         {%- for message in messages %}
-            <div class="alert alert-danger m-3 p-3 border border-light-subtle w-75">
-                <span class="fw-bold">{{ message }}</span>
+            <div class="alert alert-danger fw-bold m-3 p-3 border border-light-subtle w-75">
+                {{ message }}
             </div>
         {%- endfor %}
     {%- endif %}
@@ -64,7 +68,7 @@
         -->
     {%- endif %}
             <div class="container-fluid py-3">
-                <a class="h1 text-primary-emphasis" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
+                <a class="h1" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url) }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url) }}</a>
                 <div class="row">
                     <div class="h2 m-1 p-1 col text-start">
                         <code id="current-doi" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
@@ -214,7 +218,7 @@
     {%- if doi.created %}
                                     <tr title="{{ doi.created|prettytime }} [{{ doi.created }}]">
                                         <td class="fw-bold">Created</td>
-                                        <td class="{%- if doi.created|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                        <td class="{% if doi.created|isfuture %}future-{%- endif %}doi-date">
                                             {{ doi.created|prettytime }}
                                         </td>
                                     </tr>
@@ -222,7 +226,7 @@
     {%- if doi.deposited %}
                                     <tr title="{{ doi.deposited|prettytime }} [{{ doi.deposited }}]">
                                         <td class="fw-bold">Deposited</td>
-                                        <td class="{%- if doi.deposited|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                        <td class="{% if doi.deposited|isfuture %}future-{%- endif %}doi-date">
                                             {{ doi.deposited|prettytime }}
                                         </td>
                                     </tr>
@@ -230,7 +234,7 @@
     {%- if doi.indexed %}
                                     <tr title="{{ doi.indexed|prettytime }} [{{ doi.indexed }}]">
                                         <td class="fw-bold">Indexed</td>
-                                        <td class="{%- if doi.indexed|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                        <td class="{% if doi.indexed|isfuture %}future-{%- endif %}doi-date">
                                             {{ doi.indexed|prettytime }}
                                         </td>
                                     </tr>
@@ -238,7 +242,7 @@
     {%- if doi.issued %}
                                     <tr title="{{ doi.issued|prettytime }} [{{ doi.issued }}]">
                                         <td class="fw-bold">Issued</td>
-                                        <td class="{%- if doi.issued|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                        <td class="{% if doi.issued|isfuture %}future-{%- endif %}doi-date">
                                             {{ doi.issued|prettytime }}
                                         </td>
                                     </tr>
@@ -246,7 +250,7 @@
     {%- if doi.published %}
                                     <tr title="[{{ doi.published }}]">
                                         <td class="fw-bold">Published</td>
-                                        <td class="{%- if doi.published|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                        <td class="{% if doi.published|isfuture %}future-{%- endif %}doi-date">
                                             {{ doi.published|prettytime }}
                                         </td>
                                     </tr>
@@ -254,7 +258,7 @@
     {%- if doi.published_online %}
                                     <tr title="{{ doi.published_online|prettytime }} [{{ doi.published_online }}]">
                                         <td class="fw-bold">Published Online</td>
-                                        <td class="{%- if doi.published_online|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                        <td class="{% if doi.published_online|isfuture %}future-{%- endif %}doi-date">
                                             {{ doi.published_online|prettytime }}
                                         </td>
                                     </tr>
@@ -262,7 +266,7 @@
     {%- if doi.published_print %}
                                     <tr title="{{ doi.published_print|prettytime }} [{{ doi.published_print }}]">
                                         <td class="fw-bold">Published Print</td>
-                                        <td class="{%- if doi.published_print|isfuture %}fw-bold future-date{%- else %}fst-italic{%- endif %}">
+                                        <td class="{% if doi.published_print|isfuture %}future-{%- endif %}doi-date">
                                             {{ doi.published_print|prettytime }}
                                         </td>
                                     </tr>
@@ -276,8 +280,9 @@
                     <div class="col m-1 p-1">
 
                         <details class="card" open>
-                            <summary class="card-header" id="funders" title="Funders">
+                            <summary class="card-header" id="funders" title="Funders: {{ doi.funders|length }}">
                                 <span class="h3">Funders</span>
+                                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.funders|length }}</code>
                                 <a class="anchor-link bi bi-link-45deg" href="#funders" aria-label="Link to this section: Funders (funders)"></a>
                             </summary>
                             <ol class="card-body list-group list-group-numbered list-group-flush">
@@ -287,32 +292,12 @@
             {{ funder }}
         -->
             {%- endif %}
-                                <li class="list-group-item list-group-item-action">
+                                <li class="card-text list-group-item">
+                                    <i>{{ funder.name }}</i>
                                     <ul class="list-group list-group-flush">
-            {%- for (fund_key, fund_val) in funder.items() %}
                                         <li class="list-group-item">
-                                            <b>{{ fund_key }}</b>
-                                            <ul class="list-group list-group-flush">
-                {%- if  fund_val.__class__.__name__ == 'list' %}
-                    {%- for i in fund_val %}
-                                                    <li class="list-group-item">
-                                                        <code>{{ i }}</code>
-                                                    </li>
-                    {%- endfor %}
-                {%- elif fund_key == "DOI" %}
-                                                    <li class="list-group-item">
-                                                        <code>{{ fund_val }}</code>
-                                                    </li>
-                {%- elif fund_key == "name" %}
-                                                    <li class="list-group-item">
-                                                        <i>{{ fund_val }}</i>
-                                                    </li>
-                {%- else %}
-                                                    <li class="list-group-item">{{ fund_val }}</li>
-                {%- endif %}
-                                            </ul>
+                                            <code>{{ funder.funding_doi }}</code>
                                         </li>
-            {%- endfor %}
                                     </ul>
                                 </li>
         {%- endfor %}

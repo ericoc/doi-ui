@@ -16,13 +16,13 @@ class DOIAuthor:
     def __init__(self, doi, author: dict = {}):
         self.doi = doi
         self.orcid = author.get("ORCID", "")
-        self.sequence = author.get("sequence", self.sequence)
-        self.given = author.get("given", self.given)
-        self.family = author.get("family", self.family)
-        self.name = f'{self.given} {self.family}'
+        self.sequence = author.get("sequence", "")
+        self.given = author.get("given", "")
+        self.family = author.get("family", "")
+        self.name = f"{self.given} {self.family}"
 
         # Check if DOI author affiliated with "University of Pennsylvania".
-        self.affiliation = author.get("affiliation", self.affiliation)
+        self.affiliation = author.get("affiliation", [])
         self.is_penn = self.is_affiliated()
 
     def is_affiliated(self, _test: str = "University of Pennsylvania") -> bool:

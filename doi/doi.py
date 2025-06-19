@@ -8,6 +8,7 @@ from re import compile as re_compile
 from requests import get
 
 from .author import DOIAuthor
+from .funder import DOIFunder
 from .parsers import parse_date
 
 
@@ -63,7 +64,6 @@ class DOI:
             if self._data:
                 self.abstract = self._data.get("abstract", self.abstract)
                 self.authors = self._data.get("author", self.authors)
-                self.funders = self._data.get("funder", self.funders)
                 self.publisher = self._data.get("publisher", self.publisher)
                 self.referenced_by_count = self._data.get(
                     "is-referenced-by-count", self.referenced_by_count
@@ -99,6 +99,14 @@ class DOI:
                 self.published_print = parse_date(
                     self._data.get("published-print")
                 )
+
+                # Set funders list attribute.
+                self.funders = []
+                funders = self._data.get("funder", self.funders)
+                if funders:
+                    for funder in funders:
+                        funder_obj = DOIFunder(doi=self, funder=funder)
+                        self.funders.append(funder_obj)
 
                 # Format JSON and delete data dictionary.
                 self.json =  json_dumps(self._data, indent=2)
