@@ -8,7 +8,8 @@ class DOIFunder:
 
     doi: str = ""
     name: str = ""
-    label: str = ""
+    preferred_label: str = ""
+    alternative_label: str = ""
     awards: list = []
     fund_doi: str = ""
 
@@ -22,10 +23,15 @@ class DOIFunder:
         if self.fund_doi and _gather:
             self._data = self.__gather(self.fund_doi)
             print(self._data)
-            self.label = self._data["prefLabel"]["Label"]["literalForm"]\
-                             ["content"] or ""
-            print(self.label)
-            del self._data
+            try:
+                self.preferred_label = self._data["prefLabel"]["Label"]\
+                                       ["literalForm"]["content"]
+                self.alternative_label = self._data["altLabel"][0]["Label"]\
+                                         ["literalForm"]["content"]
+            except KeyError:
+                pass
+            finally:
+                del self._data
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'

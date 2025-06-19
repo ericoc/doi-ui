@@ -298,6 +298,12 @@
             {%- endif %}
                                 <li class="card-text list-group-item">
                                     <i title="{{ funder.name }}">{{ funder.name }}</i>
+            {%- if funder.preferred_label and funder.preferred_label != funder.name %}
+                                    (<i>{{ funder.preferred_label }}</i>)
+            {%- endif %}
+            {%- if funder.alternative_label and funder.alternative_label != funder.name and funder.alternative_label != funder.preferred_label %}
+                                    [<i>{{ funder.alternative_label }}</i>]
+            {%- endif %}
                                     <ol class="list-group list-group-flush">
             {%- if funder.funding_doi %}
                                         <li class="list-group-item" title="{{ funder.funding_doi }}">
