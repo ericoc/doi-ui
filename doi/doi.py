@@ -59,7 +59,7 @@ class DOI:
         if _gather:
             self._data = self.__gather()
 
-            # Fill in attributes of the Python DOI object, using JSON data.
+            # Fill in attributes of the Python DOI object, via JSON data.
             if self._data:
                 self.abstract = self._data.get("abstract", self.abstract)
                 self.authors = self._data.get("author", self.authors)

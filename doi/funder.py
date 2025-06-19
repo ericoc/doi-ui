@@ -20,18 +20,37 @@ class DOIFunder:
         self.name = funder.get("name", "")
         self.awards = funder.get("award", [])
 
+        # Gather fund DOI data, by default.
         if self.fund_doi and _gather:
             self._data = self.__gather(self.fund_doi)
-            print(self._data)
-            try:
-                self.preferred_label = self._data["prefLabel"]["Label"]\
-                                       ["literalForm"]["content"]
-                self.alternative_label = self._data["altLabel"][0]["Label"]\
-                                         ["literalForm"]["content"]
-            except KeyError:
-                pass
-            finally:
-                del self._data
+
+            # Fill in attributes of the Python DOI funder object, via JSON data.
+            if self._data:
+                print(self._data)
+
+                # Set label attributes.
+                try:
+                    self.preferred_label = self._data["prefLabel"]["Label"]\
+                                           ["literalForm"]["content"]
+                    alts = self._data["altLabel"]
+
+                    # Use single alternative label.
+                    if len(alts) == 1:
+                        self.alternative_label = alts["Label"]["literalForm"]\
+                            ["content"]
+
+                    # Otherwise, use the alternative label that is longest.
+                    else:
+                        for alt_label in alts:
+                            alt = alt_label["Label"]["literalForm"]["content"]
+                            if len(alt) > len(self.alternative_label):
+                                self.alternative_label = alt
+
+                except KeyError:
+                    pass
+
+                finally:
+                    del self._data
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'
