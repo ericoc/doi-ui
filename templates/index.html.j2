@@ -276,7 +276,6 @@
                         </details>
                     </div>
 
-    {%- if doi.funders %}
                     <div class="col m-1 p-1">
 
                         <details class="card" open>
@@ -285,6 +284,7 @@
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.funders|length }}</code>
                                 <a class="anchor-link bi bi-link-45deg" href="#funders" aria-label="Link to this section: Funders (funders)"></a>
                             </summary>
+    {%- if doi.funders %}
                             <ol class="card-body list-group list-group-numbered list-group-flush">
         {%- for funder in doi.funders %}
             {%- if debug %}
@@ -302,11 +302,14 @@
                                 </li>
         {%- endfor %}
                             </ol>
+    {%- else %}
+                            <div class="card-body">
+                                <p class="card-text fst-italic fw-bold text-danger-emphasis">None</p>
+                            </div>
+    {%- endif %}
                         </details>
 
                     </div>
-    {%- endif %}
-
                 </div>
 
     {%- if doi.json %}

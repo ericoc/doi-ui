@@ -5,7 +5,7 @@ https://www.doi.org/
 from datetime import date, datetime
 from json import dumps as json_dumps
 from re import compile as re_compile
-from requests import get
+from requests import get as requests_get
 
 from .author import DOIAuthor
 from .funder import DOIFunder
@@ -25,7 +25,6 @@ class DOI:
     and others can track it too."""
 
     _data: dict = {}
-    _timeout: int = 3
 
     doi: str = ""
     abstract: str = ""
@@ -126,13 +125,13 @@ class DOI:
     # Gather (JSON) information about the DOI.
     def __gather(self) -> dict:
         try:
-            resp = get(
+            resp = requests_get(
                 headers={
                     "Accept": "application/json",
-                    "User-Agent": "DOI JSON Search / doi.ericoc.com v1.0"
+                    "User-Agent": "DOI Search / doi.ericoc.com v1.0"
                 },
                 url=f'https://doi.org/{self.doi}',
-                timeout=self._timeout
+                timeout=3
             )
             if resp.status_code != 200:
                 raise FileNotFoundError
