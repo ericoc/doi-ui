@@ -76,15 +76,28 @@ class DOI:
                 self.title = self._data.get("title", self.title)
 
                 # Set author(s).
+                self.authors = []
                 author_data = self._data.get("author")
                 if author_data:
-                    self.authors = []
                     for author in author_data:
                         author_obj = DOIAuthor(doi=self, author=author)
                         self.authors.append(author_obj)
                         if author_obj.is_penn:
                             self.is_penn = True
                 del author_data
+
+                # Set funders list attribute.
+                self.funders = []
+                funder_data = self._data.get("funder", [])
+                if funder_data:
+                    for funder in funder_data:
+                        funder_obj = DOIFunder(doi=self, funder=funder)
+                        self.funders.append(funder_obj)
+                del funder_data
+
+                # Format JSON and delete data dictionary.
+                self.json =  json_dumps(self._data, indent=2)
+                del self._data
 
                 # Set date attributes.
                 self.created = parse_date(self._data.get("created"))
@@ -98,18 +111,6 @@ class DOI:
                 self.published_print = parse_date(
                     self._data.get("published-print")
                 )
-
-                # Set funders list attribute.
-                self.funders = []
-                funders = self._data.get("funder", self.funders)
-                if funders:
-                    for funder in funders:
-                        funder_obj = DOIFunder(doi=self, funder=funder)
-                        self.funders.append(funder_obj)
-
-                # Format JSON and delete data dictionary.
-                self.json =  json_dumps(self._data, indent=2)
-                del self._data
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'
