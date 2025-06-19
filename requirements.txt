@@ -20,6 +20,6 @@ simplejson==3.20.1
 six==1.17.0
 soupsieve==2.7
 typing_extensions==4.14.0
-urllib3==2.4.0
+urllib3==2.5.0
 webencodings==0.5.1
 Werkzeug==3.1.3
