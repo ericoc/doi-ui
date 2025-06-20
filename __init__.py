@@ -1,10 +1,11 @@
 import logging
 from flask import Flask, \
     flash, render_template, make_response, request, send_from_directory
-from flask_caching import Cache
-from doi import DOI
-from filters import isfuture, prettytime
 from orcid import PublicAPI
+
+from .common import cache
+from .doi import DOI
+from .filters import isfuture, prettytime
 
 
 # Flask.
@@ -12,7 +13,7 @@ app = Flask(__name__)
 app.config.from_pyfile("config.py")
 app.add_template_filter(isfuture)
 app.add_template_filter(prettytime)
-cache = Cache(app)
+cache.init_app(app)
 debug = app.config.get("DEBUG", False)
 
 # Logging.

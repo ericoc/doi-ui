@@ -1,5 +1,7 @@
 from requests import get as requests_get
 
+from ..common import cache
+
 
 class DOIFunder:
     """Funder of a DOI includes name, DOI, awards, etc."""
@@ -14,43 +16,47 @@ class DOIFunder:
     fund_doi: str = ""
 
     # Initialization of a DOI Funder Python object.
-    def __init__(self, doi, funder: dict = {}, _gather: bool = True):
+    def __init__(self, doi, funder: dict = {}):
         self.doi = doi
         self.fund_doi = funder.get("DOI", "")
+        self.url = \
+            f"https://data.crossref.org/fundingdata/funder/{self.fund_doi}"
         self.name = funder.get("name", "")
         self.awards = set(funder.get("award", set()))
 
-        # Gather fund DOI data, by default.
-        if self.fund_doi and _gather:
-            self._data = self.__gather(self.fund_doi)
+        # Check cache for fund DOI information.
+        fund_doi_cache = cache.get(self.url)
 
-            # Fill in attributes of the Python DOI funder object, via JSON data.
-            if self._data:
-                print(self._data)
+        # Use cached fund DOI information, if it was found.
+        if fund_doi_cache:
+            resp = fund_doi_cache
 
-                # Set label attributes.
-                try:
-                    self.preferred_label = self._data["prefLabel"]["Label"]\
-                                           ["literalForm"]["content"]
-                    alts = self._data["altLabel"]
+        # Otherwise, gather and cache fund DOI data.
+        else:
+            resp = requests_get(
+                url=self.url,
+                headers={"User-Agent": "DOI Search / doi.ericoc.com v1.0"},
+                timeout=3
+            )
+            cache.set(self.url, resp)
 
-                    # Use single alternative label.
-                    if len(alts) == 1:
-                        self.alternative_label = alts["Label"]["literalForm"]\
-                            ["content"]
+        self._data = resp.json()
+        self.preferred_label = self._data["prefLabel"]["Label"]["literalForm"]\
+            ["content"]
+        alts = self._data["altLabel"]
 
-                    # Otherwise, use the alternative label that is longest.
-                    else:
-                        for alt_label in alts:
-                            alt = alt_label["Label"]["literalForm"]["content"]
-                            if len(alt) > len(self.alternative_label):
-                                self.alternative_label = alt
+        # Use single alternative label.
+        if len(alts) == 1:
+            self.alternative_label = alts["Label"]["literalForm"]["content"]
 
-                except KeyError:
-                    pass
+        # Otherwise, use the alternative label that is longest.
+        else:
+            for alt_label in alts:
+                alt = alt_label["Label"]["literalForm"]["content"]
+                if len(alt) > len(self.alternative_label):
+                    self.alternative_label = alt
 
-                finally:
-                    del self._data
+        del self._data
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'
