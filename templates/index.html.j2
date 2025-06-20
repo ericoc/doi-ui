@@ -121,7 +121,7 @@
             {%- endif %}
                                 <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
             {%- if author.orcid %}
-                                    <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid|replace('https://orcid.org/', '') }}&gt;">
+                                    <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid }}&gt;">
             {%- endif -%}
                                         {{ author.name }}
             {%- if author.orcid -%}
