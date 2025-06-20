@@ -176,10 +176,16 @@
                                     </a>
             {%- endif %}
             {%- if reference["journal-title"] %}
-                                    - <i>{{ reference["journal-title"] }}</i>
+                                    / <span class="fst-italic fw-bold">{{ reference["journal-title"] }}</span>:
             {%- endif %}
             {%- if reference["volume-title"] %}
-                                    <i>{{ reference["volume-title"] }}</i>
+                                    / <i>{{ reference["volume-title"] }}</i>
+            {%- endif %}
+            {%- if reference["series-title"] %}
+                                    / <i>{{ reference["series-title"] }}</i>
+            {%- endif %}
+            {%- if reference["article-title"] %}
+                                    <i>{{ reference["article-title"] }}</i>
             {%- endif %}
             {%- if reference["year"] %}
                                     (<span class="font-monospace">{{ reference["year"]}}</span>)
