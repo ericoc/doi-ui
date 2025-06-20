@@ -26,7 +26,6 @@ class DOIFunder:
 
             # Fill in attributes of the Python DOI funder object, via JSON data.
             if self._data:
-                print(self._data)
 
                 # Set label attributes.
                 try:
