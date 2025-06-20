@@ -101,7 +101,7 @@
         {%- endif %}
 
                     <div class="col m-1 p-1">
-                        <details class="card" open>
+                        <details class="card">
                             <summary class="card-header" id="authors" title="Authors: {{ doi.authors|length }}{%- if doi.is_penn %} (Penn){%- endif %}">
                                 <span class="h3">Authors</span>
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.authors|length }}</code>
@@ -140,18 +140,14 @@
                     </div>
     {%- endif %}
                     <div class="col m-1 p-1">
-                        <details class="card" open>
+                        <details class="card">
                             <summary class="card-header" id="references" title="References: {{ doi.references|length }} / Referenced By: {{ doi.referenced_by_count }}">
                                 <span class="h3">References</span>
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.references|length }}</code>
                                 <a class="anchor-link bi bi-link-45deg" href="#references" aria-label="Link to this section: References (references)"></a>
-                                <span class="text-end" title="Referenced by: {{ doi.referenced_by_count }}">
+                                <span class="text-end align-self-end" title="Referenced by: {{ doi.referenced_by_count }}">
                                     <i class="ms-3">Referenced by</i>:
-    {%- if doi.referenced_by_count > 0 %}
-                                    <code class="fw-bold">{{ doi.referenced_by_count }}</code>
-    {%- else %}
-                                    <span class="fw-bold fst-italic text-danger-emphasis">None</span>
-    {%- endif %}
+                                    <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.referenced_by_count }}</code>
                                 </span>
                             </summary>
     {%- if doi.references %}
@@ -182,6 +178,9 @@
             {%- if reference["journal-title"] %}
                                     - <i>{{ reference["journal-title"] }}</i>
             {%- endif %}
+            {%- if reference["volume-title"] %}
+                                    <i>{{ reference["volume-title"] }}</i>
+            {%- endif %}
             {%- if reference["year"] %}
                                     (<span class="font-monospace">{{ reference["year"]}}</span>)
             {%- endif %}
@@ -206,7 +205,7 @@
                 <div class="card-group row">
 
                     <div class="col m-1 p-1">
-                        <details class="card" open>
+                        <details class="card">
                             <summary class="card-header" id="dates" title="Dates">
                                 <span class="h3">Dates</span>
                                 <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
@@ -282,7 +281,7 @@
 
                     <div class="col m-1 p-1">
 
-                        <details class="card" open>
+                        <details class="card">
                             <summary class="card-header" id="funders" title="Funders: {{ doi.funders|length }}">
                                 <span class="h3">Funders</span>
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.funders|length }}</code>
