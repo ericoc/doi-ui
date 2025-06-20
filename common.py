@@ -1,4 +1,4 @@
-from .config import CACHE_CONFIG
+from config import CACHE_CONFIG
 from flask_caching import Cache
 
 

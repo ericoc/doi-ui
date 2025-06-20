@@ -25,7 +25,8 @@ class DOIFunder:
         self.awards = set(funder.get("award", set()))
 
         # Check cache for fund DOI information.
-        fund_doi_cache = cache.get(self.url)
+        funder_cache_key = self.fund_doi.replace("/", "_")
+        fund_doi_cache = cache.get(funder_cache_key)
 
         # Use cached fund DOI information, if it was found.
         if fund_doi_cache:
@@ -38,7 +39,7 @@ class DOIFunder:
                 headers={"User-Agent": "DOI Search / doi.ericoc.com v1.0"},
                 timeout=3
             )
-            cache.set(self.url, resp)
+            cache.set(funder_cache_key, resp)
 
         self._data = resp.json()
         self.preferred_label = self._data["prefLabel"]["Label"]["literalForm"]\
