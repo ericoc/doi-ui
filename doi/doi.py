@@ -95,6 +95,10 @@ class DOI:
                         self.funders.append(funder_obj)
                 del funder_data
 
+                # Format JSON and delete data dictionary.
+                self.json =  json_dumps(self._data, indent=2)
+                del self._data
+
                 # Set date attributes.
                 self.created = parse_date(self._data.get("created"))
                 self.deposited = parse_date(self._data.get("deposited"))
@@ -107,10 +111,6 @@ class DOI:
                 self.published_print = parse_date(
                     self._data.get("published-print")
                 )
-
-                # Format JSON and delete data dictionary.
-                self.json =  json_dumps(self._data, indent=2)
-                del self._data
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: {self.__str__()}'
