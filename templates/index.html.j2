@@ -298,7 +298,7 @@
                                 <li class="card-text list-group-item">
                                     <b title="{{ funder.name }}">{{ funder.name }}</b>
             {%- if funder.preferred_label and funder.preferred_label != funder.name %}
-                                    : <i>{{ funder.preferred_label }}</i>
+                                    / <i>{{ funder.preferred_label }}</i>
             {%- endif %}
             {%- if funder.alternative_label and funder.alternative_label != funder.name and funder.alternative_label != funder.preferred_label %}
                                     - <i>{{ funder.alternative_label }}</i>
