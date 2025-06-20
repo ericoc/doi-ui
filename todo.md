@@ -1,5 +1,10 @@
 # TODO
 
+## Caching (especially `DOIFunder`)
+
+I need to cache each "`DOIFunder`" (by URL?) to avoid unnecessary requests to
+`https://data.crossref.org`, and just generally improve caching overall.
+
 ## ORCID API Token
 
 I (_poorly_) set this up to get a search token for the ORCID Public API on every
