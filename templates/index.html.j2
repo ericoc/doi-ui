@@ -107,7 +107,7 @@
                 <a class="h1" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default(doi.url)|striptags }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default(doi.url)|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default(doi.url)|striptags }}</a>
                 <div class="row">
                     <div class="h2 m-2 p-2 col text-start" id="doi-type" title="Type: {{ doi.type }}">
-                        <i class="bi bi-{% if doi.type == "book" %}book{% elif doi.type == "journal-article" %}journal-bookmark{% endif %}"></i>
+                        <i class="bi bi-{% if doi.type == "book" %}book{% elif doi.type == "journal-article" %}journal-bookmark{% endif %} text-primary-emphasis"></i>
                             {{ doi.type }}
                     </div>
                     <div class="h2 fst-italic m-2 p-2 col text-start" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
@@ -134,14 +134,14 @@
                                 <span class="h3">
                                     <i class="bi bi-pen text-primary-emphasis"></i>
                                     Authors
+                                    <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.authors|length }}</code>
+                                    <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
                                 </span>
-                                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.authors|length }}</code>
     {%- if doi.is_penn %}
                                 <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
                                     <img class="penn-shield mx-1" src="{{ url_for('static', filename='penn-shield.png') }}" alt="University of Pennsylvania Shield Logo Icon">
                                 </span>
     {%- endif %}
-                                <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
                             </summary>
     {%- if doi.authors %}
         {%- if debug %}
@@ -180,15 +180,15 @@
                     </div>
                     <div class="col m-1 p-1">
                         <details class="card">
-                            <summary class="card-header" id="references" title="References: {{ doi.references|length }} / Referenced By: {{ doi.referenced_by_count }}">
-                                <span class="h3">
+                            <summary class="card-header" id="references" title="References: {{ doi.references|length }} / Referenced: {{ doi.referenced_by_count }}">
+                                <span class="h3 text-start">
                                     <i class="bi bi-journals text-primary-emphasis"></i>
                                     References
+                                    <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.references|length }}</code>
+                                    <a class="anchor-link bi bi-link-45deg" href="#references" aria-label="Link to this section: References (references)"></a>
                                 </span>
-                                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.references|length }}</code>
-                                <a class="anchor-link bi bi-link-45deg" href="#references" aria-label="Link to this section: References (references)"></a>
-                                <span class="text-end align-self-end" title="Referenced by: {{ doi.referenced_by_count }}">
-                                    <i class="ms-3">Referenced by</i>:
+                                <span class="h4 float-end text-end">
+                                    <i>Referenced</i>
                                     <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.referenced_by_count }}</code>
                                 </span>
                             </summary>
@@ -226,8 +226,8 @@
                                 <span class="h3">
                                     <i class="bi bi-calendar-week text-primary-emphasis"></i>
                                     Dates
+                                    <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
                                 </span>
-                                <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
                             </summary>
                             <table class="card-body card-text table table-bordered rounded table-responsive table-hover table-striped border-light-subtle container-fluid">
                                 <thead>
@@ -305,9 +305,9 @@
                                 <span class="h3">
                                     <i class="bi bi-cash-stack text-primary-emphasis"></i>
                                     Funders
+                                    <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.funders|length }}</code>
+                                    <a class="anchor-link bi bi-link-45deg" href="#funders" aria-label="Link to this section: Funders (funders)"></a>
                                 </span>
-                                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.funders|length }}</code>
-                                <a class="anchor-link bi bi-link-45deg" href="#funders" aria-label="Link to this section: Funders (funders)"></a>
                             </summary>
     {%- if doi.funders %}
         {%- if debug %}
@@ -375,8 +375,8 @@
                                     <label class="h3" for="doi-json">
                                         <i class="bi bi-filetype-raw text-primary-emphasis"></i>
                                         Raw Data
+                                        <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
                                     </label>
-                                    <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
                                 </summary>
                                 <div class="m-3">
                                     <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
