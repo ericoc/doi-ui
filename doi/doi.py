@@ -9,6 +9,7 @@ from requests import get as requests_get
 
 from .author import DOIAuthor
 from .funder import DOIFunder
+from .reference import DOIReference
 from .parsers import parse_date
 
 
@@ -70,14 +71,13 @@ class DOI:
                 self.reference_count = self._data.get(
                     "reference-count", self.reference_count
                 )
-                self.references = self._data.get("reference", self.references)
                 self.type = self._data.get("type", self.type)
                 self.url = self._data.get("URL", self.url)
                 self.title = self._data.get("title", self.title)
 
-                # Set author(s).
+                # Set authors list attribute.
                 self.authors = []
-                author_data = self._data.get("author")
+                author_data = self._data.get("author", [])
                 if author_data:
                     for author in author_data:
                         author_obj = DOIAuthor(doi=self, author=author)
@@ -94,6 +94,15 @@ class DOI:
                         funder_obj = DOIFunder(doi=self, funder=funder)
                         self.funders.append(funder_obj)
                 del funder_data
+
+                # Set references list attribute.
+                self.references = []
+                reference_data = self._data.get("reference", [])
+                if reference_data:
+                    for reference in reference_data:
+                        refer_obj = DOIReference(doi=self, reference=reference)
+                        self.references.append(refer_obj)
+                del reference_data
 
                 # Set date attributes.
                 self.created = parse_date(self._data.get("created"))
