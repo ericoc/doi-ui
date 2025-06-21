@@ -9,9 +9,13 @@ class DOIFunder:
     doi: str = ""
     name: str = ""
     preferred_label: str = ""
-    alternative_label: str = ""
+    alternative_labels: list = []
     awards: set = set()
+    broader: str = ""
     fund_doi: str = ""
+    funding_body_type: str = ""
+    funding_body_subtype: str = ""
+    region: str = ""
 
     # Initialization of a DOI Funder Python object.
     def __init__(self, doi, funder: dict = {}, _gather: bool = True):
@@ -26,24 +30,34 @@ class DOIFunder:
 
             # Fill in attributes of the Python DOI funder object, via JSON data.
             if self._data:
-
-                # Set label attributes.
                 try:
+
+                    # Set label attributes.
                     self.preferred_label = self._data["prefLabel"]["Label"]\
                                            ["literalForm"]["content"]
+                    self.alternative_labels = []
                     alts = self._data["altLabel"]
 
                     # Use single alternative label.
                     if len(alts) == 1:
-                        self.alternative_label = alts["Label"]["literalForm"]\
-                            ["content"]
+                        self.alternative_labels.append(
+                            alts["Label"]["literalForm"]["content"]
+                        )
 
                     # Otherwise, use the alternative label that is longest.
                     else:
                         for alt_label in alts:
-                            alt = alt_label["Label"]["literalForm"]["content"]
-                            if len(alt) > len(self.alternative_label):
-                                self.alternative_label = alt
+                            self.alternative_labels.append(
+                                alt_label["Label"]["literalForm"]["content"]
+                            )
+
+                    # Set funding body type/subtype.
+                    self.funding_body_type = self._data["fundingBodyType"]
+                    self.funding_body_type = self._data["fundingBodySubType"]
+
+                    # Set broader resource, and region attributes.
+                    self.broader = self._data["broad"]["resource"]
+                    self.region = self._data["region"]
 
                 except KeyError:
                     pass
@@ -74,3 +88,7 @@ class DOIFunder:
 
         except Exception as fund_doi_exc:
             raise fund_doi_exc
+
+    @property
+    def anchor(self) -> str:
+        return self.name.replace(" ", "-").replace("_", "-").replace("/", "-")

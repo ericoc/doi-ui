@@ -37,3 +37,7 @@ class DOIReference:
 
     def __str__(self) -> str:
         return str(self._data)
+
+    @property
+    def anchor(self) -> str:
+        return self.key.replace(" ", "-").replace("_", "-").replace("/", "-")
