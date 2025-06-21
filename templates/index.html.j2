@@ -118,26 +118,29 @@
     {%- if doi.abstract %}
                 <div class="row">
                     <div class="col m-1 p-1">
-                        <blockquote class="blockquote px-3" id="doi-abstract">
+                        <p class="blockquote px-3" id="doi-abstract">
                             {{ doi.abstract }}
-                        </blockquote>
+                        </p>
                     </div>
                 </div>
     {%- endif %}
                 <div class="card-group row">
-    {%- if doi.authors %}
                     <div class="col m-1 p-1">
                         <details class="card">
                             <summary class="card-header" id="authors" title="Authors: {{ doi.authors|length }}{%- if doi.is_penn %} (Penn){%- endif %}">
-                                <span class="h3">Authors</span>
+                                <span class="h3">
+                                    <i class="bi bi-pen text-primary-emphasis"></i>
+                                    Authors
+                                </span>
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.authors|length }}</code>
-        {%- if doi.is_penn %}
+    {%- if doi.is_penn %}
                                 <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
                                     <img class="penn-shield mx-1" src="{{ url_for('static', filename='penn-shield.png') }}" alt="University of Pennsylvania Shield Logo Icon">
                                 </span>
-        {%- endif %}
+    {%- endif %}
                                 <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
                             </summary>
+    {%- if doi.authors %}
         {%- if debug %}
                             <!-- {{ doi.authors }} -->
         {%- endif %}
@@ -163,13 +166,22 @@
                                 </li>
         {%- endfor %}
                             </ol>
+    {%- else %}
+                            <div class="card-body">
+                                <p class="card-text fst-italic fw-bold text-danger-emphasis">
+                                    None
+                                </p>
+                            </div>
+    {%- endif %}
                         </details>
                     </div>
-    {%- endif %}
                     <div class="col m-1 p-1">
                         <details class="card">
                             <summary class="card-header" id="references" title="References: {{ doi.references|length }} / Referenced By: {{ doi.referenced_by_count }}">
-                                <span class="h3">References</span>
+                                <span class="h3">
+                                    <i class="bi bi-sliders text-primary-emphasis"></i>
+                                    References
+                                </span>
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.references|length }}</code>
                                 <a class="anchor-link bi bi-link-45deg" href="#references" aria-label="Link to this section: References (references)"></a>
                                 <span class="text-end align-self-end" title="Referenced by: {{ doi.referenced_by_count }}">
@@ -208,7 +220,10 @@
                     <div class="col m-1 p-1">
                         <details class="card">
                             <summary class="card-header" id="dates" title="Dates">
-                                <span class="h3">Dates</span>
+                                <span class="h3">
+                                    <i class="bi bi-calendar-week text-primary-emphasis"></i>
+                                    Dates
+                                </span>
                                 <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
                             </summary>
                             <table class="card-body card-text table table-bordered rounded table-responsive table-hover table-striped border-light-subtle container-fluid">
@@ -284,7 +299,10 @@
 
                         <details class="card">
                             <summary class="card-header" id="funders" title="Funders: {{ doi.funders|length }}">
-                                <span class="h3">Funders</span>
+                                <span class="h3">
+                                    <i class="bi bi-cash-stack text-primary-emphasis"></i>
+                                    Funders
+                                </span>
                                 <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.funders|length }}</code>
                                 <a class="anchor-link bi bi-link-45deg" href="#funders" aria-label="Link to this section: Funders (funders)"></a>
                             </summary>
@@ -351,7 +369,10 @@
                         <div class="col m-1 p-1">
                             <details class="card">
                                 <summary class="card-header" data-bs-toggle="tooltip" data-bs_title="Raw Data" id="raw-data" title="Raw Data">
-                                    <label class="h3" for="doi-json">Raw Data</label>
+                                    <label class="h3" for="doi-json">
+                                        <i class="bi bi-filetype-raw text-primary-emphasis"></i>
+                                        Raw Data
+                                    </label>
                                     <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
                                 </summary>
                                 <div class="m-3">
