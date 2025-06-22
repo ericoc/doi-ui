@@ -13,8 +13,8 @@ class DOIFunder:
     awards: set = set()
     broader: str = ""
     fund_doi: str = ""
-    funding_body_type: str = ""
-    funding_body_subtype: str = ""
+    body_type: str = ""
+    body_subtype: str = ""
     region: str = ""
 
     # Initialization of a DOI Funder Python object.
@@ -52,11 +52,11 @@ class DOIFunder:
                             )
 
                     # Set funding body type/subtype.
-                    self.funding_body_type = self._data["fundingBodyType"]
-                    self.funding_body_type = self._data["fundingBodySubType"]
+                    self.body_type = self._data["fundingBodyType"]
+                    self.body_subtype = self._data["fundingBodySubType"]
 
                     # Set broader resource, and region attributes.
-                    self.broader = self._data["broad"]["resource"]
+                    self.broader = self._data["broader"]["resource"]
                     self.region = self._data["region"]
 
                 except KeyError:
