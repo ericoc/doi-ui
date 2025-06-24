@@ -1,7 +1,7 @@
 {%- macro render_funder(funder) %}
                                         <details>
                                             <summary>
-                                                <span class="h4" title="{{ funder.name }}">
+                                                <span class="h6" title="{{ funder.name }}">
                                                     {{ funder.name }}
                                                 </span>
     {%- if funder.fund_doi %}
@@ -10,9 +10,9 @@
                                                 </code>
     {%- endif %}
     {%- if funder.preferred_label and funder.preferred_label != funder.name %}
-                                                <span class="fst-italic float-end text-end">
+                                                <i class="float-end text-end">
                                                     {{ funder.preferred_label }}
-                                                </span>
+                                                </i>
     {%- endif %}
                                             </summary>
     {%- if funder.region %}
@@ -31,7 +31,7 @@
                                             </p>
     {%- endif %}
     {%- if funder.alternative_labels %}
-                                            <details open>
+                                            <details class="ms-3" open>
                                                 <summary title="Labels">
                                                     <b>Labels</b>
                                                     <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ funder.alternative_labels|length }}</code>
@@ -46,7 +46,7 @@
                                             </details>
     {%- endif %}
     {%- if funder.awards %}
-                                            <details open>
+                                            <details class="ms-3" open>
                                                 <summary title="Awards">
                                                     <b>Awards</b>
                                                     <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ funder.awards|length }}</code>
