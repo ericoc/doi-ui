@@ -26,7 +26,6 @@ class HomeView(TemplateView):
     def dispatch(self, request, *args, **kwargs):
 
         submitted_doi = request.GET.get("doi")
-
         if submitted_doi:
             if not DOI_REGEX.match(submitted_doi):
                 return HttpResponseBadRequest("Invalid DOI format!")
@@ -42,11 +41,16 @@ class HomeView(TemplateView):
                         timeout=3
                     )
                     if resp.status_code != 200:
+                        self.doi = None
                         return HttpResponseBadRequest("No such DOI was found!")
+
                     self.doi = DOI(doi=submitted_doi, _data=resp.json())
-                    cache.set(doi_cache_key, self.doi)
+
                 except Exception as doi_exc:
                     raise doi_exc
+
+                finally:
+                    cache.set(doi_cache_key, self.doi)
 
         return super().dispatch(request, *args, **kwargs)
 

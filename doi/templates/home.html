@@ -4,5 +4,287 @@
 {% block meta_title %}{% if doi %}{{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_title %}
 {% block meta_url %}{% if doi %}{% url "home" %}?doi={{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_url %}
 {% block content %}
-{% if doi %}{{ doi }}{% endif %}
+    {% if doi and doi != "" and doi != None %}
+        {% if DEBUG is True %}
+    <!-- {{ doi }} -->
+        {% endif %}
+    <div class="container-fluid py-3">
+        <a class="h1" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default:doi.url|striptags }}</a>
+        <div class="row">
+            <div class="h2 m-2 p-2 col text-start" id="doi-type" title="Type: {{ doi.type }}">
+                <i class="bi bi-{% if doi.type == "book" %}book{% elif doi.type == "journal-article" %}journal-bookmark{% endif %} text-primary-emphasis"></i>
+                {{ doi.type }}
+            </div>
+            <div class="h2 fst-italic m-2 p-2 col text-start" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
+                {{ doi.publisher }}
+            </div>
+            <div class="h2 m-2 p-2 col text-end">
+                <code id="current-doi" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
+                <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-doi" title="Copy '{{ doi.doi }}' to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy &lt;span class='fw-bold font-monospace'&gt;{{ doi.doi }}&lt;/span&gt; to clipboard"></a>
+            </div>
+        </div>
+        {% if doi.abstract %}
+        <div class="row">
+            <div class="col m-1 p-1">
+                <p class="blockquote px-3" id="doi-abstract">
+                    {{ doi.abstract }}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+        <div class="card-group row">
+            <div class="col m-1 p-1">
+                <details class="card">
+                    <summary class="card-header" id="authors" title="Authors: {{ doi.authors|length }}{% if doi.is_penn %} (Penn){% endif %}">
+                        <span class="h3">
+                            <i class="bi bi-pen text-primary-emphasis"></i>
+                            Authors
+                            <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.authors|length }}</code>
+                            <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
+                        </span>
+        {% if doi.is_penn %}
+                        <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
+                            <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="University of Pennsylvania Shield Logo Icon">
+                        </span>
+        {% endif %}
+                    </summary>
+        {% if doi.authors %}
+            {% if DEBUG is True %}
+                    <!-- {{ doi.authors }} -->
+            {% endif %}
+                    <ol class="list-group list-group-numbered list-group-flush">
+            {% for author in doi.authors %}
+                {% if debug %}
+                        <!-- {{ author }} -->
+                {% endif %}
+                        <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
+                {% if author.orcid %}
+                            <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid }}&gt;">
+                {% endif %}
+                                {{ author.name }}
+                {% if author.orcid %}
+                            </a>
+                {% endif %}
+                            (<i>{{ author.sequence }}</i>)
+                {% if author.is_penn %}
+                            <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
+                                <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="University of Pennsylvania">
+                            </span>
+                {% endif %}
+                        </li>
+            {% endfor %}
+                    </ol>
+        {% else %}
+                    <div class="card-body">
+                        <p class="card-text fst-italic fw-bold text-danger-emphasis">
+                            None
+                        </p>
+                    </div>
+        {% endif %}
+                </details>
+            </div>
+            <div class="col m-1 p-1">
+                <details class="card">
+                    <summary class="card-header" id="references" title="References: {{ doi.references|length }} / Referenced: {{ doi.referenced_by_count }}">
+                        <span class="h3 text-start">
+                            <i class="bi bi-journals text-primary-emphasis"></i>
+                            References
+                            <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.references|length }}</code>
+                            <a class="anchor-link bi bi-link-45deg" href="#references" aria-label="Link to this section: References (references)"></a>
+                        </span>
+                        <span class="h4 float-end text-end">
+                            <i>Referenced</i>
+                            <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.referenced_by_count }}</code>
+                        </span>
+                    </summary>
+        {% if doi.references %}
+            {% if DEBUG is True %}
+                    <!-- {{ doi.references }} -->
+            {% endif %}
+                    <ol class="list-group list-group-numbered list-group-flush">
+            {% for reference in doi.references %}
+                {% if debug %}
+                        <!-- {{ reference }} -->
+                {% endif %}
+                        <li class="list-group-item list-group-item-action">
+
+
+
+
+
+                {% if reference.referenced_doi %}
+                            <a href="{% url 'home' %}?doi={{ reference.referenced_doi }}#search" title="{{ reference.anchor }}" id="reference-{{ reference.anchor }}">
+                {% endif %}
+                {% if reference.unstructured %}
+                                {{ reference.unstructured }}
+                    {% if reference.referenced_doi %}
+                                (<code>{{ reference.referenced_doi }}</code>)
+                    {% endif %}
+                {% elif reference.referenced_doi %}
+                                <code>{{ reference.referenced_doi }}</code>
+                {% else %}
+                                <code>{{ reference }}</code>
+                {% endif %}
+                {% if reference.referenced_doi %}
+                            </a>
+                {% endif %}
+                {% if reference.journal_title %}
+                            / <i><b>{{ reference.journal_title }}</b></i>
+                {% endif %}
+                {% if reference.volume_title %}
+                            / <i>{{ reference.volume_title }}</i>
+                {% endif %}
+                {% if reference.series_title %}
+                            / <i>{{ reference.series_title }}</i>
+                {% endif %}
+                {% if reference.article_title %}
+                            <i>{{ reference.article_title }}</i>
+                {% endif %}
+                {% if reference.author %}
+                            by <i>{{ reference.author }}</i>
+                {% endif %}
+                {% if reference.year %}
+                            (<span class="font-monospace">{{ reference.year}}</span>)
+                {% endif %}
+                        </li>
+            {% endfor %}
+                    </ol>
+        {% else %}
+                    <div class="card-body">
+                        <p class="card-text fst-italic fw-bold text-danger-emphasis">None</p>
+                    </div>
+        {% endif %}
+                </details>
+            </div>
+
+        </div>
+
+        <div class="card-group row">
+
+            <div class="col m-1 p-1">
+                <details class="card">
+                    <summary class="card-header" id="dates" title="Dates">
+                                <span class="h3">
+                                    <i class="bi bi-calendar-week text-primary-emphasis"></i>
+                                    Dates
+                                    <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
+                                </span>
+                    </summary>
+                    <table class="card-body card-text table table-bordered rounded table-responsive table-hover table-striped border-light-subtle container-fluid">
+                        <thead>
+                        <tr>
+                            <th class="bg-dark-subtle">Type</th>
+                            <th class="bg-dark-subtle">When</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if doi.created %}
+                        <tr title="{{ doi.created|timesince }} [{{ doi.created }}]">
+                            <td class="fw-bold">Created</td>
+                            <td>{{ doi.created|timesince }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if doi.deposited %}
+                        <tr title="{{ doi.deposited|timesince }} [{{ doi.deposited }}]">
+                            <td class="fw-bold">Deposited</td>
+                            <td>{{ doi.deposited|timesince }}</td>
+                        </tr>
+                        {% endif %}
+        {% if doi.indexed %}
+                        <tr title="{{ doi.indexed|timesince }} [{{ doi.indexed }}]">
+                            <td class="fw-bold">Indexed</td>
+                            <td>{{ doi.indexed|timesince }}</td>
+                        </tr>
+        {% endif %}
+                        {% if doi.issued %}
+                        <tr title="{{ doi.issued|timesince }} [{{ doi.issued }}]">
+                            <td class="fw-bold">Issued</td>
+                            <td>{{ doi.issued|timesince }}</td>
+                        </tr>
+        {% endif %}
+        {% if doi.published %}
+                        <tr title="{{ doi.published|timesince }} [{{ doi.published }}]">
+                            <td class="fw-bold">Published</td>
+                            <td>{{ doi.published|timesince }}</td>
+                        </tr>
+        {% endif %}
+        {% if doi.published_online %}
+                        <tr title="{{ doi.published_online|timesince }} [{{ doi.published_online }}]">
+                            <td class="fw-bold">Published Online</td>
+                            <td>{{ doi.published_online|timesince }}</td>
+                        </tr>
+        {% endif %}
+        {% if doi.published_print %}
+                        <tr title="{{ doi.published_print|timesince }} [{{ doi.published_print }}]">
+                            <td class="fw-bold">Published Print</td>
+                            <td>{{ doi.published_print|timesince }}</td>
+                        </tr>
+        {% endif %}
+                        </tbody>
+                    </table>
+                </details>
+            </div>
+
+            <div class="col m-1 p-1">
+
+                <details class="card">
+                    <summary class="card-header" id="funders" title="Funders: {{ doi.funders|length }}">
+                        <span class="h3">
+                            <i class="bi bi-cash-stack text-primary-emphasis"></i>
+                            Funders
+                            <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ doi.funders|length }}</code>
+                            <a class="anchor-link bi bi-link-45deg" href="#funders" aria-label="Link to this section: Funders (funders)"></a>
+                        </span>
+                    </summary>
+        {% if doi.funders %}
+            {% if DEBUG is True %}
+                    <!-- {{ doi.funders }} -->
+            {% endif %}
+                    <ol class="list-group list-group-numbered">
+            {% for funder in doi.funders %}
+                {% if debug is True %}
+                        <!-- {{ funder }} -->
+                {% endif %}
+                        <li class="list-group-item list-group-item-action">
+                            {{ funder }}
+                        </li>
+            {% endfor %}
+                    </ol>
+        {% else %}
+                    <div class="card-body">
+                        <p class="card-text fst-italic fw-bold text-danger-emphasis">
+                            None
+                        </p>
+                    </div>
+        {% endif %}
+                </details>
+
+            </div>
+        </div>
+
+        {% if doi.json %}
+        <div class="row py-3">
+            <div class="col m-1 p-1">
+                <details class="card">
+                    <summary class="card-header" data-bs-toggle="tooltip" data-bs-title="Raw Data" id="raw-data" title="Raw Data">
+                        <label class="h3" for="doi-json">
+                            <i class="bi bi-filetype-raw text-primary-emphasis"></i>
+                            Raw Data
+                            <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
+                        </label>
+                    </summary>
+                    <div class="m-3">
+                        <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
+                    </div>
+                </details>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">
+        <i class="bi bi-arrow-up-circle-fill"></i>
+    </button>
+
+    {% endif %}
 {% endblock content %}

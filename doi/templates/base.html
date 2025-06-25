@@ -1,4 +1,5 @@
 {% load static %}
+{% if DEBUG is True %}<!-- {% debug %} -->{% endif %}
 <!DOCTYPE html>
 <html class="dark" data-bs-theme="dark" lang="en">
     <head>
@@ -63,7 +64,7 @@
                 </form>
             </nav>
         </header>
-        <main class="text-center" id="content">
+        <main class="container-fluid" id="content">
 {% block content %}
 {% endblock content %}
             <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">
