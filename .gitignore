@@ -3,7 +3,6 @@ venv/
 !.gitignore
 cache/
 config.py
+settings.py
 __pycache__
 *.pyc
-static/bootstrap*
-static/jquery*js

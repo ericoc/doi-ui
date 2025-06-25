@@ -1,4 +1,6 @@
-"""DOI reference always has a key, but may or may not include much more."""
+"""
+DOI reference always has a key, but may or may not include much more.
+"""
 class DOIReference:
     _data: dict = {}
     key: str = ""

@@ -13,7 +13,7 @@ class DOIAuthor:
     is_penn: bool = False
 
     # Initialization of a DOI author.
-    def __init__(self, doi, author: dict = {}):
+    def __init__(self, doi: str, author: dict):
         self.doi = doi
         self.orcid = author.get("ORCID", "")
         self.sequence = author.get("sequence", "")
@@ -21,15 +21,15 @@ class DOIAuthor:
         self.family = author.get("family", "")
         self.name = f"{self.given} {self.family}"
 
-        # Check if DOI author affiliated with "University of Pennsylvania".
+        # Check if DOI author is affiliated with "University of Pennsylvania".
         self.affiliation = author.get("affiliation", [])
-        self.is_penn = self.is_affiliated()
+        self.is_penn = self.is_affiliated("University of Pennsylvania")
 
-    def is_affiliated(self, _test: str = "University of Pennsylvania") -> bool:
+    def is_affiliated(self, _test: str = "") -> bool:
         # Check for test string in each affiliation name.
         if _test:
-            for _affiliation in self.affiliation:
-                if _test in _affiliation.get("name", ""):
+            for affiliation in self.affiliation:
+                if _test in affiliation.get("name", ""):
                     return True
         return False
 

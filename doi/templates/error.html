@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Sorry!{% endblock title %}
+{% block meta_title %}Error{% endblock meta_title %}
+{% block content %}
+    <p class="alert alert-danger">
+        {{ message }}
+    </p>
+    <p class="fst-italic alert alert-info">
+        You may want to return to the <a href="{% url "home" %}" title="home page">home page</a>.
+    </p>
+{% endblock content %}

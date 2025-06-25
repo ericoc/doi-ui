@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{% if doi %}{{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock title %}
+{% block meta_title %}{% if doi %}{{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_title %}
+{% block meta_url %}{% if doi %}{% url "home" %}?doi={{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_url %}
+{% block content %}
+{% if doi %}{{ doi }}{% endif %}
+{% endblock content %}
