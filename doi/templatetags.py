@@ -15,7 +15,6 @@ def human_time(when: (date, datetime)) -> str:
 
     current = None
     ret = str(when)
-    fmt = "%A, %B %d, %Y"
 
     if isinstance(when, date):
         current = date.today()
