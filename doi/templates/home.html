@@ -179,45 +179,45 @@
                         </thead>
                         <tbody>
                         {% if doi.created %}
-                        <tr title="{{ doi.created|timesince }} [{{ doi.created }}]">
+                        <tr title="{{ doi.created|human_time }} ({{ doi.created }})">
                             <td class="fw-bold">Created</td>
-                            <td>{{ doi.created|timesince }}</td>
+                            <td>{{ doi.created|human_time }} (<i>{{ doi.created }}</i>)</td>
                         </tr>
                         {% endif %}
                         {% if doi.deposited %}
-                        <tr title="{{ doi.deposited|timesince }} [{{ doi.deposited }}]">
+                        <tr title="{{ doi.deposited|human_time }} ({{ doi.deposited }})">
                             <td class="fw-bold">Deposited</td>
-                            <td>{{ doi.deposited|timesince }}</td>
+                            <td>{{ doi.deposited|human_time }} (<i>{{ doi.deposited }}</i>)</td>
                         </tr>
                         {% endif %}
         {% if doi.indexed %}
-                        <tr title="{{ doi.indexed|timesince }} [{{ doi.indexed }}]">
+                        <tr title="{{ doi.indexed|human_time }} ({{ doi.indexed }})">
                             <td class="fw-bold">Indexed</td>
-                            <td>{{ doi.indexed|timesince }}</td>
+                            <td>{{ doi.indexed|human_time }} (<i>{{ doi.indexed }}</i>)</td>
                         </tr>
         {% endif %}
                         {% if doi.issued %}
-                        <tr title="{{ doi.issued|timesince }} [{{ doi.issued }}]">
+                        <tr title="{{ doi.issued|human_time }} ({{ doi.issued }})">
                             <td class="fw-bold">Issued</td>
-                            <td>{{ doi.issued|timesince }}</td>
+                            <td>{{ doi.issued|human_time }} (<i>{{ doi.issued }}</i>)</td>
                         </tr>
         {% endif %}
         {% if doi.published %}
-                        <tr title="{{ doi.published|timesince }} [{{ doi.published }}]">
+                        <tr title="{{ doi.published|human_time }} ({{ doi.published }})">
                             <td class="fw-bold">Published</td>
-                            <td>{{ doi.published|timesince }}</td>
+                            <td>{{ doi.published|human_time }} (<i>{{ doi.published }}</i>)</td>
                         </tr>
         {% endif %}
         {% if doi.published_online %}
-                        <tr title="{{ doi.published_online|timesince }} [{{ doi.published_online }}]">
+                        <tr title="{{ doi.published_online|human_time }} ({{ doi.published_online }})">
                             <td class="fw-bold">Published Online</td>
-                            <td>{{ doi.published_online|timesince }}</td>
+                            <td>{{ doi.published_online|human_time }} (<i>{{ doi.published_online}}</i>)</td>
                         </tr>
         {% endif %}
         {% if doi.published_print %}
-                        <tr title="{{ doi.published_print|timesince }} [{{ doi.published_print }}]">
+                        <tr title="{{ doi.published_print|human_time }} ({{ doi.published_print }})">
                             <td class="fw-bold">Published Print</td>
-                            <td>{{ doi.published_print|timesince }}</td>
+                            <td>{{ doi.published_print|human_time }} (<i>{{ doi.published_print }}</i>)</td>
                         </tr>
         {% endif %}
                         </tbody>
