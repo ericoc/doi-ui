@@ -178,48 +178,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% if doi.created %}
-                        <tr title="{{ doi.created|human_time }} ({{ doi.created }})">
-                            <td class="fw-bold">Created</td>
-                            <td>{{ doi.created|human_time }} (<i>{{ doi.created }}</i>)</td>
-                        </tr>
-                        {% endif %}
-                        {% if doi.deposited %}
-                        <tr title="{{ doi.deposited|human_time }} ({{ doi.deposited }})">
-                            <td class="fw-bold">Deposited</td>
-                            <td>{{ doi.deposited|human_time }} (<i>{{ doi.deposited }}</i>)</td>
-                        </tr>
-                        {% endif %}
-        {% if doi.indexed %}
-                        <tr title="{{ doi.indexed|human_time }} ({{ doi.indexed }})">
-                            <td class="fw-bold">Indexed</td>
-                            <td>{{ doi.indexed|human_time }} (<i>{{ doi.indexed }}</i>)</td>
-                        </tr>
-        {% endif %}
-                        {% if doi.issued %}
-                        <tr title="{{ doi.issued|human_time }} ({{ doi.issued }})">
-                            <td class="fw-bold">Issued</td>
-                            <td>{{ doi.issued|human_time }} (<i>{{ doi.issued }}</i>)</td>
-                        </tr>
-        {% endif %}
-        {% if doi.published %}
-                        <tr title="{{ doi.published|human_time }} ({{ doi.published }})">
-                            <td class="fw-bold">Published</td>
-                            <td>{{ doi.published|human_time }} (<i>{{ doi.published }}</i>)</td>
-                        </tr>
-        {% endif %}
-        {% if doi.published_online %}
-                        <tr title="{{ doi.published_online|human_time }} ({{ doi.published_online }})">
-                            <td class="fw-bold">Published Online</td>
-                            <td>{{ doi.published_online|human_time }} (<i>{{ doi.published_online}}</i>)</td>
-                        </tr>
-        {% endif %}
-        {% if doi.published_print %}
-                        <tr title="{{ doi.published_print|human_time }} ({{ doi.published_print }})">
-                            <td class="fw-bold">Published Print</td>
-                            <td>{{ doi.published_print|human_time }} (<i>{{ doi.published_print }}</i>)</td>
-                        </tr>
-        {% endif %}
+                        {% include "date.html" with date_name="Created" doi_date=doi.created %}
+                        {% include "date.html" with date_name="Deposited" doi_date=doi.deposited %}
+                        {% include "date.html" with date_name="Indexed" doi_date=doi.indexed %}
+                        {% include "date.html" with date_name="Issued" doi_date=doi.issued %}
+                        {% include "date.html" with date_name="Published" doi_date=doi.published %}
+                        {% include "date.html" with date_name="Published Online" doi_date=doi.published_online %}
+                        {% include "date.html" with date_name="Published Print" doi_date=doi.published_print %}
                         </tbody>
                     </table>
                 </details>

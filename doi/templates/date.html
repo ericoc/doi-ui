@@ -1,0 +1,6 @@
+{% if doi_date %}
+    <tr title="{{ doi_date|human_time }} ({{ doi_date }})">
+        <td class="fw-bold">{{ date_name }}</td>
+        <td>{{ doi_date|human_time }} (<i>{{ doi_date }}</i>)</td>
+    </tr>
+{% endif %}
