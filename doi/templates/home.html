@@ -5,9 +5,7 @@
 {% block meta_url %}{% if doi %}{% url "home" %}?doi={{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_url %}
 {% block content %}
     {% if doi and doi != "" and doi != None %}
-        {% if DEBUG is True %}
-    <!-- {{ doi }} -->
-        {% endif %}
+        {% if DEBUG is True %}<!-- {{ doi }} -->{% endif %}
     <div class="container-fluid py-3">
         <a class="h1" href="{{ doi.url }}" id="title" target="_blank" data-bs-title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default:doi.url|striptags }}</a>
         <div class="row">
@@ -49,14 +47,10 @@
         {% endif %}
                     </summary>
         {% if doi.authors %}
-            {% if DEBUG is True %}
-                    <!-- {{ doi.authors }} -->
-            {% endif %}
+            {% if DEBUG is True %}<!-- {{ doi.authors }} -->{% endif %}
                     <ol class="list-group list-group-numbered list-group-flush">
             {% for author in doi.authors %}
-                {% if debug %}
-                        <!-- {{ author }} -->
-                {% endif %}
+                {% if DEBUG is true %}<!-- {{ author }} -->{% endif %}
                         <li class="list-group-item list-group-item-action{% if author.sequence == "first" %} fw-bold{% endif %}">
                 {% if author.orcid %}
                             <a href="{{ author.orcid }}" target="_blank" title="{{ author.name }} &lt;{{ author.orcid }}&gt;">
@@ -98,55 +92,11 @@
                         </span>
                     </summary>
         {% if doi.references %}
-            {% if DEBUG is True %}
-                    <!-- {{ doi.references }} -->
-            {% endif %}
+            {% if DEBUG is True %}<!-- {{ doi.references }} -->{% endif %}
                     <ol class="list-group list-group-numbered list-group-flush">
             {% for reference in doi.references %}
-                {% if debug %}
-                        <!-- {{ reference }} -->
-                {% endif %}
-                        <li class="list-group-item list-group-item-action">
-
-
-
-
-
-                {% if reference.referenced_doi %}
-                            <a href="{% url 'home' %}?doi={{ reference.referenced_doi }}#search" title="{{ reference.anchor }}" id="reference-{{ reference.anchor }}">
-                {% endif %}
-                {% if reference.unstructured %}
-                                {{ reference.unstructured }}
-                    {% if reference.referenced_doi %}
-                                (<code>{{ reference.referenced_doi }}</code>)
-                    {% endif %}
-                {% elif reference.referenced_doi %}
-                                <code>{{ reference.referenced_doi }}</code>
-                {% else %}
-                                <code>{{ reference }}</code>
-                {% endif %}
-                {% if reference.referenced_doi %}
-                            </a>
-                {% endif %}
-                {% if reference.journal_title %}
-                            / <i><b>{{ reference.journal_title }}</b></i>
-                {% endif %}
-                {% if reference.volume_title %}
-                            / <i>{{ reference.volume_title }}</i>
-                {% endif %}
-                {% if reference.series_title %}
-                            / <i>{{ reference.series_title }}</i>
-                {% endif %}
-                {% if reference.article_title %}
-                            <i>{{ reference.article_title }}</i>
-                {% endif %}
-                {% if reference.author %}
-                            by <i>{{ reference.author }}</i>
-                {% endif %}
-                {% if reference.year %}
-                            (<span class="font-monospace">{{ reference.year}}</span>)
-                {% endif %}
-                        </li>
+                    {% if DEBUG is True %}<!-- {{ reference }} -->{% endif %}
+                    {% include "reference.html" with reference=reference %}
             {% endfor %}
                     </ol>
         {% else %}
@@ -202,14 +152,10 @@
                         </span>
                     </summary>
         {% if doi.funders %}
-            {% if DEBUG is True %}
-                    <!-- {{ doi.funders }} -->
-            {% endif %}
+            {% if DEBUG is True %}<!-- {{ doi.funders }} -->{% endif %}
                     <ol class="list-group list-group-numbered">
             {% for funder in doi.funders %}
-                {% if debug is True %}
-                        <!-- {{ funder }} -->
-                {% endif %}
+                {% if DEBUG is True %}<!-- {{ funder }} -->{% endif %}
                         <li class="list-group-item list-group-item-action">
                             {{ funder }}
                         </li>
