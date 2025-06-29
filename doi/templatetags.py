@@ -3,6 +3,7 @@ from zoneinfo import ZoneInfo
 
 from django.conf import settings
 from django.template.defaulttags import register
+from django.utils.safestring import mark_safe
 from django.utils.timesince import timesince, timeuntil
 
 
@@ -27,6 +28,6 @@ def human_time(when: (date, datetime)) -> str:
         if when <= current:
             ret += f"{timesince(when)} ago"
         else:
-            ret += f"in {timeuntil(when)}"
+            ret += f'<b class="text-danger-emphasis">in {timeuntil(when)}</b>'
 
-    return ret
+    return mark_safe(ret)

@@ -15,14 +15,14 @@ def parse_date(item: (dict, None)) -> (date, datetime, None):
 
         date_parts = item.get("date-parts")
         if date_parts:
-            p_date = date_parts[0]
+            p_date = date_parts[0] or None
             if p_date:
-                if len(p_date) == 3:
-                    return date(p_date[0], p_date[1], p_date[2])
-                elif len(p_date) == 2:
-                    return date(p_date[0], p_date[1], 1)
-                elif len(p_date) == 1 and p_date[0] is not None:
-                    return date(p_date[0], 1, 1)
+                year = p_date[0] or None
+                month = p_date[1] or 1
+                day = p_date[2] or 1
+                if year:
+                    return date(year, month, day)
+
         return item
 
     return None
