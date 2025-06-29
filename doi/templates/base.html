@@ -58,7 +58,7 @@
                     </p>
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg" maxlength="255" name="doi" id="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}" aria-label="DOI">
-                        <button class="btn btn-outline-primary btn-lg" type="submit" tabindex="1" value="Search" title="S"earch>Search</button>
+                        <button class="btn btn-outline-primary btn-lg" type="submit" tabindex="1" value="Search" title="Search">Search</button>
                         <button class="btn btn-outline-secondary btn-lg" id="reset" type="reset" title="Reset">Reset</button>
                     </div>
                 </form>
@@ -77,7 +77,8 @@
             </small>
         </footer>
         <script>
-            // Copy-paste button for the DOI.
+{% if doi %}
+            // Button to copy-paste current DOI.
             async function copyDOI(text) {
                 try {
                     await navigator.clipboard.writeText(text)
@@ -93,8 +94,8 @@
                     tooltipInner[0].innerHTML = "Copied!"
                 }
             })
-
-            // Button to jump to top of page.
+{% endif %}
+            // Button to scroll to top of page.
             let goUpButton = document.getElementById("btn-back-to-top")
             window.onscroll = function () { scrollFunction() }
             function scrollFunction() {
@@ -105,14 +106,14 @@
                 }
             }
             goUpButton.addEventListener("click", backToTop)
-            function backToTop() {
+            async function backToTop() {
                 let tooltipInner = document.getElementsByClassName("tooltip-inner")
                 tooltipInner[0].innerHTML = "Scrolling!"
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
             }
 
-            // Enable Bootstrap tooltips and popovers.
+            // Bootstrap tooltips and popovers.
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
