@@ -1,6 +1,4 @@
-"""
-Funder of a DOI includes name, DOI, awards, etc.
-"""
+"""Funder of a DOI includes name, DOI, awards, etc."""
 class DOIFunder:
 
     doi: str = ""
@@ -16,6 +14,7 @@ class DOIFunder:
 
     # Initialization of a DOI funder.
     def __init__(self, doi: str, funder: dict):
+
         self.doi = doi
         self.fund_doi = funder.get("DOI", "")
         self.name = funder.get("name", "")
@@ -58,12 +57,12 @@ class DOIFunder:
             del funder
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}: {self.__str__()}'
+        return f"{self.__class__.__name__}: {self.__str__()}"
 
     def __str__(self) -> str:
         return (
-            f'{self.name} ({self.fund_doi}) [{len(self.awards)} awards(s)]'
-            f' @ {self.doi}'
+            f"{self.name} ({self.fund_doi}) [{len(self.awards)} awards(s)]"
+            f" @ {self.doi}"
         )
 
     @property
