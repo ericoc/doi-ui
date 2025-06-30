@@ -1,0 +1,36 @@
+<li class="list-group-item list-group-item-action">
+    {% if reference.referenced_doi %}
+        <a href="{% url 'home' %}?doi={{ reference.referenced_doi }}#search" title="{{ reference.anchor }}" id="reference-{{ reference.anchor }}">
+    {% endif %}
+    {% if reference.unstructured %}
+        {{ reference.unstructured }}
+        {% if reference.referenced_doi %}
+            (<code>{{ reference.referenced_doi }}</code>)
+        {% endif %}
+    {% elif reference.referenced_doi %}
+        <code>{{ reference.referenced_doi }}</code>
+    {% else %}
+        <code>{{ reference }}</code>
+    {% endif %}
+    {% if reference.referenced_doi %}
+        </a>
+    {% endif %}
+    {% if reference.journal_title %}
+        / <i><b>{{ reference.journal_title }}</b></i>
+    {% endif %}
+    {% if reference.volume_title %}
+        / <i>{{ reference.volume_title }}</i>
+    {% endif %}
+    {% if reference.series_title %}
+        / <i>{{ reference.series_title }}</i>
+    {% endif %}
+    {% if reference.article_title %}
+        <i>{{ reference.article_title }}</i>
+    {% endif %}
+    {% if reference.author %}
+        by <i>{{ reference.author }}</i>
+    {% endif %}
+    {% if reference.year %}
+        (<span class="font-monospace">{{ reference.year}}</span>)
+    {% endif %}
+</li>

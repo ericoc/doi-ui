@@ -1,6 +1,4 @@
-"""
-Author of a DOI can include specific affiliation(s), ORCID, etc.
-"""
+"""Author of a DOI can include specific affiliation(s), ORCID, etc."""
 class DOIAuthor:
 
     doi: str = ""
@@ -34,14 +32,18 @@ class DOIAuthor:
         return False
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}: {self.__str__()}'
+        return f"{self.__class__.__name__}: {self.__str__()}"
 
     def __str__(self) -> str:
-        msg = f'{self.name}'
+        msg = f"{self.name}"
         if self.orcid:
-            msg += f' <{self.orcid}>'
+            msg += f" <{self.orcid}>"
         if self.is_penn:
-            msg += ' [Penn]'
-        msg += f' ({self.sequence})'
-        msg += f' @ {self.doi}'
+            msg += " [Penn]"
+        msg += f" ({self.sequence})"
+        msg += f" @ {self.doi}"
         return msg
+
+    @property
+    def orcid_id(self) -> str:
+        return self.orcid.replace("https://orcid.org/", "")
