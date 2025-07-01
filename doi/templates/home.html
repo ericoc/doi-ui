@@ -153,19 +153,15 @@
                     </summary>
         {% if doi.funders %}
             {% if DEBUG is True %}<!-- {{ doi.funders }} -->{% endif %}
-                    <ol class="list-group list-group-numbered">
-            {% for funder in doi.funders %}
-                {% if DEBUG is True %}<!-- {{ funder }} -->{% endif %}
-                        <li class="list-group-item list-group-item-action">
-                            {{ funder }}
-                        </li>
-            {% endfor %}
+                    <ol class="list-group list-group-numbered list-group-flush">
+                {% for funder in doi.funders %}
+                    {% if DEBUG is True %}<!-- {{ funder }} -->{% endif %}
+                    {% include "funder.html" with funder=funder %}
+                {% endfor %}
                     </ol>
         {% else %}
                     <div class="card-body">
-                        <p class="card-text fst-italic fw-bold text-danger-emphasis">
-                            None
-                        </p>
+                        <p class="card-text fst-italic fw-bold text-danger-emphasis">None</p>
                     </div>
         {% endif %}
                 </details>

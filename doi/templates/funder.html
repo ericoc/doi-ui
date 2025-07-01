@@ -1,36 +1,64 @@
 <li class="list-group-item list-group-item-action">
-    {% if reference.referenced_doi %}
-        <a href="{% url 'home' %}?doi={{ reference.referenced_doi }}#search" title="{{ reference.anchor }}" id="reference-{{ reference.anchor }}">
+    <details>
+        <summary>
+            <span class="h6" title="{{ funder.name }}">
+                {{ funder.name }}
+            </span>
+{% if funder.fund_doi %}
+            <code class="float-end text-end" title="{{ funder.fund_doi }}">
+                <a href="https://data.crossref.org/fundingdata/funder/{{ funder.fund_doi }}" target="_blank">{{ funder.fund_doi }}</a>
+            </code>
+{% endif %}
+{% if funder.preferred_label and funder.preferred_label != funder.name %}
+            <i class="float-end text-end">
+                {{ funder.preferred_label }}
+            </i>
+{% endif %}
+        </summary>
+{% if funder.region %}
+        <p class="Region: {{ funder.region }}">
+            <b>Region</b>: <i>{{ funder.region }}</i>
+        </p>
+{% endif %}
+{% if funder.body_type or funder.body_subtype %}
+        <p class="small fst-italic">
+    {% if funder.body_type %}
+            {{ funder.body_type }}
     {% endif %}
-    {% if reference.unstructured %}
-        {{ reference.unstructured }}
-        {% if reference.referenced_doi %}
-            (<code>{{ reference.referenced_doi }}</code>)
-        {% endif %}
-    {% elif reference.referenced_doi %}
-        <code>{{ reference.referenced_doi }}</code>
-    {% else %}
-        <code>{{ reference }}</code>
+    {% if funder.body_subtype %}
+            ({{ funder.body_subtype }})
     {% endif %}
-    {% if reference.referenced_doi %}
-        </a>
-    {% endif %}
-    {% if reference.journal_title %}
-        / <i><b>{{ reference.journal_title }}</b></i>
-    {% endif %}
-    {% if reference.volume_title %}
-        / <i>{{ reference.volume_title }}</i>
-    {% endif %}
-    {% if reference.series_title %}
-        / <i>{{ reference.series_title }}</i>
-    {% endif %}
-    {% if reference.article_title %}
-        <i>{{ reference.article_title }}</i>
-    {% endif %}
-    {% if reference.author %}
-        by <i>{{ reference.author }}</i>
-    {% endif %}
-    {% if reference.year %}
-        (<span class="font-monospace">{{ reference.year}}</span>)
-    {% endif %}
+        </p>
+{% endif %}
+{% if funder.alternative_labels %}
+        <details class="ms-3" open>
+            <summary title="Labels">
+                <b>Labels</b>
+                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ funder.alternative_labels|length }}</code>
+            </summary>
+            <ol class="list-group list-group-numbered">
+    {% for alternative_label in funder.alternative_labels %}
+                <li class="fst-italic list-group-item list-group-item-action">
+                    {{ alternative_label }}
+                </li>
+    {% endfor %}
+            </ol>
+        </details>
+{% endif %}
+{% if funder.awards %}
+        <details class="ms-3" open>
+            <summary title="Awards">
+                <b>Awards</b>
+                <code class="badge bg-dark rounded-pill border border-secondary text-danger-emphasis">{{ funder.awards|length }}</code>
+            </summary>
+            <ol class="list-group list-group-numbered">
+    {% for award in funder.awards %}
+                <li class="font-monospace list-group-item list-group-item-action" id="award-{{ award }}" title="{{ award }}">
+                    {{ award }}
+                </li>
+    {% endfor %}
+            </ol>
+        </details>
+    </details>
+{% endif %}
 </li>

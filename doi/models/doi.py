@@ -1,7 +1,3 @@
-"""
-Digital Object Identifier (DOI).
-https://www.doi.org/
-"""
 from datetime import date, datetime
 from json import dumps as json_dumps
 
@@ -11,16 +7,8 @@ from .reference import DOIReference
 from ..parsers import parse_date
 
 
+"""Digital Object Identifier (DOI)."""
 class DOI:
-    """
-    A Digital Object Identifier (DOI) is a digital identifier of an object,
-    any object - physical, digital, or abstract. DOIs solve a common problem:
-    keeping track of things. Things can be matter, material, content, or
-    activities. Designed to be used by humans as well as machines,
-    DOIs identify objects persistently. They allow things to be uniquely
-    identified and accessed reliably. You know what you have, where it is,
-    and others can track it too.
-    """
 
     doi: str = ""
     _data: dict = {}
@@ -64,13 +52,9 @@ class DOI:
         # Set authors list attribute.
         self.authors = []
         for author in _data.get("author", []):
+            print(author)
             author_obj = DOIAuthor(doi=self.doi, author=author)
-            # TODO: Check ORCID.
             self.authors.append(author_obj)
-
-            # If any author is Penn-related, DOI is Penn-related.
-            if author_obj.is_penn:
-                self.is_penn = True
 
         # Set funders list.
         self.funders = []
@@ -98,12 +82,12 @@ class DOI:
         del _data
 
     def __repr__(self) -> str:
-        return f'{self.__class__.__name__}: {self.__str__()}'
+        return f"{self.__class__.__name__}: {self.__str__()}"
 
     def __str__(self) -> str:
         msg = self.doi
         if self.title:
-            msg += f'. {self.title}'
+            msg += f". {self.title}"
         if self.is_penn:
-            msg += ' [Penn]'
+            msg += " [Penn]"
         return msg
