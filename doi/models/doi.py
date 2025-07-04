@@ -59,13 +59,12 @@ class DOI:
             msg += " [Penn]"
         return msg
 
-    def gather(self, doi: str = ""):
+    def gather(self, doi: str):
 
         # Gather information from doi.org about the submitted DOI.
         resp = requests.get(
-            headers=settings.REQUEST_HEADERS,
-            url=f"https://doi.org/{doi}",
-            timeout=settings.REQUEST_TIMEOUT
+            headers=settings.REQUEST_HEADERS, timeout=settings.REQUEST_TIMEOUT,
+            url=f"https://doi.org/{doi}"
         )
 
         # Raise exception for non-existent DOI.

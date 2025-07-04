@@ -1,3 +1,7 @@
+import requests
+from django.conf import settings
+
+
 """Funder of a DOI includes name, DOI, awards, etc."""
 class DOIFunder:
 
@@ -16,18 +20,42 @@ class DOIFunder:
     def __init__(self, doi: str, funder: dict):
 
         self.doi = doi
-        self.fund_doi = funder.get("DOI", "")
-        self.name = funder.get("name", "")
-        self.awards = set(funder.get("award", set()))
+        self.fund_doi = funder.get("DOI", self.fund_doi)
+        self.name = funder.get("name", self.name)
+        self.awards = set(funder.get("award", self.awards))
 
-        # Fill in attributes of the Python DOI funder object, via JSON data.
+        # Gather information about the funder DOI.
+        if self.fund_doi:
+            self.gather()
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}: {self.__str__()}"
+
+    def __str__(self) -> str:
+        return (
+            f"{self.name} ({self.fund_doi}) [{len(self.awards)} awards(s)]"
+            f" @ {self.doi}"
+        )
+
+    @property
+    def anchor(self) -> str:
+        return self.name.replace(" ", "-").replace("_", "-").replace("/", "-")
+
+    def gather(self):
+
+        # Gather information from crossref.org about the funding DOI.
+        resp = requests.get(
+            headers=settings.REQUEST_HEADERS, timeout=settings.REQUEST_TIMEOUT,
+            url=f'https://data.crossref.org/fundingdata/funder/{self.fund_doi}'
+        )
+
+        # Fill in funder object attributes using JSON response.
+        data = resp.json()
         try:
-
-            # Set label attributes.
-            self.preferred_label = funder["prefLabel"]["Label"]\
-                                   ["literalForm"]["content"]
+            self.preferred_label = data["prefLabel"]["Label"]["literalForm"]\
+            ["content"]
             self.alternative_labels = []
-            alts = funder["altLabel"]
+            alts = data["altLabel"]
 
             # Use single alternative label.
             if len(alts) == 1:
@@ -43,28 +71,15 @@ class DOIFunder:
                     )
 
             # Set funding body type/subtype.
-            self.body_type = funder["fundingBodyType"]
-            self.body_subtype = funder["fundingBodySubType"]
+            self.body_type = data["fundingBodyType"]
+            self.body_subtype = data["fundingBodySubType"]
 
             # Set broader resource, and region attributes.
-            self.broader = funder["broader"]["resource"]
-            self.region = funder["region"]
+            self.broader = data["broader"]["resource"]
+            self.region = data["region"]
 
         except KeyError:
             pass
 
         finally:
-            del funder
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}: {self.__str__()}"
-
-    def __str__(self) -> str:
-        return (
-            f"{self.name} ({self.fund_doi}) [{len(self.awards)} awards(s)]"
-            f" @ {self.doi}"
-        )
-
-    @property
-    def anchor(self) -> str:
-        return self.name.replace(" ", "-").replace("_", "-").replace("/", "-")
+            del data
