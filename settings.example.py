@@ -110,3 +110,9 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # ORCID API settings.
 ORCID_API_CLIENT_ID = "APP-xxx"
 ORCID_API_CLIENT_SECRET = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+REQUEST_HEADERS = {
+    "Accept": "application/json",
+    "User-Agent": f"DOI Search / {WEBSITE_TITLE} v1.0"
+}
+REQUEST_TIMEOUT = 5

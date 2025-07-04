@@ -46,4 +46,6 @@ class DOIAuthor:
 
     @property
     def orcid_id(self) -> str:
-        return self.orcid.replace("https://orcid.org/", "")
+        if self.orcid:
+            return self.orcid.replace("https://orcid.org/", "")
+        return self.orcid
