@@ -3,6 +3,7 @@ from pathlib import Path
 
 
 # Website title.
+UNIVERSITY = "University of Pennsylvania"
 WEBSITE_TITLE = 'DOI'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

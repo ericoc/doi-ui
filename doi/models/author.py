@@ -1,3 +1,6 @@
+from django.conf import settings
+
+
 """Author of a DOI can include specific affiliation(s), ORCID, etc."""
 class DOIAuthor:
 
@@ -11,7 +14,7 @@ class DOIAuthor:
     is_penn: bool = False
 
     # Initialization of a DOI author.
-    def __init__(self, doi: str, author: dict):
+    def __init__(self, doi: str, author: dict, orcid_api: tuple = ()):
         self.doi = doi
         self.orcid = author.get("ORCID", "")
         self.sequence = author.get("sequence", "")
@@ -19,16 +22,36 @@ class DOIAuthor:
         self.family = author.get("family", "")
         self.name = f"{self.given} {self.family}"
 
-        # Check if DOI author is affiliated with "University of Pennsylvania".
+        # Check if DOI author is affiliated with the university.
         self.affiliation = author.get("affiliation", [])
-        self.is_penn = self.is_affiliated("University of Pennsylvania")
+        self.is_penn = self.is_affiliated(settings.UNIVERSITY, orcid_api)
 
-    def is_affiliated(self, _test: str = "") -> bool:
+    def is_affiliated(self, _test: str = "", orcid_api: tuple = ()):
         # Check for test string in each affiliation name.
         if _test:
             for affiliation in self.affiliation:
                 if _test in affiliation.get("name", ""):
                     return True
+        # Check for employment via ORCID.
+        if self.orcid_id and orcid_api:
+            return self.check_orcid(orcid_api)
+        return False
+
+    def check_orcid(self, orcid_api):
+        # Check each ORCID employment for the university string.
+        employments = orcid_api[0].read_record_public(
+            orcid_id=self.orcid_id,
+            request_type="employments",
+            token=orcid_api[1]
+        )
+        if employments:
+            employ_summary = employments.get("employment-summary")
+            for employment in employ_summary:
+                employ_org = employment.get("organization")
+                if employ_org:
+                    org_name = employ_org.get("name")
+                    if org_name == settings.UNIVERSITY:
+                        return True
         return False
 
     def __repr__(self) -> str:

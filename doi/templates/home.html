@@ -41,8 +41,8 @@
                             <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
                         </span>
         {% if doi.is_penn %}
-                        <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
-                            <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="University of Pennsylvania Shield Logo Icon">
+                        <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="{{ UNIVERSITY }}">
+                            <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="{{ UNIVERSITY }}">
                         </span>
         {% endif %}
                     </summary>
@@ -61,8 +61,8 @@
                 {% endif %}
                             (<i>{{ author.sequence }}</i>)
                 {% if author.is_penn %}
-                            <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="University of Pennsylvania">
-                                <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="University of Pennsylvania">
+                            <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="{{ UNIVERSITY }}">
+                                <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="{{ UNIVERSITY }}">
                             </span>
                 {% endif %}
                         </li>

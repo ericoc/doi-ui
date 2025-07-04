@@ -3,6 +3,7 @@ import requests
 from datetime import date, datetime
 from django.conf import settings
 from json import dumps as json_dumps
+from orcid import PublicAPI
 
 from .author import DOIAuthor
 from .funder import DOIFunder
@@ -10,10 +11,20 @@ from .reference import DOIReference
 from ..parsers import parse_date
 
 
-DOI_REGEX = re.compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
+def get_orcid_api():
+
+
+    # Connect/authenticate to ORCID.org API, and get a search token.
+    orcid_api = PublicAPI(
+        institution_key=settings.ORCID_API_CLIENT_ID,
+        institution_secret=settings.ORCID_API_CLIENT_SECRET
+    )
+    orcid_token = orcid_api.get_search_token_from_orcid()
+    return orcid_api, orcid_token
 
 
 """Digital Object Identifier (DOI)."""
+DOI_REGEX = re.compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
 class DOI:
 
     doi: str = ""
@@ -25,7 +36,6 @@ class DOI:
     funders: list = []
     indexed: (date, datetime, None) = None
     issued: (date, datetime, None) = None
-    is_penn: bool = False
     json: str = ""
     published: (date, None) = None
     published_online: (date, None) = None
@@ -55,7 +65,7 @@ class DOI:
         msg = self.doi
         if self.title:
             msg += f". {self.title}"
-        if self.is_penn:
+        if self.is_penn():
             msg += " [Penn]"
         return msg
 
@@ -86,14 +96,18 @@ class DOI:
         self.title = data.get("title", self.title)
 
         # Set authors list attribute.
+        orcid_conn = PublicAPI(
+            institution_key=settings.ORCID_API_CLIENT_ID,
+            institution_secret=settings.ORCID_API_CLIENT_SECRET
+        )
+        orcid_token = orcid_conn.get_search_token_from_orcid()
+        orcid_api = (orcid_conn, orcid_token)
         self.authors = []
         for author in data.get("author", []):
-            author_obj = DOIAuthor(doi=self.doi, author=author)
+            author_obj = DOIAuthor(
+                doi=self.doi, author=author, orcid_api=orcid_api
+            )
             self.authors.append(author_obj)
-
-            # If any author is Penn-affiliated, so is the DOI.
-            if author_obj.is_penn:
-                self.is_penn = True
 
         # Set funders list.
         self.funders = []
@@ -119,3 +133,10 @@ class DOI:
         # Format JSON and delete data dictionary.
         self.json =  json_dumps(data, indent=2)
         del data
+
+    def is_penn(self) -> bool:
+        # If any author is Penn-affiliated, so is the DOI.
+        for author in self.authors:
+            if author.is_penn:
+                return True
+        return False
