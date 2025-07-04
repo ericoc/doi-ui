@@ -1,7 +1,8 @@
 # DOI-UI
 ## https://doi.ericoc.com/
 
-Experimenting with searching/displaying Digital Object Identifiers (DOIs).
+Experimenting with searching/displaying Digital Object Identifiers (DOIs),
+using Python `requests` and `orcid`.
 
 ### DOI?
 > A DOI is a digital identifier of an object, any object -
@@ -13,5 +14,3 @@ identified and accessed reliably. You know what you have, where it is,
 and others can track it too.
 
 -- https://www.doi.org/
-
-#### Requires Python `requests`!
