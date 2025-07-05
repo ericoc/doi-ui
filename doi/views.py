@@ -1,5 +1,6 @@
+from django.core.exceptions import BadRequest
+from django.http.response import Http404
 from django.views.generic.base import TemplateView
-from django.http.response import HttpResponseBadRequest, HttpResponseNotFound
 
 from .models import DOI
 
@@ -26,10 +27,10 @@ class HomeView(TemplateView):
                 self.doi = DOI(submitted_doi=submitted_doi)
 
             except FileNotFoundError:
-                return HttpResponseNotFound("No such DOI was found!")
+                raise Http404("No such DOI was found!")
 
             except ValueError:
-                return HttpResponseBadRequest("Invalid DOI format!")
+                raise BadRequest("Invalid DOI format!")
 
             except Exception as doi_exc:
                 raise doi_exc

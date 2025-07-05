@@ -24,7 +24,7 @@
         {% if doi.abstract %}
         <div class="row">
             <div class="col m-1 p-1">
-                <p class="blockquote px-3" id="doi-abstract">
+                <p class="small" id="doi-abstract">
                     {{ doi.abstract }}
                 </p>
             </div>
@@ -173,7 +173,7 @@
         <div class="row py-3">
             <div class="col m-1 p-1">
                 <details class="card">
-                    <summary class="card-header" data-bs-toggle="tooltip" data-bs-title="Raw Data" id="raw-data" title="Raw Data">
+                    <summary class="card-header" id="raw-data" title="Raw Data">
                         <label class="h3" for="doi-json">
                             <i class="bi bi-filetype-raw text-primary-emphasis"></i>
                             Raw Data
@@ -188,10 +188,6 @@
         </div>
         {% endif %}
     </div>
-
-    <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">
-        <i class="bi bi-arrow-up-circle-fill"></i>
-    </button>
 
     {% endif %}
 {% endblock content %}
