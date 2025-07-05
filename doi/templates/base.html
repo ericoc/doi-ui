@@ -1,12 +1,11 @@
 {% load static %}
-{% if DEBUG is True %}<!-- {% debug %} -->{% endif %}
 <!DOCTYPE html>
 <html class="dark" data-bs-theme="dark" lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
         <meta name="author" content="Eric O'Callaghan">
-        <meta charset="UTF-8">
         <meta name="description" content="{{ WEBSITE_TITLE }}">
+        <meta name="format-detection" content="telephone=no">
         <meta name="keywords" content="Eric O'Callaghan, Eric OCallaghan, EricOC, Eric OC">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta property="og:type" content="website">
@@ -40,6 +39,7 @@
     </head>
 
     <body>
+{% if DEBUG is True %}<!-- {% debug %} -->{% endif %}
         <header class="container-fluid header">
             <nav class="navbar navbar-expand-lg">
                 <a class="border border-secondary rounded me-3 p-3 icon-link icon-link-hover navbar-brand text-decoration-none" href="{% url 'home' %}" aria-label="DOI-UI" title="DOI-UI"><img alt="DOI-UI" id="logo" src="{% static 'icon.png' %}"></a>
@@ -54,7 +54,7 @@
                         <i>e.g.</i>
                         <a href="{% url 'home' %}?doi=10.1116/6.0004361#search" title="DOI: 10.1116/6.0004361"><code>10.1116/6.0004361</code></a>,&ensp;
                         <a href="{% url 'home' %}?doi=10.1038/s41586-024-08156-8#search" title="DOI: 10.1038/s41586-024-08156-8"><code>10.1038/s41586-024-08156-8</code></a>,&ensp;
-                        <a href="{% url 'home' %}?doi=10.1021/acsenergylett.4c03337#search" title="DOI: 10.1021/acsenergylett.4c03337"><code>10.1021/acsenergylett.4c03337</code></a>
+                        <a href="{% url 'home' %}?doi=10.1021/acsenergylett.4c03337#search" title="DOI: 10.1021/acsenergylett.4c03337"><code>10.1021/acsenergylett.4c03337</code></a>.
                     </p>
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg" maxlength="255" name="doi" id="doi" tabindex="0" {% if doi %}value="{{ doi.doi }}{% else %}placeholder="10.1038/s41586-024-08156-8{% endif %}" aria-label="DOI">
@@ -71,7 +71,7 @@
                 <i class="bi bi-arrow-up-circle-fill"></i>
             </button>
         </main>
-        <footer class="container-fluid py-1">
+        <footer class="container-fluid">
             <small class="text-start">
                 <a class="icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> <code>https://github.com/ericoc/doi-ui</code></a>
             </small>

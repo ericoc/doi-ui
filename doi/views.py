@@ -18,23 +18,17 @@ class HomeView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
 
-        # Handle submitted DOI from URL.
+        # Create object using DOI submitted via URL.
         submitted_doi = request.GET.get("doi")
         if submitted_doi:
-
-            # Create DOI object.
             try:
                 self.doi = DOI(submitted_doi=submitted_doi)
-
-            except FileNotFoundError:
-                raise Http404("No such DOI was found!")
-
-            except ValueError:
-                raise BadRequest("Invalid DOI format!")
-
+            except FileNotFoundError as not_found_err:
+                raise Http404(not_found_err)
+            except ValueError as val_err:
+                raise BadRequest(val_err)
             except Exception as doi_exc:
-                raise doi_exc
-
+                raise RuntimeError("Unknown error.") from doi_exc
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
