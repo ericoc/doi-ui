@@ -26,7 +26,10 @@ class DOIFunder:
 
         # Gather information about the funder DOI.
         if self.fund_doi:
-            self.gather()
+            try:
+                self.gather()
+            except Exception:
+                pass
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
@@ -43,15 +46,19 @@ class DOIFunder:
 
     def gather(self):
 
-        # Gather information from crossref.org about the funding DOI.
-        resp = requests.get(
-            headers=settings.REQUEST_HEADERS, timeout=settings.REQUEST_TIMEOUT,
-            url=f'https://data.crossref.org/fundingdata/funder/{self.fund_doi}'
-        )
-
-        # Fill in funder object attributes using JSON response.
-        data = resp.json()
         try:
+
+            # Gather information from crossref.org about the funding DOI.
+            resp = requests.get(
+                headers=settings.REQUEST_HEADERS,
+                timeout=settings.REQUEST_TIMEOUT,
+                url=f'https://data.crossref.org/fundingdata/funder/{self.fund_doi}'
+            )
+            resp.raise_for_status()
+
+            # Fill in funder object attributes using JSON response.
+            data = resp.json()
+
             self.preferred_label = data["prefLabel"]["Label"]["literalForm"]\
             ["content"]
             self.alternative_labels = []
@@ -80,6 +87,3 @@ class DOIFunder:
 
         except KeyError:
             pass
-
-        finally:
-            del data
