@@ -10,11 +10,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta property="og:type" content="website">
         <meta property="og:site_name" content="{{ WEBSITE_TITLE }}">
-        <meta property="og:title" content="{{ WEBSITE_TITLE }}: {% block meta_title %}Search{% endblock meta_title %}">
+        <meta property="og:title" content="{{ WEBSITE_TITLE }}: {% block meta_title %}{{ title|default:"Home" }}{% endblock meta_title %}">
         <meta property="og:description" content="{{ WEBSITE_TITLE }}">
         <meta property="og:image" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% block meta_image %}{% static 'icon.png' %}{% endblock meta_image %}">
         <meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% block meta_url %}{% endblock meta_url %}">
-        <title>{{ WEBSITE_TITLE }}: {% block title %}Search{% endblock title %}</title>
+        <title>{{ WEBSITE_TITLE }}: {% block title %}{{ title|default:"Home" }}{% endblock title %}</title>
         <script src="{% static 'jquery-3.7.1.min.js' %}"></script>
         <link href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static 'favicon.ico' %}" rel="shortcut icon" type="image/vnd.microsoft.icon">
         <link href="{% static 'bootstrap-5.3.7-dist/css/bootstrap.css' %}" rel="stylesheet">

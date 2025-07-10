@@ -26,9 +26,9 @@ class HomeView(TemplateView):
         submitted_doi = request.GET.get("doi", "")
         if submitted_doi:
             if not DOI_REGEX.match(submitted_doi):
-                self.message = "Sorry, but that is an invalid DOI format."
+                self.message = "Sorry, but that is not a valid DOI."
                 self.status_code = HTTPStatus.BAD_REQUEST
-                self.title = "Unknown error"
+                self.title = "Invalid DOI"
                 self.template_name = "error.html"
 
             else:
@@ -40,7 +40,8 @@ class HomeView(TemplateView):
                     self.template_name = "home.html"
 
                 except FileNotFoundError:
-                    self.message = "Sorry, but that DOI could not be found."
+                    self.message = f"Sorry, but that DOI ({submitted_doi})" \
+                        " could not be found."
                     self.status_code = HTTPStatus.NOT_FOUND
                     self.title = "Not Found"
                     self.template_name = "error.html"
