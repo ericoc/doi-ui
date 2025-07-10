@@ -1,6 +1,6 @@
+/static/
 __pycache__/
 cache/
-static/
 venv/
 .*
 !.gitignore
