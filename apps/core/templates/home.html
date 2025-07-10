@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}{% if doi %}{{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock title %}
 {% block meta_title %}{% if doi %}{{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_title %}
-{% block meta_url %}{% if doi %}{% url "home" %}?doi={{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_url %}
+{% block meta_url %}{% if doi %}{% url "doi" %}?doi={{ doi }}{% else %}{{ block.super }}{% endif %}{% endblock meta_url %}
 {% block content %}
     {% if doi and doi != "" and doi != None %}
         {% if DEBUG is True %}<!-- {{ doi }} -->{% endif %}
@@ -41,8 +41,8 @@
                             <a class="anchor-link bi bi-link-45deg" href="#authors" aria-label="Link to this section: Authors (authors)"></a>
                         </span>
         {% if doi.is_penn %}
-                        <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="{{ UNIVERSITY }}">
-                            <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="{{ UNIVERSITY }}">
+                        <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail text-end float-end" title="{{ UNIVERSITY }}">
+                            <img class="penn-shield mx-1 text-end" src="{% static 'penn-shield.png' %}" alt="{{ UNIVERSITY }}">
                         </span>
         {% endif %}
                     </summary>
@@ -61,8 +61,8 @@
                 {% endif %}
                             (<i>{{ author.sequence }}</i>)
                 {% if author.is_penn %}
-                            <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail" title="{{ UNIVERSITY }}">
-                                <img class="penn-shield mx-1" src="{% static 'penn-shield.png' %}" alt="{{ UNIVERSITY }}">
+                            <span class="bg-secondary border border-danger badge rounded-pill rounded img-thumbnail text-end float-end" title="{{ UNIVERSITY }}">
+                                <img class="penn-shield mx-1 text-end" src="{% static 'penn-shield.png' %}" alt="{{ UNIVERSITY }}">
                             </span>
                 {% endif %}
                         </li>

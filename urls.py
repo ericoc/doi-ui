@@ -1,76 +1,78 @@
+from http import HTTPStatus
+
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls.conf import path
 
-from views import HomeView
+from apps.core.views import ErrorView
+from apps.doi.views import DOIView
 
 
-# Include main application URL(s).
-urlpatterns = [
-    path("", HomeView.as_view(), name="home"),
-]
+# Include DOI application URL.
+urlpatterns = [path("", DOIView.as_view(), name="doi"),]
 
 # Error handlers.
-handler400 = HomeView.as_view(
+handler400 = ErrorView.as_view(
     message="Sorry, but the request was not understood.",
-    status_code=400,
+    status_code=HTTPStatus.BAD_REQUEST,
     title="Bad Request"
 )
-handler401 = HomeView.as_view(
+handler401 = ErrorView.as_view(
     message="Sorry, but you do not have authorization to access this page.",
-    status_code=401,
+    status_code=HTTPStatus.UNAUTHORIZED,
     title="Not Authorized"
 )
-handler403 = HomeView.as_view(
+handler403 = ErrorView.as_view(
     message="Sorry, but access to this page is forbidden.",
-    status_code=403,
+    status_code=HTTPStatus.FORBIDDEN,
     title="Forbidden"
 )
-handler404 = HomeView.as_view(
+handler404 = ErrorView.as_view(
     message="Sorry, but no such page could be found.",
-    status_code=404,
+    status_code=HTTPStatus.NOT_FOUND,
     title="Page Not Found"
 )
-handler405 = HomeView.as_view(
+handler405 = ErrorView.as_view(
     message="Sorry, but the requested method is not supported.",
-    status_code=405,
+    status_code=HTTPStatus.METHOD_NOT_ALLOWED,
     title="Method Not Allowed"
 )
-handler410 = HomeView.as_view(
+handler410 = ErrorView.as_view(
     message="Sorry, but that resource is gone.",
-    status_code=410,
+    status_code=HTTPStatus.GONE,
     title="Gone"
 )
-handler420 = HomeView.as_view(
+handler420 = ErrorView.as_view(
     message="Sorry, but please enhance your calm.",
     status_code=420,
     title="Enhance Your Calm"
 )
-handler500 = HomeView.as_view(
+handler500 = ErrorView.as_view(
     message="Sorry, but unfortunately, there was an internal server error.",
-    status_code=500,
+    status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
     title="Sorry!"
 )
-handler501 = HomeView.as_view(
+handler501 = ErrorView.as_view(
     message="Sorry, but the server cannot handle your request.",
-    status_code=501,
+    status_code=HTTPStatus.NOT_IMPLEMENTED,
     title="Not Implemented"
 )
 
 # Host static and media content in debug mode.
 if settings.DEBUG:
-    urlpatterns += static(
-        prefix=settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-    )
-    urlpatterns += static(
-        prefix=settings.STATIC_URL, document_root=settings.STATIC_ROOT
-    )
-    urlpatterns += path("400/", handler400, name="400"),
-    urlpatterns += path("401/", handler401, name="401"),
-    urlpatterns += path("403/", handler403, name="403"),
-    urlpatterns += path("404/", handler404, name="404"),
-    urlpatterns += path("405/", handler405, name="405"),
-    urlpatterns += path("410/", handler410, name="410"),
+    urlpatterns += \
+        static(prefix=settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += \
+        static(prefix=settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += path(f"{HTTPStatus.BAD_REQUEST}/", handler400, name="400"),
+    urlpatterns += path(f"{HTTPStatus.UNAUTHORIZED}/", handler401, name="401"),
+    urlpatterns += path(f"{HTTPStatus.FORBIDDEN}/", handler403, name="403"),
+    urlpatterns += path(f"{HTTPStatus.NOT_FOUND}/", handler404, name="404"),
+    urlpatterns += \
+        path(f"{HTTPStatus.METHOD_NOT_ALLOWED}/", handler405, name="405"),
+    urlpatterns += path(f"{HTTPStatus.GONE}/", handler410, name="410"),
     urlpatterns += path("420/", handler420, name="420"),
-    urlpatterns += path("500/", handler500, name="500"),
-    urlpatterns += path("501/", handler501, name="501"),
+    urlpatterns += \
+        path(f"{HTTPStatus.INTERNAL_SERVER_ERROR}/", handler500, name="500"),
+    urlpatterns += \
+        path(f"{HTTPStatus.NOT_IMPLEMENTED}/", handler501, name="501"),

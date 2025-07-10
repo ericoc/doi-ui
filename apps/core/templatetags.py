@@ -11,6 +11,7 @@ from django.utils.timesince import timesince, timeuntil
 def get_dict_item(dictionary, key):
     return dictionary.get(key)
 
+
 @register.filter(name="human_time")
 def human_time(when: (date, datetime)) -> str:
 

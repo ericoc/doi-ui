@@ -1,8 +1,8 @@
+__pycache__/
+cache/
+static/
 venv/
 .*
 !.gitignore
-cache/
-config.py
-settings.py
-__pycache__
 *.pyc
+settings.py

@@ -1,6 +1,6 @@
 <li class="list-group-item list-group-item-action">
     {% if reference.referenced_doi %}
-        <a href="{% url 'home' %}?doi={{ reference.referenced_doi }}#search" title="{{ reference.anchor }}" id="reference-{{ reference.anchor }}">
+        <a href="{% url 'doi' %}?doi={{ reference.referenced_doi }}#search" title="{{ reference.anchor }}" id="reference-{{ reference.anchor }}">
     {% endif %}
     {% if reference.unstructured %}
         {{ reference.unstructured }}

@@ -2,30 +2,24 @@ from http import HTTPStatus
 from re import compile as re_compile
 
 from django.conf import settings
-from django.views.generic.base import TemplateView
+from apps.core.views import BaseView
 
-from models import DOI
+from apps.doi.models import DOI
 
 
 # Compile regular expression pattern (of a DOI) from Django settings.
 DOI_REGEX = re_compile(settings.DOI_PATTERN)
 
 
-class HomeView(TemplateView):
-    """Main page searches DOI."""
-
-    doi: DOI = ""
-    http_method_names: tuple = ("get",)
-    message: str = ""
-    status_code: int = HTTPStatus.OK
-    title: str = "Home"
-    template_name: str = "home.html"
+class DOIView(BaseView):
+    """Search DOI."""
+    title = "Search"
 
     def setup(self, request, *args, **kwargs):
 
-        submitted_doi = request.GET.get("doi", "")
-        if submitted_doi:
-            if not DOI_REGEX.match(submitted_doi):
+        doi = request.GET.get("doi", "")
+        if doi:
+            if not DOI_REGEX.match(doi):
                 self.message = "Sorry, but that is not a valid DOI."
                 self.status_code = HTTPStatus.BAD_REQUEST
                 self.title = "Invalid DOI"
@@ -34,14 +28,13 @@ class HomeView(TemplateView):
             else:
 
                 try:
-                    self.doi = DOI(submitted_doi=submitted_doi)
+                    self.doi = DOI(_doi=doi)
                     self.status_code = HTTPStatus.OK
                     self.title = self.doi.doi
                     self.template_name = "home.html"
 
                 except FileNotFoundError:
-                    self.message = f"Sorry, but that DOI ({submitted_doi})" \
-                        " could not be found."
+                    self.message = f"Sorry, DOI ({doi}) could not be found."
                     self.status_code = HTTPStatus.NOT_FOUND
                     self.title = "Not Found"
                     self.template_name = "error.html"
@@ -53,14 +46,3 @@ class HomeView(TemplateView):
                     self.template_name = "error.html"
 
         return super().setup(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["doi"] = self.doi
-        context["title"] = self.title
-        context["message"] = self.message
-        return context
-
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
-        return self.render_to_response(context, status=self.status_code)

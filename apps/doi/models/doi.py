@@ -37,9 +37,9 @@ class DOI:
     url: str = ""
 
     # Initialization of a Digital Object Identifier (DOI) Python object.
-    def __init__(self, submitted_doi: str = ""):
+    def __init__(self, _doi: str = ""):
         # Gather information about the DOI.
-        self.gather(doi=submitted_doi)
+        self.gather(doi=_doi)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
