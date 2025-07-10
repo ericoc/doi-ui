@@ -56,7 +56,6 @@ EMAIL_HOST_USER = EMAIL_HOST_PASSWORD = None
 # Application definition.
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
-    'doi'
 ]
 
 MIDDLEWARE = [
@@ -73,16 +72,16 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
-                'doi.contexts.website_title',
+                'contexts.website_title',
             ],
             'libraries': {
-                'doi': 'doi.templatetags'
+                'doi': 'templatetags'
             },
         },
     },
@@ -108,12 +107,15 @@ MEDIA_ROOT = Path(BASE_DIR, MEDIA_URL)
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
+# DOI regular expression pattern.
+DOI_PATTERN = r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)'
+
 # ORCID API settings.
 ORCID_API_CLIENT_ID = "APP-xxx"
 ORCID_API_CLIENT_SECRET = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
 REQUEST_HEADERS = {
     "Accept": "application/json",
-    "User-Agent": f"DOI Search / {WEBSITE_TITLE} v1.0"
+    "User-Agent": f"DOI Search / {WEBSITE_TITLE} v2.0"
 }
 REQUEST_TIMEOUT = 5

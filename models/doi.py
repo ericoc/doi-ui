@@ -8,19 +8,7 @@ from orcid import PublicAPI
 from .author import DOIAuthor
 from .funder import DOIFunder
 from .reference import DOIReference
-from ..parsers import parse_date
-
-
-def get_orcid_api():
-
-
-    # Connect/authenticate to ORCID.org API, and get a search token.
-    orcid_api = PublicAPI(
-        institution_key=settings.ORCID_API_CLIENT_ID,
-        institution_secret=settings.ORCID_API_CLIENT_SECRET
-    )
-    orcid_token = orcid_api.get_search_token_from_orcid()
-    return orcid_api, orcid_token
+from parsers import parse_date
 
 
 """Digital Object Identifier (DOI)."""
@@ -50,11 +38,6 @@ class DOI:
 
     # Initialization of a Digital Object Identifier (DOI) Python object.
     def __init__(self, submitted_doi: str = ""):
-
-        # Raise exception for invalid format DOI.
-        if not DOI_REGEX.match(submitted_doi):
-            raise ValueError("Invalid DOI format!")
-
         # Gather information about the DOI.
         self.gather(doi=submitted_doi)
 
@@ -132,7 +115,6 @@ class DOI:
 
         # Format JSON and delete data dictionary.
         self.json =  json_dumps(data, indent=2)
-        del data
 
     def is_penn(self) -> bool:
         # If any author is Penn-affiliated, so is the DOI.

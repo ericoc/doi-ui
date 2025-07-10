@@ -16,7 +16,7 @@ and others can track it too.
 -- https://www.doi.org/
 
 ### BibTeX
-> The word ,,BibTeX'' stands for a tool and a file format which are used to
+> The word "BibTeX" stands for a tool and a file format which are used to
 describe and process lists of references, mostly in conjunction with LaTeX documents.
 
 Need to learn more and implement this.
