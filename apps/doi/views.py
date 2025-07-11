@@ -2,8 +2,11 @@ from http import HTTPStatus
 from re import compile as re_compile
 
 from django.conf import settings
-from apps.core.views import BaseView
+from django.contrib import messages
+# from django.http import Http404
+from django.utils.html import format_html
 
+from apps.core.views import BaseView
 from apps.doi.models import DOI
 
 
@@ -20,10 +23,12 @@ class DOIView(BaseView):
         doi = request.GET.get("doi", "")
         if doi:
             if not DOI_REGEX.match(doi):
-                self.message = "Sorry, but that is not a valid DOI."
+                messages.error(
+                    request,
+                    "Sorry, but that is not a valid DOI."
+                )
                 self.status_code = HTTPStatus.BAD_REQUEST
                 self.title = "Invalid DOI"
-                self.template_name = "error.html"
 
             else:
 
@@ -34,15 +39,22 @@ class DOIView(BaseView):
                     self.template_name = "home.html"
 
                 except FileNotFoundError:
-                    self.message = f"Sorry, DOI ({doi}) could not be found."
+                    messages.error(
+                        request,
+                        message=format_html(
+                            "Sorry. DOI (<code>{}</code>) not found.",
+                            doi
+                        )
+                    )
                     self.status_code = HTTPStatus.NOT_FOUND
                     self.title = "Not Found"
-                    self.template_name = "error.html"
 
                 except Exception:
-                    self.message = "Sorry, but there was an unknown error."
+                    messages.error(
+                        request,
+                        "Sorry, but there was an unknown error."
+                    )
                     self.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
-                    self.title = "Unknown error"
-                    self.template_name = "error.html"
+                    self.title = "Unknown Error"
 
         return super().setup(request, *args, **kwargs)

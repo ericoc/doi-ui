@@ -65,6 +65,19 @@
             </nav>
         </header>
         <main class="container-fluid" id="content">
+{% block messages %}
+    {% if messages %}
+            <div id="messages">
+        {% for message in messages %}
+                <div class="alert alert-dark" role="alert">
+                    <p class="fw-bold lead message-{{ message.tags }}">
+                        {{ message }}
+                    </p>
+                </div>
+        {% endfor %}
+            </div>
+    {% endif %}
+{% endblock messages %}
 {% block content %}
 {% endblock content %}
             <button type="button" class="btn btn-light btn-floating btn-lg" id="btn-back-to-top" data-bs-title="Back To Top" data-bs-toggle="tooltip">
@@ -78,8 +91,8 @@
         </footer>
         <script>
 {% if doi %}
-            // Button to copy-paste current DOI.
-            async function copyDOI(text) {
+            // Handle copy-paste buttons.
+            async function copyIt(text) {
                 try {
                     await navigator.clipboard.writeText(text)
                 } catch (err) {
@@ -89,11 +102,21 @@
             const copyDOIButton = document.getElementById("copy-doi")
             const currentDOI = document.getElementById("current-doi").innerText
             copyDOIButton.addEventListener("click", () => {
-                if (copyDOI(currentDOI)) {
+                if (copyIt(currentDOI)) {
                     let tooltipInner = document.getElementsByClassName('tooltip-inner')
                     tooltipInner[0].innerHTML = "Copied!"
                 }
             })
+    {% if doi.bibliography %}
+            const copyDOIAbstractButton = document.getElementById("copy-abstract")
+            const abstractDOI = document.getElementById("doi-bibliography").innerText
+            copyDOIAbstractButton.addEventListener("click", () => {
+                if (copyIt(abstractDOI)) {
+                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
+                    tooltipInner[0].innerHTML = "Copied!"
+                }
+            })
+    {% endif %}
 {% endif %}
             // Button to scroll to top of page.
             let goUpButton = document.getElementById("btn-back-to-top")

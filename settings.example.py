@@ -118,8 +118,5 @@ DOI_PATTERN = r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)'
 ORCID_API_CLIENT_ID = "APP-0123ABCDEFG"
 ORCID_API_CLIENT_SECRET = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 
-REQUEST_HEADERS = {
-    "Accept": "application/json",
-    "User-Agent": f"DOI Search / {WEBSITE_TITLE} v2.0"
-}
+REQUEST_HEADERS = {"User-Agent": f"DOI Search / {WEBSITE_TITLE} v2.0"}
 REQUEST_TIMEOUT = 5

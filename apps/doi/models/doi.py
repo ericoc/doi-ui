@@ -19,6 +19,7 @@ class DOI:
 
     abstract: str = ""
     authors: list = []
+    bibliography: str = ""
     created: (date, datetime, None) = None
     deposited: (date, datetime, None) = None
     funders: list = []
@@ -40,6 +41,7 @@ class DOI:
     def __init__(self, _doi: str = ""):
         # Gather information about the DOI.
         self.gather(doi=_doi)
+        self.bibliography = self._gather_bibliography()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
@@ -52,11 +54,31 @@ class DOI:
             msg += " [Penn]"
         return msg
 
-    def gather(self, doi: str):
+    def _gather_bibliography(self) -> str:
+        # Gather bibliography information from doi.org about the DOI.
+        settings.REQUEST_HEADERS["Accept"] = "text/x-bibliography"
+        try:
+            resp = requests.get(
+                headers=settings.REQUEST_HEADERS,
+                timeout=settings.REQUEST_TIMEOUT,
+                url=f"https://doi.org/{self.doi}"
+            )
+            resp_text = resp.text.replace(
+                f"https://doi.org/{self.doi}",
+                ""
+            ).strip()
+            if resp_text:
+                return resp_text
+        except Exception:
+            pass
+        return ""
 
-        # Gather information from doi.org about the submitted DOI.
+    def gather(self, doi: str):
+        # Gather JSON information from doi.org about the submitted DOI.
+        settings.REQUEST_HEADERS["Accept"] = "application/json"
         resp = requests.get(
-            headers=settings.REQUEST_HEADERS, timeout=settings.REQUEST_TIMEOUT,
+            headers=settings.REQUEST_HEADERS,
+            timeout=settings.REQUEST_TIMEOUT,
             url=f"https://doi.org/{doi}"
         )
 
