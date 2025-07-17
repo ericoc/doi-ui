@@ -20,6 +20,7 @@ class DOI:
     abstract: str = ""
     authors: list = []
     bibliography: str = ""
+    bibtex: str = ""
     container_title: str = ""
     created: (date, datetime, None) = None
     deposited: (date, datetime, None) = None
@@ -45,6 +46,7 @@ class DOI:
         # Gather information about the DOI.
         self.gather(doi=_doi)
         self.bibliography = self._gather_bibliography()
+        self.bibtex = self._gather_bibtex()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
@@ -70,6 +72,22 @@ class DOI:
                 f"https://doi.org/{self.doi}",
                 ""
             ).strip()
+            if resp_text:
+                return resp_text
+        except Exception:
+            pass
+        return ""
+
+    def _gather_bibtex(self) -> str:
+        # Gather BibTeX information from doi.org about the DOI.
+        settings.REQUEST_HEADERS["Accept"] = "application/x-bibtex"
+        try:
+            resp = requests.get(
+                headers=settings.REQUEST_HEADERS,
+                timeout=settings.REQUEST_TIMEOUT,
+                url=f"https://doi.org/{self.doi}"
+            )
+            resp_text = resp.text.strip()
             if resp_text:
                 return resp_text
         except Exception:

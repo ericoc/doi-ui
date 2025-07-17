@@ -175,23 +175,43 @@
         </div>
 
         {% if doi.json %}
-        <div class="row py-3">
-            <div class="col">
-                <details class="card">
-                    <summary class="card-header" id="raw-data" title="Raw Data">
-                        <label class="h3" for="doi-json">
-                            <i class="bi bi-filetype-raw text-primary-emphasis"></i>
-                            Raw Data
-                            <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
-                        </label>
-                    </summary>
-                    <div class="m-3">
-                        <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
-                    </div>
-                </details>
+            <div class="row pt-3">
+                <div class="col">
+                    <details class="card">
+                        <summary class="card-header" id="raw-data" title="Raw Data">
+                            <label class="h3" for="doi-json">
+                                <i class="bi bi-filetype-raw text-primary-emphasis"></i>
+                                Raw Data
+                                <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
+                            </label>
+                        </summary>
+                        <div class="m-3">
+                            <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
+                        </div>
+                    </details>
+                </div>
             </div>
-        </div>
         {% endif %}
+
+        {% if doi.bibtex %}
+            <div class="row py-3">
+                <div class="col">
+                    <details class="card">
+                        <summary class="card-header" id="bibtex" title="BibTeX">
+                            <label class="h3" for="doi-bibtex">
+                                <i class="bi bi-blockquote-left text-primary-emphasis"></i>
+                                BibTeX
+                                <a class="anchor-link bi bi-link-45deg" href="#bibtex" aria-label="Link to this section: BibTeX (bibtex)"></a>
+                            </label>
+                        </summary>
+                        <div class="m-3">
+                            <textarea class="font-monospace form-control form-control-sm w-100" id="doi-bibtex" rows="10" aria-readonly="true" readonly>{{ doi.bibtex }}</textarea>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        {% endif %}
+
     </div>
 
     {% endif %}
