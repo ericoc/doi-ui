@@ -90,34 +90,6 @@
             </small>
         </footer>
         <script>
-{% if doi %}
-            // Handle copy-paste buttons.
-            async function copyIt(text) {
-                try {
-                    await navigator.clipboard.writeText(text)
-                } catch (err) {
-                    console.error("Failed to copy text: ", err)
-                }
-            }
-            const copyDOIButton = document.getElementById("copy-doi")
-            const currentDOI = document.getElementById("current-doi").innerText
-            copyDOIButton.addEventListener("click", () => {
-                if (copyIt(currentDOI)) {
-                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
-                    tooltipInner[0].innerHTML = "Copied!"
-                }
-            })
-    {% if doi.bibliography %}
-            const copyDOIAbstractButton = document.getElementById("copy-abstract")
-            const abstractDOI = document.getElementById("doi-bibliography").innerText
-            copyDOIAbstractButton.addEventListener("click", () => {
-                if (copyIt(abstractDOI)) {
-                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
-                    tooltipInner[0].innerHTML = "Copied!"
-                }
-            })
-    {% endif %}
-{% endif %}
             // Button to scroll to top of page.
             let goUpButton = document.getElementById("btn-back-to-top")
             window.onscroll = function () { scrollFunction() }

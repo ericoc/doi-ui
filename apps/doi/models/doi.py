@@ -20,12 +20,14 @@ class DOI:
     abstract: str = ""
     authors: list = []
     bibliography: str = ""
+    container_title: str = ""
     created: (date, datetime, None) = None
     deposited: (date, datetime, None) = None
     funders: list = []
     indexed: (date, datetime, None) = None
     issued: (date, datetime, None) = None
     json: str = ""
+    member: str = ""
     published: (date, None) = None
     published_online: (date, None) = None
     published_print: (date, None) = None
@@ -33,6 +35,7 @@ class DOI:
     referenced_by_count: int = 0
     reference_count: int = 0
     references: list = []
+    source: str = ""
     title: str = ""
     type: str = ""
     url: str = ""
@@ -91,11 +94,14 @@ class DOI:
         self.doi = data.get("DOI", self.doi)
         self.abstract = data.get("abstract", self.abstract)
         self.authors = data.get("author", self.authors)
+        self.container_title = data.get("container-title", self.container_title)
+        self.member = data.get("member", self.member)
         self.publisher = data.get("publisher", self.publisher)
         self.referenced_by_count = data.get(
             "is-referenced-by-count", self.referenced_by_count
         )
         self.reference_count = data.get("reference-count", self.reference_count)
+        self.source = data.get("source", self.source)
         self.type = data.get("type", self.type)
         self.url = data.get("URL", self.url)
         self.title = data.get("title", self.title)

@@ -9,16 +9,15 @@
     <div class="container-fluid py-3">
         <a class="h1" href="https://doi.org/{{ doi.doi }}" id="title" target="_blank" data-bs-title="{{ doi.title|default:doi.url|striptags }} &lt;https://doi.org/{{ doi.doi }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default:doi.url|striptags }}</a>
         <div class="row">
-            <div class="h2 m-1 p-1 col text-start" id="doi-type" title="Type: {{ doi.type }}">
+            <div class="h2 m-1 p-1 col text-start" id="doi-type-source" title="{{ doi.source }} {{ doi.type }}">
                 <i class="bi bi-{% if doi.type == "book" %}book{% elif doi.type == "journal-article" %}journal-bookmark{% endif %} text-primary-emphasis"></i>
-                {{ doi.type }}
+                <i>{{ doi.source }}</i> / <span class="font-monospace small">{{ doi.type }}</span>
             </div>
             <div class="h2 fst-italic m-1 p-1 col text-start" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
                 {{ doi.publisher }}
             </div>
-            <div class="h2 m-1 p-1 col text-end">
-                <code class="text-nowrap" id="current-doi" title="DOI: {{ doi.doi }}">{{ doi.doi }}</code>
-                <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-doi" title="Copy '{{ doi.doi }}' to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy &lt;span class='fw-bold font-monospace'&gt;{{ doi.doi }}&lt;/span&gt; to clipboard"></a>
+            <div class="h2 m-1 p-1 col text-end" title="{{ doi.container_title }} ({{ doi.member }})">
+                <i>{{ doi.container_title }}</i> (<span class="font-monospace small">{{ doi.member }}</span>)
             </div>
         </div>
         {% if doi.abstract %}
@@ -35,7 +34,6 @@
                 <div class="col">
                     <p class="blockquote border border-secondary-emphasis fs-6 rounded p-2">
                         <span class="small font-monospace" id="doi-bibliography">{{ doi.bibliography|safe }}</span>
-                        <a role="button" class="bi bi-copy" data-bs-html="true" id="copy-abstract" title="Copy bibliography to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy bibliography to clipboard"></a>
                     </p>
                 </div>
             </div>
