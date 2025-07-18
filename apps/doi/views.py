@@ -1,18 +1,21 @@
 from http import HTTPStatus
+from logging import getLogger
 from re import compile as re_compile
 
 from django.conf import settings
 from django.contrib import messages
-# from django.http import Http404
 from django.utils.html import format_html
+from requests.exceptions import JSONDecodeError
 
 from apps.core.views import BaseView
 from apps.doi.models import DOI
 
 
+# Logger.
+logger = getLogger(__name__)
+
 # Compile regular expression pattern (of a DOI) from Django settings.
 DOI_REGEX = re_compile(settings.DOI_PATTERN)
-
 
 class DOIView(BaseView):
     """Search DOI."""
@@ -38,7 +41,8 @@ class DOIView(BaseView):
                     self.title = self.doi.doi
                     self.template_name = "home.html"
 
-                except FileNotFoundError:
+                except FileNotFoundError as not_found:
+                    logger.exception(not_found)
                     messages.error(
                         request,
                         message=format_html(
@@ -49,7 +53,17 @@ class DOIView(BaseView):
                     self.status_code = HTTPStatus.NOT_FOUND
                     self.title = "Not Found"
 
-                except Exception:
+                except JSONDecodeError as json_err:
+                    logger.exception(json_err)
+                    messages.error(
+                        request,
+                        "Sorry, but there was a JSON decoding error."
+                    )
+                    self.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
+                    self.title = "JSON Decoding Error"
+
+                except Exception as other_exc:
+                    logger.exception(other_exc)
                     messages.error(
                         request,
                         "Sorry, but there was an unknown error."
