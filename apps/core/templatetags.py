@@ -9,12 +9,13 @@ from django.utils.timesince import timesince, timeuntil
 
 @register.filter(name="get_dict_item")
 def get_dict_item(dictionary, key):
+    # Filter to get dictionary item.
     return dictionary.get(key)
 
 
 @register.filter(name="human_time")
 def human_time(when: (date, datetime)) -> str:
-
+    # Filter to present relative time, with color.
     current = None
     ret = str(when)
 

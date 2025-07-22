@@ -1,8 +1,8 @@
 from django.conf import settings
 
 
-def website_title(request):
-    """Context processor for website title."""
+def context_processors(request):
+    # Context processors for debug boolean, university name, and website title.
     return {
         "DEBUG": settings.DEBUG,
         "UNIVERSITY": settings.UNIVERSITY,

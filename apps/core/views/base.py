@@ -1,6 +1,4 @@
 from http import HTTPStatus
-
-from django.contrib import messages
 from django.views.generic.base import TemplateView
 
 from apps.doi.models.doi import DOI
@@ -12,13 +10,12 @@ class BaseView(TemplateView):
     """
     doi: (DOI, str) = ""
     http_method_names: tuple = ("get",)
-    message: str = ""
     status_code: int = HTTPStatus.OK
     title: str = "Home"
     template_name: str = "home.html"
 
     def get_context_data(self, **kwargs):
-        # Include DOI object, and title, in response context.
+        # Include DOI object and title in response context.
         context = super().get_context_data(**kwargs)
         context["doi"] = self.doi
         context["title"] = self.title
@@ -28,19 +25,3 @@ class BaseView(TemplateView):
         # Update HTTP response code.
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context, status=self.status_code)
-
-
-class ErrorView(BaseView):
-    """
-    Template view for error handling shows message with status code.
-    """
-    message = ""
-    status_code = HTTPStatus.INTERNAL_SERVER_ERROR
-    title = "Sorry"
-
-    def setup(self, request, *args, **kwargs):
-        # Actually message any message string.
-        if self.message:
-            messages.error(request, self.message)
-            self.message = ""
-        return super().setup(self, request, *args, **kwargs)

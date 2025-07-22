@@ -1,9 +1,9 @@
-import re
 import requests
 from datetime import date, datetime
 from django.conf import settings
 from json import dumps as json_dumps
 from orcid import PublicAPI
+from re import compile as re_compile
 
 from .author import DOIAuthor
 from .funder import DOIFunder
@@ -11,10 +11,14 @@ from .reference import DOIReference
 from parsers import parse_date
 
 
-"""Digital Object Identifier (DOI)."""
-DOI_REGEX = re.compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
-class DOI:
+# Compiled regular expression pattern for a DOI string.
+DOI_REGEX = re_compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
 
+
+class DOI:
+    """
+    Digital Object Identifier (DOI).
+    """
     doi: str = ""
 
     abstract: str = ""
@@ -43,21 +47,17 @@ class DOI:
 
     # Initialization of a Digital Object Identifier (DOI) Python object.
     def __init__(self, _doi: str = ""):
-        # Gather information about the DOI.
-        self.gather(doi=_doi)
+
+        # Immediately raise an exception if submitted DOI has invalid format.
+        if not DOI_REGEX.match(_doi):
+            raise NameError("Invalid DOI format.")
+
+        # Gather and populate information about the DOI.
+        self._populate(
+            data=self._gather(doi=_doi)
+        )
         self.bibliography = self._gather_bibliography()
         self.bibtex = self._gather_bibtex()
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}: {self.__str__()}"
-
-    def __str__(self) -> str:
-        msg = self.doi
-        if self.title:
-            msg += f". {self.title}"
-        if self.is_penn():
-            msg += " [Penn]"
-        return msg
 
     def _gather_bibliography(self) -> str:
         # Gather bibliography information from doi.org about the DOI.
@@ -94,7 +94,7 @@ class DOI:
             pass
         return ""
 
-    def gather(self, doi: str):
+    def _gather(self, doi: str):
         # Gather JSON information from doi.org about the submitted DOI.
         settings.REQUEST_HEADERS["Accept"] = "application/json"
         resp = requests.get(
@@ -105,10 +105,17 @@ class DOI:
 
         # Raise exception for non-existent DOI.
         if resp.status_code != 200:
-            raise FileNotFoundError("No such DOI was found!")
+            raise FileNotFoundError("No such DOI found.")
 
+        # Convert response to JSON
+        try:
+            return resp.json()
+        except requests.exceptions.JSONDecodeError as json_err:
+            raise ValueError("Cannot decode response as JSON.") from json_err
+
+
+    def _populate(self, data):
         # Fill in DOI object attributes using JSON response.
-        data = resp.json()
         self.doi = data.get("DOI", self.doi)
         self.abstract = data.get("abstract", self.abstract)
         self.authors = data.get("author", self.authors)
@@ -124,13 +131,15 @@ class DOI:
         self.url = data.get("URL", self.url)
         self.title = data.get("title", self.title)
 
-        # Set authors list attribute.
+        # Set up connection to ORCID API.
         orcid_conn = PublicAPI(
             institution_key=settings.ORCID_API_CLIENT_ID,
             institution_secret=settings.ORCID_API_CLIENT_SECRET
         )
         orcid_token = orcid_conn.get_search_token_from_orcid()
         orcid_api = (orcid_conn, orcid_token)
+
+        # Create list of author objects, potentially using each authors ORCID.
         self.authors = []
         for author in data.get("author", []):
             author_obj = DOIAuthor(
@@ -138,13 +147,13 @@ class DOI:
             )
             self.authors.append(author_obj)
 
-        # Set funders list.
+        # Create list of funder objects.
         self.funders = []
         for funder in data.get("funder", []):
             funder_obj = DOIFunder(doi=self.doi, funder=funder)
             self.funders.append(funder_obj)
 
-        # Set references list.
+        # Create list of reference objects.
         self.references = []
         for reference in data.get("reference", []):
             reference_obj = DOIReference(doi=self.doi, reference=reference)
@@ -159,12 +168,23 @@ class DOI:
         self.published_online = parse_date(data.get("published-online"))
         self.published_print = parse_date(data.get("published-print"))
 
-        # Format JSON and delete data dictionary.
+        # Format raw JSON.
         self.json =  json_dumps(data, indent=2)
 
     def is_penn(self) -> bool:
-        # If any author is Penn-affiliated, so is the DOI.
+        # If any author is Penn-affiliated, the DOI is Penn-affiliated.
         for author in self.authors:
             if author.is_penn:
                 return True
         return False
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}: {self.__str__()}"
+
+    def __str__(self) -> str:
+        msg = self.doi
+        if self.title:
+            msg += f". {self.title}"
+        if self.is_penn():
+            msg += " [Penn]"
+        return msg

@@ -87,7 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
-                'apps.core.contexts.website_title',
+                'apps.core.contexts.context_processors',
             ],
             'libraries': {
                 'doi': 'apps.core.templatetags'
@@ -114,9 +114,6 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = Path(BASE_DIR, MEDIA_URL)
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-
-# DOI regular expression pattern.
-DOI_PATTERN = r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)'
 
 # ORCID API settings.
 ORCID_API_CLIENT_ID = "APP-0123ABCDEFG"
