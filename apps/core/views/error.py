@@ -13,7 +13,7 @@ class ErrorView(BaseView):
     title = "Sorry"
 
     def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
         # Actually message any message string.
         if self.message:
             messages.error(request, self.message)
-        return super().setup(self, request, *args, **kwargs)

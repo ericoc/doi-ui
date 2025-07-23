@@ -18,6 +18,7 @@ class DOIView(BaseView):
     title = "Search"
 
     def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
 
         # Process any submitted DOI from query string.
         doi = request.GET.get("doi", "")
@@ -78,5 +79,3 @@ class DOIView(BaseView):
                 )
                 self.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
                 self.title = "Unknown Error"
-
-        return super().setup(request, *args, **kwargs)
