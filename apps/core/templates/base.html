@@ -146,7 +146,7 @@
     {% if doi.bibtex %}
         // Allow copying BibTeX to clipboard.
         document.getElementById("copy-bibtex").addEventListener("click", () => {
-            if (copyText(document.getElementById("doi-bibtex").value)) {
+            if (copyText(document.getElementById("doi-bibtex").innerText)) {
                 let tooltipInner = document.getElementsByClassName('tooltip-inner')
                 tooltipInner[0].innerHTML = "Copied!"
             }
