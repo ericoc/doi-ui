@@ -20,8 +20,9 @@
 
         <div class="row">
             <div class="h2 m-1 p-1 col text-start" id="doi-type-source" title="{{ doi.source }} {{ doi.type }}">
+                <i>{{ doi.source }}</i>
                 <i class="bi bi-{% if doi.type == "book" %}book{% elif doi.type == "journal-article" %}journal-bookmark{% endif %} text-primary-emphasis"></i>
-                <i>{{ doi.source }}</i> / <span class="font-monospace small">{{ doi.type }}</span>
+                <span class="font-monospace small">{{ doi.type }}</span>
             </div>
             <div class="h2 fst-italic m-1 p-1 col text-center" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
                 {{ doi.publisher }}
