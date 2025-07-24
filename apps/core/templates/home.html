@@ -6,7 +6,8 @@
 {% block content %}
     {% if doi and doi != "" and doi != None %}
         {% if DEBUG is True %}<!-- {{ doi }} -->{% endif %}
-    <div class="container-fluid py-3">
+    <div class="container-fluid py-1">
+
         <a class="h1" href="https://doi.org/{{ doi.doi }}" id="title" target="_blank" data-bs-title="{{ doi.title|default:doi.url|striptags }} &lt;https://doi.org/{{ doi.doi }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default:doi.url|striptags }}</a>
         <div class="row">
             <div class="h2 m-1 p-1 col text-start" id="doi-type-source" title="{{ doi.source }} {{ doi.type }}">
@@ -20,24 +21,45 @@
                 <i>{{ doi.container_title }}</i> (<span class="font-monospace small">{{ doi.member }}</span>)
             </div>
         </div>
-        {% if doi.abstract %}
-            <div class="row">
-                <div class="col">
-                    <p class="blockquote border border-secondary-emphasis fs-6 rounded p-2" id="doi-abstract">
-                        {{ doi.abstract|striptags }}
-                    </p>
-                </div>
+
+    {% if doi.abstract %}
+        <div class="row py-2">
+            <div class="col">
+                <details class="card" open>
+                    <summary class="card-header" id="abstract" title="Abstract">
+                        <span class="h3 text-start">
+                            <i class="bi bi-list-columns-reverse text-primary-emphasis"></i>
+                            Abstract
+                            <a class="anchor-link bi bi-link-45deg" href="#abstract" aria-label="Link to this section: Abstract (abstract)"></a>
+                        </span>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end" data-bs-html="true" href="#abstract" id="copy-abstract" title="Copy abstract to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy abstract to clipboard" data-bs-placement="right"></a>
+                    </summary>
+                    <p class="blockquote fs-6 p-2" id="doi-abstract">{{ doi.abstract|striptags }}</p>
+                </details>
             </div>
-        {% endif %}
-        {% if doi.bibliography %}
-            <div class="row">
-                <div class="col">
-                    <p class="blockquote border border-secondary-emphasis fs-6 rounded p-2">
+        </div>
+    {% endif %}
+
+    {% if doi.bibliography %}
+        <div class="row py-2">
+            <div class="col">
+                <details class="card" open>
+                    <summary class="card-header" id="bibliography" title="bibliography">
+                        <span class="h3 text-start">
+                            <i class="bi bi-text-paragraph text-primary-emphasis"></i>
+                            Bibliography
+                            <a class="anchor-link bi bi-link-45deg" href="#bibliography" aria-label="Link to this section: Bibliography (bibliography)"></a>
+                        </span>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end" data-bs-html="true" href="#bibliography" id="copy-bibliography" title="Copy bibliography to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy bibliography to clipboard" data-bs-placement="right"></a>
+                    </summary>
+                    <p class="blockquote fs-6 p-2">
                         <span class="small font-monospace" id="doi-bibliography">{{ doi.bibliography|safe }}</span>
                     </p>
-                </div>
+                </details>
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
+
         <div class="card-group row">
             <div class="col">
                 <details class="card">
@@ -83,6 +105,7 @@
         {% endif %}
                 </details>
             </div>
+
             <div class="col">
                 <details class="card">
                     <summary class="card-header" id="references" title="References: {{ doi.references|length }} / Referenced: {{ doi.referenced_by_count }}">
@@ -120,18 +143,18 @@
             <div class="col">
                 <details class="card">
                     <summary class="card-header" id="dates" title="Dates">
-                                <span class="h3">
-                                    <i class="bi bi-calendar-week text-primary-emphasis"></i>
-                                    Dates
-                                    <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
-                                </span>
+                        <span class="h3">
+                            <i class="bi bi-calendar-week text-primary-emphasis"></i>
+                            Dates
+                            <a class="anchor-link bi bi-link-45deg" href="#dates" aria-label="Link to this section: Dates (dates)"></a>
+                        </span>
                     </summary>
                     <table class="card-body card-text table table-bordered rounded table-responsive table-hover table-striped border-light-subtle container-fluid">
                         <thead>
-                        <tr>
-                            <th class="bg-dark-subtle">Type</th>
-                            <th class="bg-dark-subtle">When</th>
-                        </tr>
+                            <tr>
+                                <th class="bg-dark-subtle">Type</th>
+                                <th class="bg-dark-subtle">When</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {% include "date.html" with date_name="Created" doi_date=doi.created %}

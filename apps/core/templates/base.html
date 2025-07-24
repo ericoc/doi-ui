@@ -90,7 +90,7 @@
             </small>
         </footer>
         <script>
-            // Button to scroll to top of page.
+            // Function and button to scroll to top of page.
             let goUpButton = document.getElementById("btn-back-to-top")
             window.onscroll = function () { scrollFunction() }
             function scrollFunction() {
@@ -108,6 +108,32 @@
                 document.documentElement.scrollTop = 0
             }
 
+            // Function to copy text to clipboard.
+            async function copyText(text) {
+                try {
+                    await navigator.clipboard.writeText(text)
+                } catch (err) {
+                    console.error("Failed to copy text: ", err)
+                }
+            }
+    {% if doi.abstract %}
+            // Allow copying abstract to clipboard.
+            document.getElementById("copy-abstract").addEventListener("click", () => {
+                if (copyText(document.getElementById("doi-abstract").innerText)) {
+                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
+                    tooltipInner[0].innerHTML = "Copied!"
+                }
+            })
+    {% endif %}
+    {% if doi.bibliography %}
+            // Allow copying abstract to clipboard.
+            document.getElementById("copy-bibliography").addEventListener("click", () => {
+                if (copyText(document.getElementById("doi-bibliography").innerText)) {
+                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
+                    tooltipInner[0].innerHTML = "Copied!"
+                }
+            })
+    {% endif %}
             // Bootstrap tooltips and popovers.
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
