@@ -116,6 +116,15 @@
                     console.error("Failed to copy text: ", err)
                 }
             }
+    {% if doi.doi %}
+            // Allow copying DOI to clipboard.
+            document.getElementById("copy-doi").addEventListener("click", () => {
+                if (copyText(document.getElementById("current-doi").innerText)) {
+                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
+                    tooltipInner[0].innerHTML = "Copied!"
+                }
+            })
+    {% endif %}
     {% if doi.abstract %}
             // Allow copying abstract to clipboard.
             document.getElementById("copy-abstract").addEventListener("click", () => {
@@ -129,6 +138,24 @@
             // Allow copying abstract to clipboard.
             document.getElementById("copy-bibliography").addEventListener("click", () => {
                 if (copyText(document.getElementById("doi-bibliography").innerText)) {
+                    let tooltipInner = document.getElementsByClassName('tooltip-inner')
+                    tooltipInner[0].innerHTML = "Copied!"
+                }
+            })
+    {% endif %}
+    {% if doi.bibtex %}
+        // Allow copying BibTeX to clipboard.
+        document.getElementById("copy-bibtex").addEventListener("click", () => {
+            if (copyText(document.getElementById("doi-bibtex").value)) {
+                let tooltipInner = document.getElementsByClassName('tooltip-inner')
+                tooltipInner[0].innerHTML = "Copied!"
+            }
+        })
+    {% endif %}
+    {% if doi.json %}
+            // Allow copying JSON to clipboard.
+            document.getElementById("copy-json").addEventListener("click", () => {
+                if (copyText(document.getElementById("doi-json").value)) {
                     let tooltipInner = document.getElementsByClassName('tooltip-inner')
                     tooltipInner[0].innerHTML = "Copied!"
                 }

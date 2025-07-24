@@ -8,13 +8,22 @@
         {% if DEBUG is True %}<!-- {{ doi }} -->{% endif %}
     <div class="container-fluid py-1">
 
-        <a class="h1" href="https://doi.org/{{ doi.doi }}" id="title" target="_blank" data-bs-title="{{ doi.title|default:doi.url|striptags }} &lt;https://doi.org/{{ doi.doi }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default:doi.url|striptags }}</a>
+        <div class="row">
+            <div class="col w-90">
+                <a class="h1" href="https://doi.org/{{ doi.doi }}" id="title" target="_blank" data-bs-title="{{ doi.title|default:doi.url|striptags }} &lt;https://doi.org/{{ doi.doi }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default:doi.url|striptags }}</a>
+            </div>
+            <div class="col w-10 text-end">
+                <code class="h2" id="current-doi">{{ doi.doi }}</code>
+                <a role="button" class="bi bi-clipboard h4 text-primary-emphasis" data-bs-html="true" href="#doi" id="copy-doi" title="Copy DOI to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy DOI to clipboard" data-bs-placement="bottom"></a>
+            </div>
+        </div>
+
         <div class="row">
             <div class="h2 m-1 p-1 col text-start" id="doi-type-source" title="{{ doi.source }} {{ doi.type }}">
                 <i class="bi bi-{% if doi.type == "book" %}book{% elif doi.type == "journal-article" %}journal-bookmark{% endif %} text-primary-emphasis"></i>
                 <i>{{ doi.source }}</i> / <span class="font-monospace small">{{ doi.type }}</span>
             </div>
-            <div class="h2 fst-italic m-1 p-1 col text-start" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
+            <div class="h2 fst-italic m-1 p-1 col text-center" id="doi-publisher" title="Publisher: {{ doi.publisher }}">
                 {{ doi.publisher }}
             </div>
             <div class="h2 m-1 p-1 col text-end" title="{{ doi.container_title }} ({{ doi.member }})">
@@ -139,7 +148,6 @@
         </div>
 
         <div class="card-group row mt-1 pt-1">
-
             <div class="col">
                 <details class="card">
                     <summary class="card-header" id="dates" title="Dates">
@@ -168,7 +176,6 @@
                     </table>
                 </details>
             </div>
-
             <div class="col">
                 <details class="card">
                     <summary class="card-header" id="funders" title="Funders: {{ doi.funders|length }}">
@@ -193,46 +200,47 @@
                     </div>
         {% endif %}
                 </details>
-
             </div>
         </div>
 
-        {% if doi.json %}
-            <div class="row pt-3">
-                <div class="col">
-                    <details class="card">
-                        <summary class="card-header" id="raw-data" title="Raw Data">
-                            <label class="h3" for="doi-json">
-                                <i class="bi bi-filetype-raw text-primary-emphasis"></i>
-                                Raw Data
-                                <a class="anchor-link bi bi-link-45deg" href="#raw-data" aria-label="Link to this section: Raw Data (raw-data)"></a>
-                            </label>
-                        </summary>
-                        <div class="m-3">
-                            <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
-                        </div>
-                    </details>
-                </div>
+        {% if doi.bibtex %}
+        <div class="row pb-3 pt-1">
+            <div class="col">
+                <details class="card">
+                    <summary class="card-header" id="bibtex" title="BibTeX">
+                        <span class="h3 text-start">
+                            <i class="bi bi-blockquote-left text-primary-emphasis"></i>
+                            <label for="doi-bibtex">BibTeX</label>
+                            <a class="anchor-link bi bi-link-45deg" href="#bibtex" aria-label="Link to this section: BibTeX (bibtex)"></a>
+                        </span>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary-emphasis" data-bs-html="true" href="#bibtex" id="copy-bibtex" title="Copy BibTeX to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy BibTeX to clipboard"></a>
+                    </summary>
+                    <div class="m-3">
+                        <textarea class="font-monospace form-control form-control-sm w-100" id="doi-bibtex" rows="10" aria-readonly="true" readonly>{{ doi.bibtex }}</textarea>
+                    </div>
+                </details>
             </div>
+        </div>
         {% endif %}
 
-        {% if doi.bibtex %}
-            <div class="row py-3">
-                <div class="col">
-                    <details class="card">
-                        <summary class="card-header" id="bibtex" title="BibTeX">
-                            <label class="h3" for="doi-bibtex">
-                                <i class="bi bi-blockquote-left text-primary-emphasis"></i>
-                                BibTeX
-                                <a class="anchor-link bi bi-link-45deg" href="#bibtex" aria-label="Link to this section: BibTeX (bibtex)"></a>
-                            </label>
-                        </summary>
-                        <div class="m-3">
-                            <textarea class="font-monospace form-control form-control-sm w-100" id="doi-bibtex" rows="10" aria-readonly="true" readonly>{{ doi.bibtex }}</textarea>
-                        </div>
-                    </details>
-                </div>
+        {% if doi.json %}
+        <div class="row pt-3">
+            <div class="col">
+                <details class="card">
+                    <summary class="card-header" id="json" title="JSON">
+                        <span class="h3 text-start">
+                            <i class="bi bi-filetype-json text-primary-emphasis"></i>
+                            <label for="doi-json">JSON</label>
+                            <a class="anchor-link bi bi-link-45deg" href="#json" aria-label="Link to this section: JSON (json)"></a>
+                        </span>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary-emphasis" data-bs-html="true" href="#json" id="copy-json" title="Copy JSON to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy JSON to clipboard"></a>
+                    </summary>
+                    <div class="m-3">
+                        <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
+                    </div>
+                </details>
             </div>
+        </div>
         {% endif %}
 
     </div>
