@@ -1,5 +1,7 @@
 from django.conf import settings
 
+from requests.exceptions import HTTPError
+
 
 """Author of a DOI can include specific affiliation(s), ORCID, etc."""
 class DOIAuthor:
@@ -38,20 +40,31 @@ class DOIAuthor:
         return False
 
     def check_orcid(self, orcid_api):
-        # Check each ORCID employment for the university string.
-        employments = orcid_api[0].read_record_public(
-            orcid_id=self.orcid_id,
-            request_type="employments",
-            token=orcid_api[1]
-        )
+
+        # Gather information about an ORCID to check authors employments.
+        employments = None
+        try:
+            employments = orcid_api[0].read_record_public(
+                orcid_id=self.orcid_id,
+                request_type="employments",
+                token=orcid_api[1]
+            )
+        # Ignore HTTP response code failures (like 409 for deactivated ORCID).
+        except HTTPError:
+            pass
+
+        # Process employment records found within the ORCID.
         if employments:
             employ_summary = employments.get("employment-summary")
+
+            # Search each ORCID employment record for the university string.
             for employment in employ_summary:
                 employ_org = employment.get("organization")
                 if employ_org:
                     org_name = employ_org.get("name")
                     if org_name == settings.UNIVERSITY:
                         return True
+
         return False
 
     def __repr__(self) -> str:
