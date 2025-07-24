@@ -13,8 +13,8 @@
                 <a class="h1" href="https://doi.org/{{ doi.doi }}" id="title" target="_blank" data-bs-title="{{ doi.title|default:doi.url|striptags }} &lt;https://doi.org/{{ doi.doi }}&gt;" data-bs-toggle="tooltip" title="{{ doi.title|default:doi.url|striptags }} &lt;{{ doi.url }}&gt;">{{ doi.title|default:doi.url|striptags }}</a>
             </div>
             <div class="col w-10 text-end">
-                <span class="h2 font-monospace" id="doi">{{ doi.doi }}</span>
-                <a role="button" class="bi bi-clipboard h4 text-primary-emphasis" data-bs-html="true" href="#doi" id="copy-doi" title="Copy DOI to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy DOI to clipboard" data-bs-placement="bottom"></a>
+                <span class="h2 font-monospace" id="doi" title="DOI: {{ doi.doi }}" data-bs-html="true" data-bs-toggle="tooltip" data-bs-title="DOI: {{ doi.doi }}" data-bs-placement="left">{{ doi.doi }}</span>
+                <a role="button" class="bi bi-clipboard h4 text-primary" data-bs-html="true" href="#doi" id="copy-doi" title="Copy DOI to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy DOI to clipboard" data-bs-placement="left"></a>
             </div>
         </div>
 
@@ -42,7 +42,7 @@
                             Abstract
                             <a class="anchor-link bi bi-link-45deg" href="#abstract" aria-label="Link to this section: Abstract (abstract)"></a>
                         </span>
-                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary-emphasis" data-bs-html="true" href="#abstract" id="copy-abstract" title="Copy abstract to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy abstract to clipboard" data-bs-placement="right"></a>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary" data-bs-html="true" href="#abstract" id="copy-abstract" title="Copy abstract to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy abstract to clipboard" data-bs-placement="right"></a>
                     </summary>
                     <p class="blockquote fs-6 p-2" id="doi-abstract">{{ doi.abstract|striptags }}</p>
                 </details>
@@ -60,7 +60,7 @@
                             Bibliography
                             <a class="anchor-link bi bi-link-45deg" href="#bibliography" aria-label="Link to this section: Bibliography (bibliography)"></a>
                         </span>
-                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary-emphasis" data-bs-html="true" href="#bibliography" id="copy-bibliography" title="Copy bibliography to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy bibliography to clipboard" data-bs-placement="right"></a>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary" data-bs-html="true" href="#bibliography" id="copy-bibliography" title="Copy bibliography to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy bibliography to clipboard" data-bs-placement="right"></a>
                     </summary>
                     <p class="blockquote fs-6 p-2">
                         <span class="small font-monospace" id="doi-bibliography">{{ doi.bibliography|safe }}</span>
@@ -214,7 +214,7 @@
                             <label for="doi-bibtex">BibTeX</label>
                             <a class="anchor-link bi bi-link-45deg" href="#bibtex" aria-label="Link to this section: BibTeX (bibtex)"></a>
                         </span>
-                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary-emphasis" data-bs-html="true" href="#bibtex" id="copy-bibtex" title="Copy BibTeX to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy BibTeX to clipboard"></a>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary" data-bs-html="true" href="#bibtex" id="copy-bibtex" title="Copy BibTeX to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy BibTeX to clipboard"></a>
                     </summary>
                     <div class="m-3">
                         <textarea class="font-monospace form-control form-control-sm w-100" id="doi-bibtex" rows="10" aria-readonly="true" readonly>{{ doi.bibtex }}</textarea>
@@ -234,7 +234,7 @@
                             <label for="doi-json">JSON</label>
                             <a class="anchor-link bi bi-link-45deg" href="#json" aria-label="Link to this section: JSON (json)"></a>
                         </span>
-                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary-emphasis" data-bs-html="true" href="#json" id="copy-json" title="Copy JSON to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy JSON to clipboard"></a>
+                        <a role="button" class="bi bi-clipboard h4 float-end text-end text-primary" data-bs-html="true" href="#json" id="copy-json" title="Copy JSON to clipboard" data-bs-toggle="tooltip" data-bs-title="Copy JSON to clipboard"></a>
                     </summary>
                     <div class="m-3">
                         <textarea class="font-monospace form-control form-control-sm w-100" id="doi-json" rows="10" aria-readonly="true" readonly>{{ doi.json }}</textarea>
