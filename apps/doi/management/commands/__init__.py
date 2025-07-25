@@ -1,0 +1,1 @@
+from .wikify import WikifyDOICommand
