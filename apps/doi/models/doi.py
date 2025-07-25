@@ -1,6 +1,7 @@
 import requests
 from datetime import date, datetime
 from django.conf import settings
+from html import unescape
 from json import dumps as json_dumps
 from orcid import PublicAPI
 from re import compile as re_compile
@@ -23,6 +24,7 @@ class DOI:
 
     abstract: str = ""
     authors: list = []
+    author_count: int = 0
     bibliography: str = ""
     bibtex: str = ""
     container_title: str = ""
@@ -119,7 +121,9 @@ class DOI:
         self.doi = data.get("DOI", self.doi)
         self.abstract = data.get("abstract", self.abstract)
         self.authors = data.get("author", self.authors)
-        self.container_title = data.get("container-title", self.container_title)
+        self.container_title = unescape(
+            data.get("container-title", self.container_title)
+        )
         self.member = data.get("member", self.member)
         self.publisher = data.get("publisher", self.publisher)
         self.referenced_by_count = data.get(
@@ -146,6 +150,7 @@ class DOI:
                 doi=self.doi, author=author, orcid_api=orcid_api
             )
             self.authors.append(author_obj)
+        self.author_count = len(self.authors)
 
         # Create list of funder objects.
         self.funders = []
@@ -177,6 +182,28 @@ class DOI:
             if author.is_penn:
                 return True
         return False
+
+    @property
+    def author_display(self) -> str:
+        # Comma-separated string of each author name.
+        author_text = ""
+        for i, author in enumerate(self.authors, start=1):
+            author_text += f"{author.name}"
+            if i < self.author_count:
+                author_text += ", "
+        return author_text
+
+    @property
+    def wikitext(self):
+        # Information about DOI as wiki-text.
+        return (
+            f"|{self.author_display}\n|"
+            f"{self.published}\n|"
+            f"{self.title}\n|"
+            f"{self.container_title}\n|"
+            f"{self.doi}\n|"
+            f"-"
+        )
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
