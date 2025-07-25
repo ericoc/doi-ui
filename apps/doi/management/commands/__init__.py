@@ -1,1 +1,1 @@
-from .wikify import WikifyDOICommand
+from .wikify import Command as WikifyDOICommand

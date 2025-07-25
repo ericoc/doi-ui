@@ -48,7 +48,7 @@ class DOI:
     url: str = ""
 
     # Initialization of a Digital Object Identifier (DOI) Python object.
-    def __init__(self, _doi: str = ""):
+    def __init__(self, _doi: str = "", check_orcids: bool = True):
 
         # Immediately raise an exception if submitted DOI has invalid format.
         if not DOI_REGEX.match(_doi):
@@ -56,7 +56,8 @@ class DOI:
 
         # Gather and populate information about the DOI.
         self._populate(
-            data=self._gather(doi=_doi)
+            data=self._gather(doi=_doi),
+            check_orcids=check_orcids
         )
         self.bibliography = self._gather_bibliography()
         self.bibtex = self._gather_bibtex()
@@ -116,7 +117,7 @@ class DOI:
             raise ValueError("Cannot decode response as JSON.") from json_err
 
 
-    def _populate(self, data):
+    def _populate(self, data, check_orcids: bool):
         # Fill in DOI object attributes using JSON response.
         self.doi = data.get("DOI", self.doi)
         self.abstract = data.get("abstract", self.abstract)
@@ -135,13 +136,15 @@ class DOI:
         self.url = data.get("URL", self.url)
         self.title = data.get("title", self.title)
 
-        # Set up connection to ORCID API.
-        orcid_conn = PublicAPI(
-            institution_key=settings.ORCID_API_CLIENT_ID,
-            institution_secret=settings.ORCID_API_CLIENT_SECRET
-        )
-        orcid_token = orcid_conn.get_search_token_from_orcid()
-        orcid_api = (orcid_conn, orcid_token)
+        # Set up connection to ORCID API, by default.
+        orcid_api = ()
+        if check_orcids:
+            orcid_conn = PublicAPI(
+                institution_key=settings.ORCID_API_CLIENT_ID,
+                institution_secret=settings.ORCID_API_CLIENT_SECRET
+            )
+            orcid_token = orcid_conn.get_search_token_from_orcid()
+            orcid_api = (orcid_conn, orcid_token)
 
         # Create list of author objects, potentially using each authors ORCID.
         self.authors = []
