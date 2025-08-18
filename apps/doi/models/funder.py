@@ -63,6 +63,8 @@ class DOIFunder:
             requests.exceptions.HTTPError,
             requests.exceptions.JSONDecodeError,
             requests.exceptions.ReadTimeout,
+            ConnectionError,
+            TimeoutError,
         ) as fund_gather_exc:
             logger.exception(
                 msg=f"Failed gathering DOIFunder: {self.fund_doi} ({self.doi})",
