@@ -1,14 +1,12 @@
 from http import HTTPStatus
 from django.views.generic.base import TemplateView
 
-from apps.doi.models.doi import DOI
-
 
 class BaseView(TemplateView):
     """
     Base view.
     """
-    doi: (DOI, str) = ""
+    doi = ""
     http_method_names: tuple = ("get",)
     status_code: int = HTTPStatus.OK
     title: str = "Home"

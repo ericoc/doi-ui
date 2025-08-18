@@ -1,20 +1,28 @@
 import requests
 from django.conf import settings
+from logging import getLogger
 
 
-"""Funder of a DOI includes name, DOI, awards, etc."""
+# Logging.
+logger = getLogger(__name__)
+
+
 class DOIFunder:
+    """
+    Digital Object Identifier (DOI) Funder.
+        includes name, DOI, awards, etc.
+    """
+    doi = ""
 
-    doi: str = ""
-    name: str = ""
-    preferred_label: str = ""
-    alternative_labels: list = []
-    awards: set = set()
-    broader: str = ""
-    fund_doi: str = ""
-    body_type: str = ""
-    body_subtype: str = ""
-    region: str = ""
+    name = ""
+    preferred_label = ""
+    alternative_labels = []
+    awards = set()
+    broader = ""
+    fund_doi = ""
+    body_type = ""
+    body_subtype = ""
+    region = ""
 
     # Initialization of a DOI funder.
     def __init__(self, doi: str, funder: dict):
@@ -28,7 +36,8 @@ class DOIFunder:
         if self.fund_doi:
             try:
                 self.gather()
-            except Exception:
+            except Exception as fund_gather_exc:
+                logger.exception(fund_gather_exc)
                 pass
 
     def __repr__(self) -> str:
@@ -45,10 +54,8 @@ class DOIFunder:
         return self.name.replace(" ", "-").replace("_", "-").replace("/", "-")
 
     def gather(self):
-
+        # Gather information from crossref.org about the funding DOI.
         try:
-
-            # Gather information from crossref.org about the funding DOI.
             resp = requests.get(
                 headers=settings.REQUEST_HEADERS,
                 timeout=settings.REQUEST_TIMEOUT,
@@ -70,7 +77,7 @@ class DOIFunder:
                     alts["Label"]["literalForm"]["content"]
                 )
 
-            # Otherwise, use the alternative label that is longest.
+            # Otherwise, create a list of alternative labels.
             else:
                 for alt_label in alts:
                     self.alternative_labels.append(
@@ -85,5 +92,6 @@ class DOIFunder:
             self.broader = data["broader"]["resource"]
             self.region = data["region"]
 
-        except KeyError:
+        except KeyError as fund_gather_key_err:
+            logger.exception(fund_gather_key_err)
             pass

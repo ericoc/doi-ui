@@ -1,24 +1,28 @@
 from django.conf import settings
-
+from logging import getLogger
 from requests.exceptions import HTTPError
+
+
+# Logging.
+logger = getLogger(__name__)
 
 
 class DOIAuthor:
     """
     Digital Object Identifier (DOI) Author.
     """
-    doi: str = ""
+    doi = ""
 
-    given: str = ""
-    family: str = ""
-    name: str = ""
-    sequence: str = ""
-    affiliation: list = []
-    orcid: str = ""
-    is_penn: bool = False
+    given = ""
+    famil = ""
+    name = ""
+    sequence = ""
+    affiliation = []
+    orcid = ""
+    is_penn = False
 
     # Initialization of a DOI author.
-    def __init__(self, doi: str, author: dict, orcid_api: tuple = ()):
+    def __init__(self, doi, author: dict, orcid_api: tuple = ()):
         self.doi = doi
         self.orcid = author.get("ORCID", "")
         self.sequence = author.get("sequence", "")
@@ -56,7 +60,8 @@ class DOIAuthor:
                     token=orcid_api[1]
                 )
             # Ignore HTTP response code failures (409 for deactivated ORCID).
-            except HTTPError:
+            except HTTPError as orcid_err:
+                logger.exception(orcid_err)
                 pass
 
             # Process employment records found within the ORCID.
@@ -71,6 +76,7 @@ class DOIAuthor:
                         if org_name == settings.UNIVERSITY:
                             return True
 
+        # Otherwise, ORCID is not affiliated.
         return False
 
     @property

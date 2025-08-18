@@ -20,7 +20,7 @@ class DOIView(BaseView):
     def setup(self, request, *args, **kwargs):
         super().setup(request, *args, **kwargs)
 
-        # Process any submitted DOI from query string.
+        # Process DOI in query string.
         doi = request.GET.get("doi", "")
         if doi:
             try:
@@ -28,54 +28,45 @@ class DOIView(BaseView):
                 self.status_code = HTTPStatus.OK
                 self.title = self.doi.doi
 
-            # HTTP 400 if submitted DOI is not valid format/syntax.
+            # HTTP 400 for invalid format/syntax.
             except NameError as name_err:
                 logger.exception(name_err)
                 messages.error(
-                    request,
-                    message="Sorry, but that is not a valid DOI."
+                    request, "Sorry, but that is not a valid DOI."
                 )
                 self.status_code = HTTPStatus.BAD_REQUEST
                 self.title = "Invalid DOI Format"
 
-            # HTTP 206 if submitted DOI is not supported (is not Crossref).
+            # HTTP 501 if not Crossref.
             except ValueError as lookup_err:
                 logger.exception(lookup_err)
                 url = f"https://doi.org/{doi}"
                 messages.error(
                     request,
                     message=format_html(
-                        'Sorry'
-                        ' &mdash; only <i>Crossref</i> is currently supported'
-                        ' &mdash; not <code><a href="{}" target="_blank" title="DOI:'
-                        ' {}">{}</a></code>',
+                        'Sorry &mdash; only <i>Crossref</i> is'
+                        ' currently supported &mdash; not <code><a href="{}"'
+                        ' target="_blank" title="DOI: {}">{}</a></code>',
                         url, doi, url
                     )
                 )
-                self.status_code = HTTPStatus.PARTIAL_CONTENT
-                self.title = "Not Supported"
+                self.status_code = HTTPStatus.NOT_IMPLEMENTED
+                self.title = "Not Implemented"
 
-            # HTTP 404 if DOI could not be found.
+            # HTTP 404 if not found.
             except FileNotFoundError as not_found:
                 logger.exception(not_found)
                 messages.error(
-                    request,
-                    message=(
-                        format_html(
-                        "Sorry. DOI (<code>{}</code>) not found.",
-                        doi
-                        )
-                    )
+                    request, f"Sorry. DOI (<code>{doi}</code>) not found."
                 )
                 self.status_code = HTTPStatus.NOT_FOUND
                 self.title = "Not Found"
 
-            # Unknown errors?
-            except Exception as other_exc:
-                logger.exception(other_exc)
+            # HTTP 500 for unknown errors.
+            except Exception as unknown_exc:
+                logger.exception(unknown_exc)
                 messages.error(
-                    request,
-                    message="Sorry, but there was an unknown error."
+                    request, "Sorry, but there was an unknown error."
                 )
                 self.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
                 self.title = "Unknown Error"

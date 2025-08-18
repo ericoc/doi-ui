@@ -1,8 +1,8 @@
 import requests
-from datetime import date, datetime
 from django.conf import settings
 from html import unescape
 from json import dumps as json_dumps
+from logging import getLogger
 from orcid import PublicAPI
 from re import compile as re_compile
 
@@ -12,6 +12,9 @@ from .reference import DOIReference
 from parsers import parse_date
 
 
+# Logger.
+logger = getLogger(__name__)
+
 # Compiled regular expression pattern for a DOI string.
 DOI_REGEX = re_compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
 
@@ -20,32 +23,31 @@ class DOI:
     """
     Digital Object Identifier (DOI).
     """
-    doi: str = ""
+    doi = ""
 
-    abstract: str = ""
-    authors: list = []
-    author_count: int = 0
-    bibliography: str = ""
-    bibtex: str = ""
-    container_title: str = ""
-    created: (date, datetime, None) = None
-    deposited: (date, datetime, None) = None
-    funders: list = []
-    indexed: (date, datetime, None) = None
-    issued: (date, datetime, None) = None
-    json: str = ""
-    member: str = ""
-    published: (date, None) = None
-    published_online: (date, None) = None
-    published_print: (date, None) = None
-    publisher: str = ""
-    referenced_by_count: int = 0
-    reference_count: int = 0
-    references: list = []
-    source: str = ""
-    title: str = ""
-    type: str = ""
-    url: str = ""
+    abstract = ""
+    authors = []
+    bibliography = ""
+    bibtex = ""
+    container_title = ""
+    created = None
+    deposited = None
+    funders = []
+    indexed = None
+    issued = None
+    json = ""
+    member = ""
+    published = None
+    published_online = None
+    published_print = None
+    publisher = ""
+    referenced_by_count = 0
+    reference_count = 0
+    references = []
+    source = ""
+    title = ""
+    type = ""
+    url = ""
 
     # Initialization of a Digital Object Identifier (DOI) Python object.
     def __init__(self, _doi: str = "", check_orcids: bool = True):
@@ -77,7 +79,8 @@ class DOI:
             ).strip()
             if resp_text:
                 return resp_text
-        except Exception:
+        except Exception as bibliography_exc:
+            logger.exception(bibliography_exc)
             pass
         return ""
 
@@ -93,11 +96,12 @@ class DOI:
             resp_text = resp.text.strip()
             if resp_text:
                 return resp_text
-        except Exception:
+        except Exception as bibtex_exc:
+            logger.exception(bibtex_exc)
             pass
         return ""
 
-    def _gather(self, doi: str):
+    def _gather(self, doi):
         # Gather JSON information from doi.org about the submitted DOI.
         settings.REQUEST_HEADERS["Accept"] = "application/json"
         resp = requests.get(
@@ -110,10 +114,11 @@ class DOI:
         if resp.status_code != 200:
             raise FileNotFoundError("No such DOI found.")
 
-        # Convert response to JSON
+        # Convert response to JSON.
         try:
             return resp.json()
         except requests.exceptions.JSONDecodeError as json_err:
+            logger.exception(json_err)
             raise ValueError("Cannot decode response as JSON.") from json_err
 
 
@@ -130,7 +135,9 @@ class DOI:
         self.referenced_by_count = data.get(
             "is-referenced-by-count", self.referenced_by_count
         )
-        self.reference_count = data.get("reference-count", self.reference_count)
+        self.reference_count = data.get(
+            "reference-count", self.reference_count
+        )
         self.source = data.get("source", self.source)
         self.type = data.get("type", self.type)
         self.url = data.get("URL", self.url)
@@ -146,28 +153,36 @@ class DOI:
             orcid_token = orcid_conn.get_search_token_from_orcid()
             orcid_api = (orcid_conn, orcid_token)
 
-        # Create list of author objects, potentially using each authors ORCID.
+        # Create list of author objects,
+        #   potentially searching each authors ORCID.
         self.authors = []
         for author in data.get("author", []):
             author_obj = DOIAuthor(
-                doi=self.doi, author=author, orcid_api=orcid_api
+                doi=self.doi,
+                author=author,
+                orcid_api=orcid_api
             )
             self.authors.append(author_obj)
-        self.author_count = len(self.authors)
 
         # Create list of funder objects.
         self.funders = []
         for funder in data.get("funder", []):
-            funder_obj = DOIFunder(doi=self.doi, funder=funder)
+            funder_obj = DOIFunder(
+                doi=self.doi,
+                funder=funder
+            )
             self.funders.append(funder_obj)
 
         # Create list of reference objects.
         self.references = []
         for reference in data.get("reference", []):
-            reference_obj = DOIReference(doi=self.doi, reference=reference)
+            reference_obj = DOIReference(
+                doi=self.doi,
+                reference=reference
+            )
             self.references.append(reference_obj)
 
-        # Set date attributes.
+        # Set, and parse, each date attribute.
         self.created = parse_date(data.get("created"))
         self.deposited = parse_date(data.get("deposited"))
         self.indexed = parse_date(data.get("indexed"))
@@ -189,16 +204,17 @@ class DOI:
     @property
     def author_display(self) -> str:
         # Comma-separated string of each author name.
+        author_count = len(self.authors) or 0
         author_text = ""
         for i, author in enumerate(self.authors, start=1):
             author_text += f"{author.name}"
-            if i < self.author_count:
+            if i < author_count:
                 author_text += ", "
         return author_text
 
     @property
-    def wikitext(self):
-        # Information about DOI as wiki-text.
+    def wikitext(self) -> str:
+        # Basic details as wiki-text.
         return (
             f"|{self.author_display}\n|"
             f"{self.published}\n|"
