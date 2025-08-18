@@ -44,5 +44,4 @@ class DOIReference:
         return f"{self.__class__.__name__}: {self.__str__()}"
 
     def __str__(self) -> str:
-        return (f"{self.__class__.__name__}: {self.__str__()}"
-                f" {self.key} (@ {self.doi})")
+        return f"{self.key} (@ {self.doi})"
