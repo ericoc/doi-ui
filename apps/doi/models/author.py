@@ -1,6 +1,10 @@
 from django.conf import settings
-
+from logging import getLogger
 from requests.exceptions import HTTPError
+
+
+# Logging.
+logger = getLogger(__name__)
 
 
 class DOIAuthor:
@@ -56,8 +60,8 @@ class DOIAuthor:
                     token=orcid_api[1]
                 )
             # Ignore HTTP response code failures (409 for deactivated ORCID).
-            except HTTPError:
-                pass
+            except HTTPError as orcid_employ_http_err:
+                logger.exception(orcid_employ_http_err)
 
             # Process employment records found within the ORCID.
             if employments:

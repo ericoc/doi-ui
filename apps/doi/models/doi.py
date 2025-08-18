@@ -1,6 +1,7 @@
 import requests
 from datetime import date, datetime
 from django.conf import settings
+from logging import getLogger
 from html import unescape
 from json import dumps as json_dumps
 from orcid import PublicAPI
@@ -11,6 +12,9 @@ from .funder import DOIFunder
 from .reference import DOIReference
 from parsers import parse_date
 
+
+# Logging.
+logger = getLogger(__name__)
 
 # Compiled regular expression pattern for a DOI string.
 DOI_REGEX = re_compile(r'(doi\:)?(10[.][0-9]{4,}[^\s"\/<>]*\/[^\s"<>]+)')
@@ -77,8 +81,9 @@ class DOI:
             ).strip()
             if resp_text:
                 return resp_text
-        except Exception:
-            pass
+        except Exception as bibliography_exc:
+            logger.exception(bibliography_exc)
+
         return ""
 
     def _gather_bibtex(self) -> str:
@@ -93,8 +98,9 @@ class DOI:
             resp_text = resp.text.strip()
             if resp_text:
                 return resp_text
-        except Exception:
-            pass
+        except Exception as bibtex_exc:
+            logger.exception(bibtex_exc)
+
         return ""
 
     def _gather(self, doi: str):
@@ -114,6 +120,7 @@ class DOI:
         try:
             return resp.json()
         except requests.exceptions.JSONDecodeError as json_err:
+            logger.exception(json_err)
             raise ValueError("Cannot decode response as JSON.") from json_err
 
 

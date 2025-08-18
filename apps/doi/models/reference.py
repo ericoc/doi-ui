@@ -1,7 +1,8 @@
-"""
-DOI reference always has a key, but may or may not include much more.
-"""
 class DOIReference:
+    """
+    Digital Object Identifier (DOI) Reference.
+        Always has a key, but may or may not include much more.
+    """
     _data: dict = {}
     key: str = ""
     doi: str = ""

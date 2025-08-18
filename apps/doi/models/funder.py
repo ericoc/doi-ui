@@ -1,10 +1,17 @@
 import requests
 from django.conf import settings
+from logging import getLogger
 
 
-"""Funder of a DOI includes name, DOI, awards, etc."""
+# Logging.
+logger = getLogger(__name__)
+
+
 class DOIFunder:
-
+    """
+    Digital Object Identifier (DOI) Funder.
+        Includes name, DOI, awards, etc.
+    """
     doi: str = ""
     name: str = ""
     preferred_label: str = ""
@@ -28,8 +35,8 @@ class DOIFunder:
         if self.fund_doi:
             try:
                 self.gather()
-            except Exception:
-                pass
+            except Exception as gather_fund_exc:
+                logger.exception(gather_fund_exc)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"

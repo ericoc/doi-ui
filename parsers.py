@@ -48,14 +48,12 @@ def parse_date(item):
                     month = date_parts[1]
                 except IndexError:
                     month = 1
-                logger.info(f"Month: {month}")
 
                 # Day.
                 try:
                     day = date_parts[2]
                 except IndexError:
                     day = 1
-                logger.info(f"Day: {day}")
 
                 # Return a datetime object of the year, month, and day.
                 return date(year, month, day)
