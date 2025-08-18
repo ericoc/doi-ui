@@ -21,8 +21,8 @@ class DOIAuthor:
     orcid: str = ""
     is_penn: bool = False
 
-    # Initialization of a DOI author.
     def __init__(self, doi: str, author: dict, orcid_api: tuple = ()):
+        """Initialization of a DOI author."""
         self.doi = doi
         self.orcid = author.get("ORCID", "")
         self.sequence = author.get("sequence", "")
@@ -35,7 +35,7 @@ class DOIAuthor:
         self.is_penn = self.is_affiliated(orcid_api=orcid_api)
 
     def is_affiliated(self, orcid_api: tuple = ()) -> bool:
-        # Boolean whether an author is affiliated, possibly by ORCID.
+        """Boolean whether author is university-affiliated, maybe by ORCID."""
 
         # Check for string in each affiliation name.
         if settings.UNIVERSITY:
@@ -50,7 +50,7 @@ class DOIAuthor:
         return False
 
     def is_orcid_affiliated(self, orcid_api: tuple = ()) -> bool:
-        # Gather author ORCID, to check for string in authors employments.
+        """Gather author ORCID, to check for string in authors employments."""
         if self.orcid_id and orcid_api:
             employments = None
             try:
@@ -79,7 +79,7 @@ class DOIAuthor:
 
     @property
     def orcid_id(self) -> str:
-        # ORCID "ID" (URL).
+        """ORCID "ID" (URL)"""
         if self.orcid:
             return self.orcid.replace("https://orcid.org/", "")
         return ""

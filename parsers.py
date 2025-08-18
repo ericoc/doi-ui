@@ -12,14 +12,14 @@ def parse_date(item):
     """
     if item:
 
-        # UNIX/epoch timestamp (in milliseconds).
+        # UNIX/epoch "timestamp" (in milliseconds).
         #   Example: { "timestamp": 1753880563838 }
         timestamp = item.get("timestamp")
         if timestamp:
             timestamp = timestamp / 1000
             return datetime.fromtimestamp(timestamp, tz=timezone.utc)
 
-        # ISO date.
+        # ISO date "date-time".
         #   Example: { "date-time": "2025-07-30T13:02:43Z" }
         iso_dt = item.get("date-time")
         if iso_dt:
@@ -29,7 +29,7 @@ def parse_date(item):
                 logger.error(f"Failed parsing ISO date: {item}")
                 logger.exception(iso_dt_val_err)
 
-        # Three-part nested list (year, month, day) in "date-parts".
+        # "date-parts" is a three-part nested list: [[year, month, day]].
         #   Example: { "date-parts": [ [2025, 7, 1] ] }
         date_parts_out = item.get("date-parts")
         if date_parts_out:

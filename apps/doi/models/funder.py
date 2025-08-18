@@ -23,9 +23,8 @@ class DOIFunder:
     body_subtype: str = ""
     region: str = ""
 
-    # Initialization of a DOI funder.
     def __init__(self, doi: str, funder: dict):
-
+        """Initialization of DOI funder."""
         self.doi = doi
         self.fund_doi = funder.get("DOI", self.fund_doi)
         self.name = funder.get("name", self.name)
@@ -33,10 +32,7 @@ class DOIFunder:
 
         # Gather information about the funder DOI.
         if self.fund_doi:
-            try:
-                self.gather()
-            except Exception as gather_fund_exc:
-                logger.exception(gather_fund_exc)
+            self.gather()
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
@@ -47,37 +43,37 @@ class DOIFunder:
             f" @ {self.doi}"
         )
 
-    @property
-    def anchor(self) -> str:
-        return self.name.replace(" ", "-").replace("_", "-").replace("/", "-")
-
     def gather(self):
-
+        """Gather information from crossref.org about the funding DOI."""
         try:
-
-            # Gather information from crossref.org about the funding DOI.
             resp = requests.get(
                 headers=settings.REQUEST_HEADERS,
                 timeout=settings.REQUEST_TIMEOUT,
-                url=f'https://data.crossref.org/fundingdata/funder/{self.fund_doi}'
+                url="https://data.crossref.org/fundingdata/funder/"
+                    f"{self.fund_doi}"
             )
             resp.raise_for_status()
-
-            # Fill in funder object attributes using JSON response.
             data = resp.json()
 
+        # Skip failed DOI funder request/JSON.
+        except (
+            requests.exceptions.HTTPError,
+            requests.exceptions.JSONDecodeError
+        ):
+            return None
+
+        # Fill in funder object attributes using JSON response.
+        try:
             self.preferred_label = data["prefLabel"]["Label"]["literalForm"]\
             ["content"]
             self.alternative_labels = []
             alts = data["altLabel"]
 
-            # Use single alternative label.
+            # Use single alternative label, or append to list of alternatives.
             if len(alts) == 1:
                 self.alternative_labels.append(
                     alts["Label"]["literalForm"]["content"]
                 )
-
-            # Otherwise, use the alternative label that is longest.
             else:
                 for alt_label in alts:
                     self.alternative_labels.append(
@@ -88,7 +84,7 @@ class DOIFunder:
             self.body_type = data["fundingBodyType"]
             self.body_subtype = data["fundingBodySubType"]
 
-            # Set broader resource, and region attributes.
+            # Set broader resource and region attributes.
             self.broader = data["broader"]["resource"]
             self.region = data["region"]
 

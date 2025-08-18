@@ -51,8 +51,8 @@ class DOI:
     type: str = ""
     url: str = ""
 
-    # Initialization of a Digital Object Identifier (DOI) Python object.
     def __init__(self, _doi: str = "", check_orcids: bool = True):
+        """Initialization of Digital Object Identifier (DOI) Python object."""
 
         # Immediately raise an exception if submitted DOI has invalid format.
         if not DOI_REGEX.match(_doi):
@@ -67,7 +67,7 @@ class DOI:
         self.bibtex = self._gather_bibtex()
 
     def _gather_bibliography(self) -> str:
-        # Gather bibliography information from doi.org about the DOI.
+        """Gather bibliography information from doi.org about the DOI."""
         settings.REQUEST_HEADERS["Accept"] = "text/x-bibliography"
         try:
             resp = requests.get(
@@ -87,7 +87,7 @@ class DOI:
         return ""
 
     def _gather_bibtex(self) -> str:
-        # Gather BibTeX information from doi.org about the DOI.
+        """Gather BibTeX information from doi.org about the DOI."""
         settings.REQUEST_HEADERS["Accept"] = "application/x-bibtex"
         try:
             resp = requests.get(
@@ -104,7 +104,7 @@ class DOI:
         return ""
 
     def _gather(self, doi: str):
-        # Gather JSON information from doi.org about the submitted DOI.
+        """Gather JSON information from doi.org about the submitted DOI."""
         settings.REQUEST_HEADERS["Accept"] = "application/json"
         resp = requests.get(
             headers=settings.REQUEST_HEADERS,
@@ -125,7 +125,7 @@ class DOI:
 
 
     def _populate(self, data, check_orcids: bool):
-        # Fill in DOI object attributes using JSON response.
+        """Fill in DOI object attributes using JSON response."""
         self.doi = data.get("DOI", self.doi)
         self.abstract = data.get("abstract", self.abstract)
         self.authors = data.get("author", self.authors)
@@ -166,13 +166,15 @@ class DOI:
         self.funders = []
         for funder in data.get("funder", []):
             funder_obj = DOIFunder(doi=self.doi, funder=funder)
-            self.funders.append(funder_obj)
+            if funder_obj:
+                self.funders.append(funder_obj)
 
         # Create list of reference objects.
         self.references = []
         for reference in data.get("reference", []):
             reference_obj = DOIReference(doi=self.doi, reference=reference)
-            self.references.append(reference_obj)
+            if reference_obj:
+                self.references.append(reference_obj)
 
         # Set date attributes.
         self.created = parse_date(data.get("created"))
@@ -187,7 +189,7 @@ class DOI:
         self.json =  json_dumps(data, indent=2)
 
     def is_penn(self) -> bool:
-        # If any author is Penn-affiliated, the DOI is Penn-affiliated.
+        """If any author is Penn-affiliated, the DOI is Penn-affiliated."""
         for author in self.authors:
             if author.is_penn:
                 return True
@@ -195,7 +197,7 @@ class DOI:
 
     @property
     def author_display(self) -> str:
-        # Comma-separated string of each author name.
+        """Comma-separated string of each author name."""
         author_text = ""
         for i, author in enumerate(self.authors, start=1):
             author_text += f"{author.name}"
@@ -205,7 +207,7 @@ class DOI:
 
     @property
     def wikitext(self):
-        # Information about DOI as wiki-text.
+        """Information about DOI as wiki-text."""
         return (
             f"|{self.author_display}\n|"
             f"{self.published}\n|"
