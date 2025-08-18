@@ -13,12 +13,13 @@ class DOIFunder:
         Includes name, DOI, awards, etc.
     """
     doi: str = ""
+    fund_doi: str = ""
+
     name: str = ""
     preferred_label: str = ""
     alternative_labels: list = []
     awards: set = set()
     broader: str = ""
-    fund_doi: str = ""
     body_type: str = ""
     body_subtype: str = ""
     region: str = ""
@@ -55,11 +56,18 @@ class DOIFunder:
             resp.raise_for_status()
             data = resp.json()
 
-        # Skip failed DOI funder request/JSON.
+        # Log failed DOI funder attempts.
         except (
+            requests.exceptions.ConnectionError,
+            requests.exceptions.ConnectTimeout,
             requests.exceptions.HTTPError,
-            requests.exceptions.JSONDecodeError
-        ):
+            requests.exceptions.JSONDecodeError,
+            requests.exceptions.ReadTimeout,
+        ) as fund_gather_exc:
+            logger.exception(
+                msg=f"Failed gathering DOIFunder: {self.fund_doi} ({self.doi})",
+                exc_info=fund_gather_exc
+            )
             return None
 
         # Fill in funder object attributes using JSON response.
@@ -85,7 +93,9 @@ class DOIFunder:
             self.body_subtype = data["fundingBodySubType"]
 
             # Set broader resource and region attributes.
-            self.broader = data["broader"]["resource"]
+            self.broader = data.get("broader")
+            if self.broader and isinstance(self.broader, dict):
+                self.broader = self.broader.get("resource")
             self.region = data["region"]
 
         except KeyError:

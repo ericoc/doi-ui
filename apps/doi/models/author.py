@@ -61,7 +61,10 @@ class DOIAuthor:
                 )
             # Ignore HTTP response code failures (409 for deactivated ORCID).
             except HTTPError as orcid_employ_http_err:
-                logger.exception(orcid_employ_http_err)
+                logger.exception(
+                    msg=f"Failed checking ORCID affiliation. ({self.orcid})",
+                    exc_info=orcid_employ_http_err
+                )
 
             # Process employment records found within the ORCID.
             if employments:

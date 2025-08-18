@@ -51,6 +51,7 @@ class DOI:
     type: str = ""
     url: str = ""
 
+
     def __init__(self, _doi: str = "", check_orcids: bool = True):
         """Initialization of Digital Object Identifier (DOI) Python object."""
 
@@ -65,6 +66,7 @@ class DOI:
         )
         self.bibliography = self._gather_bibliography()
         self.bibtex = self._gather_bibtex()
+
 
     def _gather_bibliography(self) -> str:
         """Gather bibliography information from doi.org about the DOI."""
@@ -81,10 +83,15 @@ class DOI:
             ).strip()
             if resp_text:
                 return resp_text
+
         except Exception as bibliography_exc:
-            logger.exception(bibliography_exc)
+            logger.exception(
+                msg=f"Failed gathering bibliography. ({self.doi})",
+                exc_info=bibliography_exc
+            )
 
         return ""
+
 
     def _gather_bibtex(self) -> str:
         """Gather BibTeX information from doi.org about the DOI."""
@@ -99,9 +106,13 @@ class DOI:
             if resp_text:
                 return resp_text
         except Exception as bibtex_exc:
-            logger.exception(bibtex_exc)
+            logger.exception(
+                msg=f"Failed gathering BibTeX. ({self.doi})",
+                exc_info=bibtex_exc
+            )
 
         return ""
+
 
     def _gather(self, doi: str):
         """Gather JSON information from doi.org about the submitted DOI."""
@@ -120,8 +131,9 @@ class DOI:
         try:
             return resp.json()
         except requests.exceptions.JSONDecodeError as json_err:
-            logger.exception(json_err)
-            raise ValueError("Cannot decode response as JSON.") from json_err
+            msg = "Cannot decode response as JSON."
+            logger.exception(f"{msg} ({doi})")
+            raise ValueError(msg) from json_err
 
 
     def _populate(self, data, check_orcids: bool):
@@ -188,12 +200,14 @@ class DOI:
         # Format raw JSON.
         self.json =  json_dumps(data, indent=2)
 
+
     def is_penn(self) -> bool:
         """If any author is Penn-affiliated, the DOI is Penn-affiliated."""
         for author in self.authors:
             if author.is_penn:
                 return True
         return False
+
 
     @property
     def author_display(self) -> str:
@@ -204,6 +218,7 @@ class DOI:
             if i < self.author_count:
                 author_text += ", "
         return author_text
+
 
     @property
     def wikitext(self):
@@ -217,8 +232,10 @@ class DOI:
             f"-"
         )
 
+
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}: {self.__str__()}"
+
 
     def __str__(self) -> str:
         msg = self.doi
