@@ -14,7 +14,7 @@ def get_dict_item(dictionary, key):
 
 
 @register.filter(name="human_time")
-def human_time(when: (date, datetime)) -> str:
+def human_time(when) -> str:
     # Filter to present relative time, with color.
     current = None
     ret = str(when)

@@ -110,7 +110,7 @@ class DOI:
         if resp.status_code != 200:
             raise FileNotFoundError("No such DOI found.")
 
-        # Convert response to JSON
+        # Convert response to JSON.
         try:
             return resp.json()
         except requests.exceptions.JSONDecodeError as json_err:
