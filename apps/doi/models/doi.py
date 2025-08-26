@@ -158,12 +158,15 @@ class DOI:
         # Set up connection to ORCID API, by default.
         orcid_api = ()
         if check_orcids:
-            orcid_conn = PublicAPI(
-                institution_key=settings.ORCID_API_CLIENT_ID,
-                institution_secret=settings.ORCID_API_CLIENT_SECRET
-            )
-            orcid_token = orcid_conn.get_search_token_from_orcid()
-            orcid_api = (orcid_conn, orcid_token)
+            try:
+                orcid_conn = PublicAPI(
+                    institution_key=settings.ORCID_API_CLIENT_ID,
+                    institution_secret=settings.ORCID_API_CLIENT_SECRET
+                )
+                orcid_token = orcid_conn.get_search_token_from_orcid()
+                orcid_api = (orcid_conn, orcid_token)
+            except requests.exceptions.HTTPError as orcid_api_err:
+                logger.exception(msg="ORCID API Fail.", exc_info=orcid_api_err)
 
         # Create list of author objects, potentially using each authors ORCID.
         self.authors = []
