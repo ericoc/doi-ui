@@ -157,7 +157,11 @@ class DOI:
 
         # Set up connection to ORCID API, by default.
         orcid_api = ()
-        if check_orcids:
+        if (
+            check_orcids
+            and settings.ORCID_API_CLIENT_ID
+            and settings.ORCID_API_CLIENT_SECRET
+        ):
             try:
                 orcid_conn = PublicAPI(
                     institution_key=settings.ORCID_API_CLIENT_ID,
