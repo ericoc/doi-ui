@@ -27,10 +27,7 @@ class DOIView(BaseView):
         if doi:
             err_msg = ""
             try:
-                self.doi = cache.get_or_set(
-                    key=doi,
-                    default=DOI(_doi=doi)
-                )
+                self.doi = cache.get_or_set(key=doi, default=DOI(_doi=doi))
                 self.status_code = HTTPStatus.OK
                 self.title = self.doi.doi
 
