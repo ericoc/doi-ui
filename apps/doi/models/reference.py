@@ -1,6 +1,3 @@
-from functools import cached_property
-
-
 class DOIReference:
     """
     Digital Object Identifier (DOI) Reference.
@@ -44,7 +41,7 @@ class DOIReference:
     def __str__(self) -> str:
         return str(self._data)
 
-    @cached_property
+    @property
     def anchor(self) -> str:
         """HTML anchor to the reference. Example: #reference-ref5-cit5 """
         return self.key.replace(" ", "-").replace("_", "-").replace("/", "-")
