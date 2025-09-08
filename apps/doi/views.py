@@ -1,7 +1,8 @@
 from http import HTTPStatus
 from logging import getLogger
-from django.contrib import messages
 from django.conf import settings
+from django.contrib import messages
+from django.core.cache import cache
 from django.utils.html import format_html
 
 from apps.core.views import BaseView
@@ -26,7 +27,10 @@ class DOIView(BaseView):
         if doi:
             err_msg = ""
             try:
-                self.doi = DOI(_doi=doi)
+                self.doi = cache.get_or_set(
+                    key=doi,
+                    default=DOI(_doi=doi)
+                )
                 self.status_code = HTTPStatus.OK
                 self.title = self.doi.doi
 

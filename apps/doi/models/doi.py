@@ -1,6 +1,7 @@
 import requests
 from datetime import date, datetime
 from django.conf import settings
+from django.core.cache import cache
 from logging import getLogger
 from html import unescape
 from json import dumps as json_dumps
@@ -175,8 +176,13 @@ class DOI:
         # Create list of author objects, potentially using each authors ORCID.
         self.authors = []
         for author in data.get("author", []):
-            author_obj = DOIAuthor(
-                doi=self.doi, author=author, orcid_api=orcid_api
+            author_obj = cache.get_or_set(
+                key=author,
+                default=DOIAuthor(
+                    doi=self.doi,
+                    author=author,
+                    orcid_api=orcid_api
+                )
             )
             self.authors.append(author_obj)
         self.author_count = len(self.authors)
@@ -184,14 +190,20 @@ class DOI:
         # Create list of funder objects.
         self.funders = []
         for funder in data.get("funder", []):
-            funder_obj = DOIFunder(doi=self.doi, funder=funder)
+            funder_obj = cache.get_or_set(
+                key=funder,
+                default=DOIFunder(doi=self.doi, funder=funder)
+            )
             if funder_obj:
                 self.funders.append(funder_obj)
 
         # Create list of reference objects.
         self.references = []
         for reference in data.get("reference", []):
-            reference_obj = DOIReference(doi=self.doi, reference=reference)
+            reference_obj = cache.get_or_set(
+                key=reference,
+                default=DOIReference(doi=self.doi, reference=reference)
+            )
             if reference_obj:
                 self.references.append(reference_obj)
 
