@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html class="dark" data-bs-theme="dark" lang="en">
+
     <head>
         <meta charset="utf-8">
         <meta name="author" content="Eric O'Callaghan">
@@ -20,6 +21,7 @@
         <link href="{% static 'bootstrap-5.3.7-dist/css/bootstrap.css' %}" rel="stylesheet">
         <script src="{% static 'bootstrap-5.3.7-dist/js/bootstrap.bundle.js' %}"></script>
         <link rel="stylesheet" href="{% static 'bootstrap-icons-1.13.1/bootstrap-icons.min.css' %}">
+
         <style>
             .penn-shield { height: 1.5rem; }
             #logo { height: 3rem; }
@@ -32,10 +34,9 @@
             a:active.h1 { color: var(--bs-primary-text-emphasis); }
             summary::marker, a:hover.h1, .anchor-link { color: var(--bs-primary); }
             details[open] summary::marker { color: var(--bs-danger-text-emphasis); }
-            td.doi-date { font-style: italic; }
-            td.future-doi-date { font-weight: bold; color: var(--bs-danger-text-emphasis); }
             #btn-back-to-top { position: fixed; bottom: 20px; right: 20px; display: none; }
         </style>
+
     </head>
 
     <body>
@@ -64,6 +65,7 @@
                 </form>
             </nav>
         </header>
+
         <main class="container-fluid" id="content">
 {% block messages %}
     {% if messages %}
@@ -84,11 +86,13 @@
                 <i class="bi bi-arrow-up-circle-fill"></i>
             </button>
         </main>
+
         <footer class="container-fluid">
             <small class="text-start">
                 <a class="icon-link icon-link-hover" data-bs-toggle="tooltip" data-bs-title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;" href="https://github.com/ericoc/doi-ui" id="source" target="_blank" title="View source of this page &lt;https://github.com/ericoc/doi-ui&gt;"><i class="bi bi-code-slash"></i> <code>https://github.com/ericoc/doi-ui</code></a>
             </small>
         </footer>
+
         <script>
             // Function and button to scroll to top of page.
             let goUpButton = document.getElementById("btn-back-to-top")
@@ -167,5 +171,6 @@
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
             const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
         </script>
+
     </body>
 </html>
