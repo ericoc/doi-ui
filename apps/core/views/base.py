@@ -8,7 +8,7 @@ class BaseView(TemplateView):
     """
     Base view.
     """
-    doi: (DOI, str) = ""
+    doi: str = ""
     http_method_names: tuple = ("get",)
     status_code: int = HTTPStatus.OK
     title: str = "Home"
