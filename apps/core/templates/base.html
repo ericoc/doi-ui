@@ -16,10 +16,10 @@
         <meta property="og:image" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% block meta_image %}{% static 'icon.png' %}{% endblock meta_image %}">
         <meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% block meta_url %}{% endblock meta_url %}">
         <title>{{ WEBSITE_TITLE }}: {% block title %}{{ title|default:"Home" }}{% endblock title %}</title>
-        <script src="{% static 'jquery-3.7.1.min.js' %}"></script>
+        <script src="{% static 'jquery-4.0.0.min.js' %}"></script>
         <link href="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static 'favicon.ico' %}" rel="shortcut icon" type="image/vnd.microsoft.icon">
-        <link href="{% static 'bootstrap-5.3.7-dist/css/bootstrap.css' %}" rel="stylesheet">
-        <script src="{% static 'bootstrap-5.3.7-dist/js/bootstrap.bundle.js' %}"></script>
+        <link href="{% static 'bootstrap-5.3.8-dist/css/bootstrap.css' %}" rel="stylesheet">
+        <script src="{% static 'bootstrap-5.3.8-dist/js/bootstrap.bundle.js' %}"></script>
         <link rel="stylesheet" href="{% static 'bootstrap-icons-1.13.1/bootstrap-icons.min.css' %}">
 
         <style>
